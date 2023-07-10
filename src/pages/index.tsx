@@ -1,6 +1,6 @@
 import Head from 'next/head';
 
-import { Layout } from '@/component/Layout';
+import { Layout } from '@/components/Layout';
 
 function Home() {
   return (
@@ -9,7 +9,7 @@ function Home() {
         <title>setting-practice</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Layout />
+      <Layout>hi</Layout>
     </>
   );
 }
