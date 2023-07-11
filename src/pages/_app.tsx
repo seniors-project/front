@@ -2,7 +2,8 @@ import React from 'react';
 import type { AppProps } from 'next/app';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { RecoilRoot } from 'recoil';
-import GlobalStyle from '@/styles/globalStyles';
+
+import { GlobalStyles } from '@/styles/GlobalStyles';
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [queryClient] = React.useState(() => new QueryClient());
@@ -10,7 +11,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <QueryClientProvider client={queryClient}>
       <RecoilRoot>
-        <GlobalStyle />
+        <GlobalStyles />
         <Component {...pageProps} />
       </RecoilRoot>
     </QueryClientProvider>

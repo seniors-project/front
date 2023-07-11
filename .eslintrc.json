@@ -12,7 +12,7 @@
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
-  "plugins": ["@typescript-eslint"],
+  "plugins": ["@typescript-eslint", "prettier"],
   "extends": [
     "eslint:recommended",
     "plugin:prettier/recommended",
@@ -22,13 +22,22 @@
     "prettier"
   ],
   "rules": {
-    "prettier/prettier": ["error", { "endOfLine": "auto" }, { "usePrettierrc": true }],
+    "prettier/prettier": [
+      "error",
+      { "endOfLine": "auto" },
+      { "usePrettierrc": true }
+    ],
     "react/react-in-jsx-scope": "off",
     "react/prop-types": "off",
     "react/display-name": "off",
     "no-unused-vars": "off",
     "@typescript-eslint/no-var-requires": 0,
     "@typescript-eslint/no-unused-vars": ["error"],
-    "@typescript-eslint/explicit-module-boundary-types": "off"
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    // ts파일에서 tsx구문 허용 (Next.js)
+    "react/jsx-filename-extension": [
+      1,
+      { "extensions": [".js", ".jsx", ".ts", ".tsx"] }
+    ]
   }
 }
