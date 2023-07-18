@@ -1,4 +1,5 @@
 import tw from 'twin.macro';
+import Link from 'next/link';
 
 import { Container } from '@/styles';
 
@@ -29,7 +30,9 @@ export function Header() {
             <MenuItem>공개 이력서</MenuItem>
             <MenuItem>채팅하기</MenuItem>
             <MenuItem>알림</MenuItem>
-            <MenuItem>로그인/회원가입</MenuItem>
+            <Link href="/auth/login">
+              <MenuItem>로그인/회원가입</MenuItem>
+            </Link>
           </Menu>
         </ContainerInner>
       </Container>
