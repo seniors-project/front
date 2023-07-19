@@ -1,28 +1,47 @@
-import { useCallback, useEffect } from 'react';
-import { useRouter } from 'next/router';
+import { GetServerSideProps, GetServerSidePropsContext } from 'next';
 
 import { kakaoLogin } from '@/apis/auth';
 
-export default function Callback() {
-  const router = useRouter();
+const Callback = () => {
+  return null;
+};
 
-  const loginHandler = useCallback(async () => {
-    if (!router.query.code) return;
+export const getServerSideProps: GetServerSideProps = async (
+  context: GetServerSidePropsContext,
+) => {
+  if (!context.query.code)
+    return {
+      redirect: {
+        permanent: false,
+        destination: '/auth/login',
+      },
+      props: {},
+    };
 
-    const response = await kakaoLogin(router.query.code as string);
+  const response = await kakaoLogin(context.query.code as string);
+  const { accessToken, refreshToken } = response.data;
 
-    localStorage.setItem('token', response.data.accessToken);
+  if (response.status === 200) {
+    context.res.setHeader('set-cookie', [
+      `access-token=${accessToken}; path=/;`,
+      `refresh-token=${refreshToken}; path=/;`,
+    ]);
 
-    if (response.status === 200) {
-      router.replace('/');
-    } else {
-      router.back();
-    }
-  }, [router.query]);
+    return {
+      redirect: {
+        permanent: false,
+        destination: '/',
+      },
+      props: {},
+    };
+  }
 
-  useEffect(() => {
-    loginHandler();
-  }, [loginHandler]);
+  return {
+    redirect: {
+      permanent: false,
+      destination: '/auth/login',
+    },
+  };
+};
 
-  return <></>;
-}
+export default Callback;
