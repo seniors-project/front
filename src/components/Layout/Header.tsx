@@ -24,7 +24,9 @@ export function Header() {
       <Container>
         <ContainerInner>
           <Logo>
-            <img src="/images/logo.png" />
+            <Link href="/">
+              <img src="/images/logo.png" />
+            </Link>
           </Logo>
           <Menu>
             <MenuItem>공개 이력서</MenuItem>
