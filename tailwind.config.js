@@ -9,9 +9,9 @@ module.exports = {
     extend: {
       colors: {
         primary: {
-          // light: '#',
-          main: '#FF9696', // 임시
-          // dark: '#',
+          light: '#2888f7',
+          main: '#0177FD',
+          dark: '#024da3',
         },
       },
     },
