@@ -1,23 +1,26 @@
 import tw from "twin.macro";
+
 import { ResumeWriteButton } from "./ChatButton";
+import ChatListBox from "./ChatListBox";
 
 function ChatList() {
   return (
-    <StyledChatListBox>
+    <StyledChatListContainer>
       <StyledChatListBoxUpText>채팅 목록</StyledChatListBoxUpText>
       <StyledGrayLine />
+      <ChatListBox />
       <StyledContent>
         <StyledChatListBoxDownText>공개 이력서에서<br/>인맥을 쌓고 채팅을 해 보세요!</StyledChatListBoxDownText>
         <ResumeWriteButton />
       </StyledContent>
-    </StyledChatListBox>
+    </StyledChatListContainer>
   );
 }
 
 export default ChatList;
 
-const StyledChatListBox = tw.div`
-w-[396px] h-[820px] rounded-2xl bg-white flex flex-col
+const StyledChatListContainer = tw.div`
+w-[396px] h-[820px] rounded-tl-[20px] bg-white flex flex-col border-t border-l border-gray-300
 `
 
 const StyledGrayLine = tw.div`
