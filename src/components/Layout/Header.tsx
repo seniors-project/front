@@ -2,7 +2,6 @@ import tw from 'twin.macro';
 import Link from 'next/link';
 
 import { Container } from '@/styles';
-import Link from 'next/link';
 
 const StyledHeader = tw.header`
   bg-white border-b-2

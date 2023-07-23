@@ -1,18 +1,24 @@
-import tw from "twin.macro";
+import tw from 'twin.macro';
 
 function ChatRoom() {
-    return (
-        <StyledChatRoomBox>
-            <StyledMessagesContainer>
-                <StyledChatRoomDate>23년 12월 23일 (목)</StyledChatRoomDate>
-                <StyledMessageBox>안녕하세요. 이력서 보고 연락드립니다. 임꺽정님께 부천지사 핸들링 포지션을 제안드리고 싶습니다.</StyledMessageBox>
-            </StyledMessagesContainer>
-            <StyledChatInputContainer>
-                <StyledChatRoomInputBox rows={1} placeholder="메세지를 입력해 주세요." />
-                <StyleChatSendButton>전송</StyleChatSendButton>
-            </StyledChatInputContainer>
-        </StyledChatRoomBox>
-    );
+  return (
+    <StyledChatRoomBox>
+      <StyledMessagesContainer>
+        <StyledChatRoomDate>23년 12월 23일 (목)</StyledChatRoomDate>
+        <StyledMessageBox>
+          안녕하세요. 이력서 보고 연락드립니다. 임꺽정님께 부천지사 핸들링
+          포지션을 제안드리고 싶습니다.
+        </StyledMessageBox>
+      </StyledMessagesContainer>
+      <StyledChatInputContainer>
+        <StyledChatRoomInputBox
+          rows={1}
+          placeholder="메세지를 입력해 주세요."
+        />
+        <StyleChatSendButton>전송</StyleChatSendButton>
+      </StyledChatInputContainer>
+    </StyledChatRoomBox>
+  );
 }
 
 export default ChatRoom;

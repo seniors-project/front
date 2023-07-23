@@ -2,8 +2,8 @@ import Head from 'next/head';
 
 import { Layout } from '@/components/Layout';
 
-import ChatList from './ChatList';
-import ChatRoom from './ChatRoom';
+import ChatList from './chatList';
+import ChatRoom from './chatRoom';
 
 function chat() {
   return (
@@ -14,15 +14,16 @@ function chat() {
       </Head>
       <Layout>
         채팅하기
-        <div style={{ 
-          display: 'flex', 
-          flexDirection: 'row', 
-          justifyContent: 'center', 
-          alignItems: 'center',
-        }}>          
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
           <ChatList />
-          <ChatRoom/>
-        </div> 
+          <ChatRoom />
+        </div>
       </Layout>
     </>
   );
