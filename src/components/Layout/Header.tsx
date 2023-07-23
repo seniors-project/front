@@ -30,7 +30,9 @@ export function Header() {
           </Logo>
           <Menu>
             <MenuItem>공개 이력서</MenuItem>
-            <MenuItem>채팅하기</MenuItem>
+            <MenuItem>
+              <Link href="/chat">채팅하기</Link>
+            </MenuItem>
             <MenuItem>알림</MenuItem>
             <Link href="/auth/login">
               <MenuItem>로그인/회원가입</MenuItem>
