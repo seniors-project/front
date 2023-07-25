@@ -13,7 +13,16 @@ module.exports = {
           main: '#0177FD',
           dark: '#024da3',
         },
+        button: {
+          blue: '0177FD',
+        },
       },
+    },
+    fontFamily: {
+      medium: 'var(----pretendered-medium-font)',
+      semibold: 'var(----pretendered-semiBold-font)',
+      bold: 'var(----pretendered-bold-font)',
+      regular: 'var(----pretendered-regular-font)',
     },
   },
   plugins: [],
