@@ -1,6 +1,10 @@
+import Modal from '@/components/Modal';
+import { useState } from 'react';
 import tw from 'twin.macro';
 
 function ChatRoom() {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <StyledChatRoomBox>
       <StyledMessagesContainer>
@@ -10,6 +14,15 @@ function ChatRoom() {
           포지션을 제안드리고 싶습니다.
         </StyledMessageBox>
       </StyledMessagesContainer>
+      <div>
+        <button onClick={() => setIsOpen(true)}>Open modal</button>
+        <Modal
+          isOpen={isOpen}
+          onClose={() => setIsOpen(false)}
+          size={{ width: '500px', height: '400px' }}>
+          <h1>Hello, world!</h1>
+        </Modal>
+      </div>
       <StyledChatInputContainer>
         <StyledChatRoomInputBox
           rows={1}
