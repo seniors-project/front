@@ -8,6 +8,9 @@ const Main = tw.main`
   min-h-[500px]
   // bg-primary-main 
   // border-y-primary-light border-y-[1px]
+  max-w-6xl
+  mx-auto
+  mt-12
 `;
 
 interface Props {
