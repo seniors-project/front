@@ -29,7 +29,9 @@ export function Header() {
             </Link>
           </Logo>
           <Menu>
-            <MenuItem>공개 이력서</MenuItem>
+            <Link href="/resumes">
+              <MenuItem>공개 이력서</MenuItem>
+            </Link>
             <MenuItem>
               <Link href="/chat">채팅하기</Link>
             </MenuItem>
