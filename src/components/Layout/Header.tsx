@@ -21,6 +21,12 @@ const Menu = tw.ul`block text-lg font-semibold`;
 const MenuItem = tw.li`inline-block p-0 pl-6`;
 
 export function Header() {
+  function kakaoLogin() {
+    window.Kakao.Auth.authorize({
+      redirectUri: 'http://localhost:3000/auth/kakao/callback',
+    });
+  }
+
   return (
     <StyledHeader>
       <Container>
@@ -38,9 +44,11 @@ export function Header() {
               <Link href="/chat">채팅하기</Link>
             </MenuItem>
             <MenuItem>알림</MenuItem>
-            <Link href="/auth/login">
-              <MenuItem>로그인/회원가입</MenuItem>
-            </Link>
+            <MenuItem>
+              <button title="카카오 로그인" onClick={kakaoLogin}>
+                로그인/회원가입
+              </button>
+            </MenuItem>
           </Menu>
         </ContainerInner>
       </Container>
