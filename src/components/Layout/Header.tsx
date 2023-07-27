@@ -1,7 +1,9 @@
 import tw from 'twin.macro';
 import Link from 'next/link';
 
-import { Container } from '@/styles';
+const Container = tw.div`
+  max-w-7xl mx-auto py-4 px-6
+`;
 
 const StyledHeader = tw.header`
   bg-white border-b-2
@@ -29,7 +31,9 @@ export function Header() {
             </Link>
           </Logo>
           <Menu>
-            <MenuItem>공개 이력서</MenuItem>
+            <Link href="/resumes">
+              <MenuItem>공개 이력서</MenuItem>
+            </Link>
             <MenuItem>
               <Link href="/chat">채팅하기</Link>
             </MenuItem>
