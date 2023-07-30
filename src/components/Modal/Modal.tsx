@@ -20,7 +20,7 @@ export default function Modal({ isOpen, children, onClose, size }: ModalProps) {
 
     return () => {
       document.body.removeChild(root);
-    }
+    };
   }, []);
 
   const handleCloseClick = (e: React.MouseEvent) => {
@@ -44,7 +44,9 @@ export default function Modal({ isOpen, children, onClose, size }: ModalProps) {
           { width: size?.width, height: size?.height },
         ]}>
         {children}
-        <button onClick={handleCloseClick} css={tw`absolute top-0 right-0 p-4`}>Close</button>
+        <button onClick={handleCloseClick} css={tw`absolute top-0 right-0 p-4`}>
+          <img src="/images/close.png" />
+        </button>
       </div>
     </div>
   ) : null;

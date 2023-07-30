@@ -1,4 +1,6 @@
-import Modal from '@/components/Modal';
+import Modal from '@/components/Modal/Modal';
+import InquiryModal from '@/components/Modal/inquiryModal';
+import LoginModal from '@/components/Modal/loginModal';
 import { useState } from 'react';
 import tw from 'twin.macro';
 
@@ -19,8 +21,8 @@ function ChatRoom() {
         <Modal
           isOpen={isOpen}
           onClose={() => setIsOpen(false)}
-          size={{ width: '500px', height: '400px' }}>
-          <h1>Hello, world!</h1>
+          size={{ width: '732px', height: '890px' }}>
+          <InquiryModal />
         </Modal>
       </div>
       <StyledChatInputContainer>
