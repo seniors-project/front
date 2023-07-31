@@ -1,6 +1,8 @@
 import tw from 'twin.macro';
 import Link from 'next/link';
 
+import { kakaoLogin } from '@/utils/kakaoLogin';
+
 const Container = tw.div`
   max-w-7xl mx-auto py-4 px-6
 `;
@@ -21,12 +23,6 @@ const Menu = tw.ul`block text-lg font-semibold`;
 const MenuItem = tw.li`inline-block p-0 pl-6`;
 
 export function Header() {
-  function kakaoLogin() {
-    window.Kakao.Auth.authorize({
-      redirectUri: 'http://localhost:3000/auth/kakao/callback',
-    });
-  }
-
   return (
     <StyledHeader>
       <Container>
