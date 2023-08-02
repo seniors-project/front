@@ -1,6 +1,6 @@
 import Modal from '@/components/Modal/Modal';
-import InquiryModal from '@/components/Modal/inquiryModal';
-import LoginModal from '@/components/Modal/loginModal';
+import InquiryModal from '@/components/Modal/InquiryModal';
+import LoginModal from '@/components/Modal/LoginModal';
 import { useState } from 'react';
 import tw from 'twin.macro';
 
