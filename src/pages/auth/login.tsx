@@ -1,8 +1,11 @@
-import tw from 'twin.macro';
+import { GetServerSidePropsContext, GetServerSideProps } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
+import tw from 'twin.macro';
 
 import { kakaoLogin } from '@/utils/kakaoLogin';
+import parseCookies from '@/utils/parseCookies';
+import { userValidate } from '@/apis/auth';
 
 import { Layout } from '@/components/Layout';
 import { Container } from '@/styles';
@@ -60,3 +63,39 @@ export default function Login() {
     </Layout>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async (
+  context: GetServerSidePropsContext,
+) => {
+  const cookies = parseCookies(context.req.headers.cookie || '');
+
+  const accessToken = cookies.accessToken;
+
+  if (!accessToken) {
+    return {
+      redirect: {
+        destination: '/auth/login',
+        permanent: false,
+      },
+    };
+  }
+
+  try {
+    const response = await userValidate(accessToken);
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+        props: { user: response.data },
+      },
+    };
+  } catch (e) {
+    console.log(e);
+    return {
+      redirect: {
+        destination: '/auth/login',
+        permanent: false,
+      },
+    };
+  }
+};
