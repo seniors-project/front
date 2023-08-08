@@ -1,5 +1,6 @@
 import tw from 'twin.macro';
 import Link from 'next/link';
+import Image from 'next/image';
 
 import { kakaoLogin } from '@/utils/kakaoLogin';
 
@@ -28,7 +29,12 @@ export default function Login() {
       <Container>
         <Logo>
           <Link href="/">
-            <img src="/images/logo.png" />
+            <Image
+              src="/images/logo.png"
+              alt="logo picture"
+              width={311}
+              height={76}
+            />
           </Link>
         </Logo>
         <div tw="max-w-lg mx-auto">
@@ -42,7 +48,12 @@ export default function Login() {
             </p>
           </LoginDescription>
           <BtnWapper title="카카오 로그인" onClick={kakaoLogin}>
-            <img src="/images/kakao.png" />
+            <Image
+              src="/images/kakao.png"
+              alt="kakao login picture"
+              width={200}
+              height={80}
+            />
           </BtnWapper>
         </div>
       </Container>

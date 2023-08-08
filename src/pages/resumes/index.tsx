@@ -1,5 +1,6 @@
 import tw from 'twin.macro';
 import { GetServerSidePropsContext, GetServerSideProps } from 'next';
+import Image from 'next/image';
 
 import { userValidate } from '@/apis/auth';
 import parseCookies from '@/utils/parseCookies';
@@ -113,7 +114,12 @@ const ResumeListPage = () => {
           <ResumeCard>
             <ResumeCardHeader>
               <ResumeCardHeaderProfileImg>
-                <img src="/images/logo.png" />
+                <Image
+                  src="/images/logo.png"
+                  alt="logo picture"
+                  width={500}
+                  height={100}
+                />
               </ResumeCardHeaderProfileImg>
               <ResumeCardHeaderProfile>
                 <p tw="font-bold text-2xl">홍길동</p>

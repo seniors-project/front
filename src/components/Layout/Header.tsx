@@ -1,5 +1,6 @@
 import tw from 'twin.macro';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const Container = tw.div`
   max-w-7xl mx-auto py-4 px-6
@@ -27,7 +28,12 @@ export function Header() {
         <ContainerInner>
           <Logo>
             <Link href="/">
-              <img src="/images/logo.png" />
+              <Image
+                src="/images/logo.png"
+                alt="Logo picture"
+                width={300}
+                height={100}
+              />
             </Link>
           </Logo>
           <Menu>
