@@ -1,8 +1,6 @@
 import tw from 'twin.macro';
 import Link from 'next/link';
 
-import { kakaoLogin } from '@/utils/kakaoLogin';
-
 const Container = tw.div`
   max-w-7xl mx-auto py-4 px-6
 `;
@@ -41,9 +39,9 @@ export function Header() {
             </MenuItem>
             <MenuItem>알림</MenuItem>
             <MenuItem>
-              <button title="카카오 로그인" onClick={kakaoLogin}>
-                로그인/회원가입
-              </button>
+              <Link href="/auth/login">
+                <MenuItem>로그인/회원가입</MenuItem>
+              </Link>
             </MenuItem>
           </Menu>
         </ContainerInner>
