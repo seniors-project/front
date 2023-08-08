@@ -31,17 +31,15 @@ export function Header() {
             </Link>
           </Logo>
           <Menu>
-            <Link href="/resumes">
-              <MenuItem>공개 이력서</MenuItem>
-            </Link>
+            <MenuItem>
+              <Link href="/resumes">공개 이력서</Link>
+            </MenuItem>
             <MenuItem>
               <Link href="/chat">채팅하기</Link>
             </MenuItem>
             <MenuItem>알림</MenuItem>
             <MenuItem>
-              <Link href="/auth/login">
-                <MenuItem>로그인/회원가입</MenuItem>
-              </Link>
+              <Link href="/auth/login">로그인/회원가입</Link>
             </MenuItem>
           </Menu>
         </ContainerInner>
