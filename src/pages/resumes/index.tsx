@@ -1,9 +1,12 @@
 import tw from 'twin.macro';
 import { GetServerSidePropsContext, GetServerSideProps } from 'next';
 import Image from 'next/image';
+import { useQuery } from '@tanstack/react-query';
 
+import { getResumes } from '@/apis/resume';
 import { userValidate } from '@/apis/auth';
 import parseCookies from '@/utils/parseCookies';
+import { ResumeResponse } from '@/types/resume';
 
 import { Layout } from '@/components/Layout';
 import { Container } from '@/styles';
@@ -35,7 +38,7 @@ const ResumeList = tw.div`
   mt-9
 `;
 
-const ResumeCard = tw.div`
+const ResumeCard = tw.li`
   mt-4
   bg-white
   rounded-xl
@@ -82,14 +85,30 @@ const ResumeDe = tw.div`
 const ResumeHistory = tw.div`
   border-t-2 font-regular text-2xl
 `;
-const ResumeHistoryLi = tw.div`
+const ResumeHistoryLi = tw.li`
   flex mt-4
 `;
 const HistoryPeriod = tw.div`
   w-60 mr-14
 `;
 
-const ResumeListPage = () => {
+type ErrorType<T> = {
+  error: T | unknown;
+};
+
+const ResumeListPage = ({ token }: { token: string }) => {
+  const { status, data, error } = useQuery<ResumeResponse, ErrorType<object>>(
+    ['resumes'],
+    async () => {
+      const response = await getResumes(token);
+      return response;
+    },
+  );
+
+  if (status === 'loading') return <span>Loading...</span>;
+
+  if (status === 'error') return <span>Error: {Object(error).message}</span>;
+
   return (
     <Layout>
       <RegisterResumeBanner>
@@ -111,53 +130,59 @@ const ResumeListPage = () => {
           <div>
             <h2 tw="font-semibold text-3xl">전체 목록</h2>
           </div>
-          <ResumeCard>
-            <ResumeCardHeader>
-              <ResumeCardHeaderProfileImg>
-                <Image
-                  src="/images/logo.png"
-                  alt="logo picture"
-                  width={500}
-                  height={100}
-                />
-              </ResumeCardHeaderProfileImg>
-              <ResumeCardHeaderProfile>
-                <p tw="font-bold text-2xl">홍길동</p>
-                <div tw="flex flex-nowrap mt-1">
-                  <p tw="font-semibold text-base">하드웨어</p>
-                  <p tw="font-medium text-base text-[#878E95] ml-1.5">선호</p>
-                </div>
-              </ResumeCardHeaderProfile>
-              <ResumeCardChatButton>
-                <button tw="mx-auto">채팅하기</button>
-              </ResumeCardChatButton>
-            </ResumeCardHeader>
-            <ResumeCardBody>
-              <ResumeDe>
-                <p>
-                  안녕하세요. 홍길동입니다. 잘 부탁드립니다. 잘
-                  부탁드립니다.안녕하세요. 홍길동입니다. 잘 부탁드립니다. 잘
-                  부탁드립니다.안녕하세요. 홍길동입니다. 잘 부탁드립니다. 잘
-                  부탁드립니다.안녕하세요. 홍길동입니다. 잘 부탁드립니다. 잘
-                  글자수로 짤라 ~~~
-                  <span>...</span>
-                  <span tw="text-slate-500 cursor-pointer">더보기</span>
-                </p>
-              </ResumeDe>
-              <ResumeHistory>
-                <ul>
-                  <ResumeHistoryLi>
-                    <HistoryPeriod>2022.04 ~ 재직중</HistoryPeriod>
-                    <div>뫄뫄IT 기업</div>
-                  </ResumeHistoryLi>
-                  <ResumeHistoryLi>
-                    <HistoryPeriod>2022.01 ~ 2022.04</HistoryPeriod>
-                    <div>뫄뫄스타트업 자문위원</div>
-                  </ResumeHistoryLi>
-                </ul>
-              </ResumeHistory>
-            </ResumeCardBody>
-          </ResumeCard>
+          {data.data.content.length > 0 && (
+            <ul>
+              {data.data.content.map(data => (
+                <ResumeCard key={data.id}>
+                  <ResumeCardHeader>
+                    <ResumeCardHeaderProfileImg>
+                      <Image
+                        src={data.photoUrl}
+                        alt="profile img"
+                        width={500}
+                        height={100}
+                      />
+                    </ResumeCardHeaderProfileImg>
+                    <ResumeCardHeaderProfile>
+                      <p tw="font-bold text-2xl">{data.name}</p>
+                      <div tw="flex flex-nowrap mt-1">
+                        <p tw="font-semibold text-base">{data.occupation}</p>
+                        <p tw="font-medium text-base text-[#878E95] ml-1.5">
+                          선호
+                        </p>
+                      </div>
+                    </ResumeCardHeaderProfile>
+                    <ResumeCardChatButton>
+                      <button tw="mx-auto">채팅하기</button>
+                    </ResumeCardChatButton>
+                  </ResumeCardHeader>
+                  <ResumeCardBody>
+                    <ResumeDe>
+                      <p>
+                        {data.introduce}
+                        <span>...</span>
+                        <span tw="text-slate-500 cursor-pointer">더보기</span>
+                      </p>
+                    </ResumeDe>
+                    <ResumeHistory>
+                      {data.careers.length > 0 && (
+                        <ul>
+                          {data.careers.map(career => (
+                            <ResumeHistoryLi key={career.id}>
+                              <HistoryPeriod>
+                                {`${career.startedAt} ~ ${career.endedAt}`}
+                              </HistoryPeriod>
+                              <div>{career.company}</div>
+                            </ResumeHistoryLi>
+                          ))}
+                        </ul>
+                      )}
+                    </ResumeHistory>
+                  </ResumeCardBody>
+                </ResumeCard>
+              ))}
+            </ul>
+          )}
         </ResumeList>
       </Container>
     </Layout>
@@ -183,7 +208,7 @@ export const getServerSideProps: GetServerSideProps = async (
   try {
     const response = await userValidate(accessToken);
     return {
-      props: { user: response.data },
+      props: { user: response.data, token: accessToken },
     };
   } catch (e) {
     console.log(e);
