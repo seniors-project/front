@@ -23,8 +23,8 @@ export const getServerSideProps: GetServerSideProps = async (
 
   if (response.status === 200) {
     context.res.setHeader('set-cookie', [
-      `access-token=${accessToken}; path=/;`,
-      `refresh-token=${refreshToken}; path=/;`,
+      `accessToken=${accessToken}; path=/;`,
+      `refreshToken=${refreshToken}; path=/;`,
     ]);
 
     return {
