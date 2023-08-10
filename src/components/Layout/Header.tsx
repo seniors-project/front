@@ -1,5 +1,6 @@
 import tw from 'twin.macro';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const Container = tw.div`
   max-w-7xl mx-auto py-4 px-6
@@ -27,20 +28,25 @@ export function Header() {
         <ContainerInner>
           <Logo>
             <Link href="/">
-              <img src="/images/logo.png" />
+              <Image
+                src="/images/logo.png"
+                alt="Logo picture"
+                width={300}
+                height={100}
+              />
             </Link>
           </Logo>
           <Menu>
-            <Link href="/resumes">
-              <MenuItem>공개 이력서</MenuItem>
-            </Link>
+            <MenuItem>
+              <Link href="/resumes">공개 이력서</Link>
+            </MenuItem>
             <MenuItem>
               <Link href="/chat">채팅하기</Link>
             </MenuItem>
             <MenuItem>알림</MenuItem>
-            <Link href="/auth/login">
-              <MenuItem>로그인/회원가입</MenuItem>
-            </Link>
+            <MenuItem>
+              <Link href="/auth/login">로그인/회원가입</Link>
+            </MenuItem>
           </Menu>
         </ContainerInner>
       </Container>
