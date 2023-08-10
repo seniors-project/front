@@ -10,6 +10,7 @@ import { ResumeResponse } from '@/types/resume';
 
 import { Layout } from '@/components/Layout';
 import { Container } from '@/styles';
+import { useState } from 'react';
 
 const RegisterResumeBanner = tw.div`
   py-10 bg-white
@@ -97,6 +98,7 @@ type ErrorType<T> = {
 };
 
 const ResumeListPage = ({ token }: { token: string }) => {
+  const [limit, setLimit] = useState(150);
   const { status, data, error } = useQuery<ResumeResponse, ErrorType<object>>(
     ['resumes'],
     async () => {
@@ -108,6 +110,17 @@ const ResumeListPage = ({ token }: { token: string }) => {
   if (status === 'loading') return <span>Loading...</span>;
 
   if (status === 'error') return <span>Error: {Object(error).message}</span>;
+
+  const toggleEllipsis = (str: string, limit: number) => {
+    return {
+      string: str.slice(0, limit),
+      isShowMore: str.length > limit,
+    };
+  };
+
+  const onClickMore = (str: string) => {
+    setLimit(str.length);
+  };
 
   return (
     <Layout>
@@ -159,9 +172,15 @@ const ResumeListPage = ({ token }: { token: string }) => {
                   <ResumeCardBody>
                     <ResumeDe>
                       <p>
-                        {data.introduce}
-                        <span>...</span>
-                        <span tw="text-slate-500 cursor-pointer">더보기</span>
+                        {toggleEllipsis(data.introduce, limit).string}
+                        {toggleEllipsis(data.introduce, limit).isShowMore && (
+                          <span
+                            onClick={() => onClickMore(data.introduce)}
+                            tw="text-slate-500 cursor-pointer">
+                            <span tw="text-black">...</span>
+                            더보기
+                          </span>
+                        )}
                       </p>
                     </ResumeDe>
                     <ResumeHistory>
