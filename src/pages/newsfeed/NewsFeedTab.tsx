@@ -4,13 +4,13 @@ function NewsFeedTab() {
     return (
         <NewsFeedTabLayout>
         <StyledNewsFeedTab1>
-            Tab 1
+            카테고리
         </StyledNewsFeedTab1>
         <StyledNewsFeedTab2>
-            Tab2
+            카테고리
         </StyledNewsFeedTab2>
         <StyledNewsFeedTab3>
-            Tab3
+        카테고리
         </StyledNewsFeedTab3>
         </NewsFeedTabLayout>
     );
@@ -23,13 +23,13 @@ flex-row
 `
 
 const StyledNewsFeedTab1 = tw.button`
-w-[150px] h-[50px] mx-6 px-[15px] items-center justify-center border rounded-2xl bg-gray-100 mt-10
+w-[150px] h-[50px] mx-6 px-[15px] items-center justify-center  bg-gray-100 mt-10 text-[grey]
 `
 
 const StyledNewsFeedTab2 = tw.button`
-w-[150px] h-[50px] mx-6 px-[15px] items-center justify-center border rounded-2xl bg-gray-100 mt-10
+w-[150px] h-[50px] mx-6 px-[15px] items-center justify-center  bg-gray-100 mt-10 text-[grey]
 `
 
 const StyledNewsFeedTab3 = tw.button`
-w-[150px] h-[50px] mx-6 px-[15px] items-center justify-center border rounded-2xl bg-gray-100 mt-10
+w-[150px] h-[50px] mx-6 px-[15px] items-center justify-center  bg-gray-100 mt-10 text-[grey]
 `

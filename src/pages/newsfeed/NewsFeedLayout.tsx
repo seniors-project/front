@@ -1,13 +1,21 @@
+import type { ReactNode } from 'react';
 import tw from 'twin.macro';
 
-function NewsFeedLayout() {
-    return (
-        <StyledNewsFeedLayout/>
-    );
-} 
+import { Header } from '@/components/Layout/Header';
 
-export default NewsFeedLayout;
+const Main = tw.main`
+  min-h-[500px]
+`;
 
-const StyledNewsFeedLayout = tw.div`
-items-center justify-center flex-row
-`
+interface Props {
+  children: ReactNode;
+}
+
+export function NewsFeedLayout({ children }: Props) {
+  return (
+    <>
+      <Header />
+      <Main>{children}</Main>
+    </>
+  );
+}

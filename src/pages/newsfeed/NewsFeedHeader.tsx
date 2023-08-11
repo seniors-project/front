@@ -1,24 +1,21 @@
 import tw from 'twin.macro';
+import { pretenderedBold } from '../../styles/fonts/index'
 
 function NewsFeedHeader() {
     return (
-        <StyledNewsFeedHeader>
-            <StyledProfileImg src="/images/profile.png" alt="Profile" />
-                <StyledInputBox type='text' placeholder='나누고 싶은 생각이 있으신가요?'/>      
-        </StyledNewsFeedHeader>
+        <>
+        <StyledNewsFeedHeader>함께 나누고 싶은 이야기가 있나요?</StyledNewsFeedHeader>
+        <StyledWriteBtn>글 작성하기</StyledWriteBtn>
+        </>
     );
 }
 
 export default NewsFeedHeader;
 
 const StyledNewsFeedHeader = tw.div`
-flex w-[600px] h-[80px] px-[15px] mt-5 py-5 border rounded-2xl bg-gray-100
+font-bold text-xl  mt-7 mb-3 
 `
 
-const StyledProfileImg = tw.img`
-h-[40px] ml-2 mr-5
-`
-
-const StyledInputBox = tw.input`
-w-[480px] h-10 border rounded
+const StyledWriteBtn = tw.button`
+font-semibold text-lg border rounded border-[#0177FD] bg-[#0177FD] text-white px-11 py-2
 `
