@@ -1,4 +1,9 @@
 import tw from 'twin.macro';
+import { GetServerSidePropsContext, GetServerSideProps } from 'next';
+import Image from 'next/image';
+
+import { userValidate } from '@/apis/auth';
+import parseCookies from '@/utils/parseCookies';
 
 import { Layout } from '@/components/Layout';
 import { Container } from '@/styles';
@@ -8,9 +13,7 @@ const RegisterResumeBanner = tw.div`
 `;
 
 const Description = tw.div`
-  font-semibold
-  text-3xl
-  leading-10
+  font-semibold text-3xl leading-10
 `;
 
 const BtnWapper = tw.div`
@@ -41,10 +44,7 @@ const ResumeCard = tw.div`
 `;
 
 const ResumeCardHeader = tw.div`
-  flex
-  px-6
-  py-4
-  
+  flex px-6 py-4
 `;
 const ResumeCardHeaderProfileImg = tw.div`
   w-20
@@ -71,10 +71,7 @@ const ResumeCardChatButton = tw.div`
 `;
 
 const ResumeCardBody = tw.div`
-  // border
-  // border-amber-800
-  border-t
-  p-6
+  border-t p-6
 `;
 const ResumeDe = tw.div`
   font-medium 
@@ -83,9 +80,7 @@ const ResumeDe = tw.div`
   leading-9
 `;
 const ResumeHistory = tw.div`
-  border-t-2
-  font-regular
-  text-2xl
+  border-t-2 font-regular text-2xl
 `;
 const ResumeHistoryLi = tw.div`
   flex mt-4
@@ -119,7 +114,12 @@ const ResumeListPage = () => {
           <ResumeCard>
             <ResumeCardHeader>
               <ResumeCardHeaderProfileImg>
-                <img src="/images/logo.png" />
+                <Image
+                  src="/images/logo.png"
+                  alt="logo picture"
+                  width={500}
+                  height={100}
+                />
               </ResumeCardHeaderProfileImg>
               <ResumeCardHeaderProfile>
                 <p tw="font-bold text-2xl">홍길동</p>
@@ -162,6 +162,38 @@ const ResumeListPage = () => {
       </Container>
     </Layout>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async (
+  context: GetServerSidePropsContext,
+) => {
+  const cookies = parseCookies(context.req.headers.cookie || '');
+
+  const accessToken = cookies.accessToken;
+
+  if (!accessToken) {
+    return {
+      redirect: {
+        destination: '/auth/login',
+        permanent: false,
+      },
+    };
+  }
+
+  try {
+    const response = await userValidate(accessToken);
+    return {
+      props: { user: response.data },
+    };
+  } catch (e) {
+    console.log(e);
+    return {
+      redirect: {
+        destination: '/auth/login',
+        permanent: false,
+      },
+    };
+  }
 };
 
 export default ResumeListPage;
