@@ -1,16 +1,16 @@
+import React, { useState } from 'react';
 import tw from 'twin.macro';
 import { GetServerSidePropsContext, GetServerSideProps } from 'next';
 import Image from 'next/image';
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
+import useInfiniteScroll from 'react-infinite-scroll-hook';
 
 import { getResumes } from '@/apis/resume';
 import { userValidate } from '@/apis/auth';
 import parseCookies from '@/utils/parseCookies';
-import { ResumeResponse } from '@/types/resume';
 
 import { Layout } from '@/components/Layout';
 import { Container } from '@/styles';
-import { useState } from 'react';
 
 const RegisterResumeBanner = tw.div`
   py-10 bg-white
@@ -93,19 +93,32 @@ const HistoryPeriod = tw.div`
   w-60 mr-14
 `;
 
-type ErrorType<T> = {
-  error: T | unknown;
-};
-
 const ResumeListPage = ({ token }: { token: string }) => {
   const [limit, setLimit] = useState(150);
-  const { status, data, error } = useQuery<ResumeResponse, ErrorType<object>>(
+
+  const { status, data, error, fetchNextPage } = useInfiniteQuery(
     ['resumes'],
-    async () => {
-      const response = await getResumes(token);
-      return response;
+    async ({ pageParam }) => {
+      const response = await getResumes(token, pageParam);
+      const resumes = response.data.content;
+      const nextCursor = resumes?.slice(-1)?.[0]?.id;
+
+      return { resumes, nextCursor };
+    },
+    {
+      getNextPageParam: lastPage => {
+        return lastPage.nextCursor;
+      },
     },
   );
+
+  const resumes = data?.pages?.flatMap(page => page.resumes);
+
+  const [sentryRef] = useInfiniteScroll({
+    loading: status === 'loading',
+    hasNextPage: true,
+    onLoadMore: fetchNextPage,
+  });
 
   if (status === 'loading') return <span>Loading...</span>;
 
@@ -143,9 +156,9 @@ const ResumeListPage = ({ token }: { token: string }) => {
           <div>
             <h2 tw="font-semibold text-3xl">전체 목록</h2>
           </div>
-          {data.data.content.length > 0 && (
+          {resumes && resumes?.length > 0 && (
             <ul>
-              {data.data.content.map(data => (
+              {resumes.map(data => (
                 <ResumeCard key={data.id}>
                   <ResumeCardHeader>
                     <ResumeCardHeaderProfileImg>
@@ -202,6 +215,7 @@ const ResumeListPage = ({ token }: { token: string }) => {
               ))}
             </ul>
           )}
+          <div ref={sentryRef} tw="h-px" />
         </ResumeList>
       </Container>
     </Layout>
