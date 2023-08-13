@@ -1,5 +1,5 @@
 import axios from 'axios';
 
 export const httpClient = axios.create({
-  baseURL: 'https://strangehoon.shop/api',
+  baseURL: process.env.NEXT_PUBLIC_BASE_URL,
 });
