@@ -73,10 +73,7 @@ export const getServerSideProps: GetServerSideProps = async (
 
   if (!accessToken) {
     return {
-      redirect: {
-        destination: '/auth/login',
-        permanent: false,
-      },
+      props: {},
     };
   }
 
@@ -92,10 +89,7 @@ export const getServerSideProps: GetServerSideProps = async (
   } catch (e) {
     console.log(e);
     return {
-      redirect: {
-        destination: '/auth/login',
-        permanent: false,
-      },
+      props: {},
     };
   }
 };
