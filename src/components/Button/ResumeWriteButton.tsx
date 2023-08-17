@@ -1,10 +1,10 @@
-'use client';
-
 import tw from 'twin.macro';
 
-export function ResumeWriteButton() {
+function ResumeWriteButton() {
   return <StyledWriteButton>이력서 작성하기</StyledWriteButton>;
 }
+
+export default ResumeWriteButton;
 
 const StyledWriteButton = tw.button`
 w-[193px] 
