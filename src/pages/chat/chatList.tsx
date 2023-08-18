@@ -1,12 +1,12 @@
 import tw from 'twin.macro';
 import { useState } from 'react';
 
-import { ResumeWriteButton } from './chatButton';
 import ChatListBox from './chatListBox';
+import ResumeWriteButton from '@/components/Button/ResumeWriteButton';
 
 function ChatList() {
   // 활성화된 채팅방의 ID를 저장하는 상태
-  const [activeChatBoxId, setActiveChatBoxId] = useState(null);
+  const [activeChatBoxId, setActiveChatBoxId] = useState<number | null>(null);
   // 가정: 각 채팅방에 대한 정보를 가진 배열
   const chatBoxes = [
     { id: 1, name: '홍길동', message: '안녕하세요. 이력서 보고...' },
@@ -14,7 +14,7 @@ function ChatList() {
     // ...
   ];
 
-  const handleClick = id => {
+  const handleClick = (id: number | null) => {
     setActiveChatBoxId(prevId => (prevId === id ? null : id));
   };
 
