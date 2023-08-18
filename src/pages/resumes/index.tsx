@@ -101,7 +101,7 @@ const ResumeListPage = ({ token }: { token: string }) => {
     async ({ pageParam }) => {
       const response = await getResumes(token, pageParam);
       const resumes = response.data.content;
-      const nextCursor = resumes?.slice(-1)?.[0]?.id;
+      const nextCursor = response.data?.lastId;
 
       return { resumes, nextCursor };
     },

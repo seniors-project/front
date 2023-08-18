@@ -15,6 +15,7 @@ export interface ResumeData {
   last: boolean;
   numberOfElements: number;
   empty: boolean;
+  lastId: number;
 }
 
 export interface Pageable {
