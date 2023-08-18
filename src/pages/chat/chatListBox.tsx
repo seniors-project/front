@@ -1,6 +1,13 @@
 import tw from 'twin.macro';
 
-function ChatListBox({ isActive, onClick, name, message }) {
+interface ChatListBoxProps {
+  isActive: boolean;
+  onClick: () => void;
+  name: string;
+  message: string;
+}
+
+function ChatListBox({ isActive, onClick, name, message }: ChatListBoxProps) {
   return isActive ? (
     <StyledActiveChatListBox onClick={onClick}>
       <StyledProfileImg src="/images/profile.png" alt="Profile" />
