@@ -59,7 +59,14 @@ const ResumeCardHeaderProfileImg = tw.div`
   mr-2
 `;
 const ResumeCardHeaderProfile = tw.div`
-  p-2
+  p-2 flex-auto
+`;
+const ViewCount = tw.div`
+  font-medium
+  text-[#515A64]
+  text-xl
+  my-auto
+  // ml-auto
 `;
 const ResumeCardChatButton = tw.div`
   w-48
@@ -178,6 +185,9 @@ const ResumeListPage = ({ token }: { token: string }) => {
                         </p>
                       </div>
                     </ResumeCardHeaderProfile>
+                    {data.viewCount && (
+                      <ViewCount>조회수 {data.viewCount}회</ViewCount>
+                    )}
                     <ResumeCardChatButton>
                       <button tw="mx-auto">채팅하기</button>
                     </ResumeCardChatButton>

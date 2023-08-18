@@ -43,6 +43,7 @@ export interface ResumeItem {
   certificates: Certificate[];
   careers: Career[];
   educations: Education[];
+  viewCount?: number;
 }
 
 export interface Education {
