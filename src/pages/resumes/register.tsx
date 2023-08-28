@@ -1,6 +1,10 @@
 import tw from 'twin.macro';
+import { GetServerSidePropsContext, GetServerSideProps } from 'next';
 import Image from 'next/image';
 import { AiFillPlusCircle } from 'react-icons/Ai';
+
+import { userValidate } from '@/apis/auth';
+import parseCookies from '@/utils/parseCookies';
 
 import { Layout } from '@/components/Layout';
 import { Container } from '@/styles';
@@ -87,7 +91,7 @@ const TemporaryBtn = tw.div`
   text-[#515A64] text-xl font-semibold
 `;
 
-const ResumeAddPage = () => {
+const ResumeRegisterPage = () => {
   return (
     <Layout>
       <Container>
@@ -166,4 +170,36 @@ const ResumeAddPage = () => {
   );
 };
 
-export default ResumeAddPage;
+export const getServerSideProps: GetServerSideProps = async (
+  context: GetServerSidePropsContext,
+) => {
+  const cookies = parseCookies(context.req.headers.cookie || '');
+
+  const accessToken = cookies.accessToken;
+
+  if (!accessToken) {
+    return {
+      redirect: {
+        destination: '/auth/login',
+        permanent: false,
+      },
+    };
+  }
+
+  try {
+    const response = await userValidate(accessToken);
+    return {
+      props: { user: response.data },
+    };
+  } catch (e) {
+    console.log(e);
+    return {
+      redirect: {
+        destination: '/auth/login',
+        permanent: false,
+      },
+    };
+  }
+};
+
+export default ResumeRegisterPage;
