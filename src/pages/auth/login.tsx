@@ -71,31 +71,25 @@ export const getServerSideProps: GetServerSideProps = async (
 
   const accessToken = cookies.accessToken;
 
-  if (!accessToken) {
-    return {
-      redirect: {
-        destination: '/auth/login',
-        permanent: false,
-      },
-    };
-  }
-
   try {
     const response = await userValidate(accessToken);
-    return {
-      redirect: {
-        destination: '/',
-        permanent: false,
-        props: { user: response.data },
-      },
-    };
+
+    if (accessToken) {
+      return {
+        redirect: {
+          destination: '/',
+          permanent: false,
+          props: { user: response.data },
+        },
+      };
+    }
   } catch (e) {
     console.log(e);
     return {
-      redirect: {
-        destination: '/auth/login',
-        permanent: false,
-      },
+      props: {},
     };
   }
+  return {
+    props: {},
+  };
 };
