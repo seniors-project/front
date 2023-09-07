@@ -1,14 +1,19 @@
 import tw from 'twin.macro';
 import { GetServerSidePropsContext, GetServerSideProps } from 'next';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
+import { useRef, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { AiFillPlusCircle } from 'react-icons/Ai';
 
 import { userValidate } from '@/apis/auth';
 import parseCookies from '@/utils/parseCookies';
+import { ResumeForm } from '@/types/resumeForm';
 
 import { Layout } from '@/components/Layout';
 import { Container } from '@/styles';
 import Switch from '@/components/Switch/Switch';
+import { postResume } from '@/apis/resume';
 
 const ResumeAddHeader = tw.div`
   font-semibold text-3xl mt-16 mb-8
@@ -31,7 +36,7 @@ const ResumeProfileImg = tw.div`
   overflow-hidden
   mr-2 mb-4
 `;
-const ResumeProfileBtn = tw.div`
+const ResumeProfileAddBtn = tw.label`
   w-[150px]
   bg-[#0177FD]
   font-semibold text-white text-lg text-center
@@ -91,79 +96,151 @@ const TemporaryBtn = tw.div`
   text-[#515A64] text-xl font-semibold
 `;
 
-const ResumeRegisterPage = () => {
+const ResumeRegisterPage = ({ token }: { token: string }) => {
+  const router = useRouter();
+  const [imgFile, setImgFile] = useState<string | ArrayBuffer | null>('');
+  const imgRef = useRef<HTMLInputElement>(null);
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { isSubmitting },
+    // errors,
+  } = useForm<ResumeForm>();
+
+  const onSubmit = async (data: ResumeForm) => {
+    console.log(data);
+    try {
+      const response = await postResume(token, data);
+      if (response.status === 200) {
+        alert('이력서 등록이 완료되었습니다.');
+        router.push('./resume');
+      } else if (response.status === 400) {
+        alert('이미 해당 유저의 이력서가 존재합니다.');
+      }
+    } catch (err) {
+      console.error(err);
+      alert('이력서 등록에 실패했습니다.');
+    }
+  };
+
+  const handleSaveImgFileChange = () => {
+    // 이미지 업로드
+    if (imgRef.current && imgRef.current.files) {
+      const file = imgRef.current.files[0];
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onloadend = () => {
+        setImgFile(reader.result);
+      };
+
+      setValue('image', file);
+    }
+  };
+
   return (
     <Layout>
       <Container>
         <ResumeAddHeader>이력서를 입력해 주세요</ResumeAddHeader>
         <Wrap>
           <ResumeAddBody>
-            <ResumeProfileImgAdd>
-              <ResumeProfileImg>
-                <Image
-                  src="/images/basicProfile.png"
-                  alt="logo picture"
-                  width={120}
-                  height={120}></Image>
-              </ResumeProfileImg>
-              <ResumeProfileBtn>사진 등록하기</ResumeProfileBtn>
-            </ResumeProfileImgAdd>
-            <AboutMeTextWrap>
-              <AboutMeText
-                maxLength={100}
-                placeholder="간단한 자기 소개글을 입력해 주세요."
-              />
-            </AboutMeTextWrap>
-            <div>
-              <IdentityDetailCard>
-                <NameInputLabel>
-                  <InputLabel>성함</InputLabel>
-                  <span tw="text-[#E15241]"> *</span>
-                </NameInputLabel>
-                <NameInput
-                  maxLength={20}
-                  placeholder=" 본명을 입력해 주세요."
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <ResumeProfileImgAdd>
+                {imgFile ? (
+                  <ResumeProfileImg>
+                    <Image
+                      src={imgFile as string}
+                      alt="profile img"
+                      width={120}
+                      height={120}
+                    />
+                  </ResumeProfileImg>
+                ) : (
+                  <ResumeProfileImg>
+                    <Image
+                      src="/images/basicProfile.png"
+                      alt="default profile img"
+                      width={120}
+                      height={120}
+                    />
+                  </ResumeProfileImg>
+                )}
+                <ResumeProfileAddBtn htmlFor="profileImg">
+                  사진 등록하기
+                </ResumeProfileAddBtn>
+                <input
+                  {...register('image')}
+                  id="profileImg"
+                  type="file"
+                  tw="hidden"
+                  accept="image/*"
+                  ref={imgRef}
+                  onChange={handleSaveImgFileChange}
                 />
-              </IdentityDetailCard>
-              <IdentityDetailCard>
-                <NameInputLabel>
-                  <InputLabel>직종</InputLabel>
-                  <span tw="text-[#E15241]"> *</span>
-                </NameInputLabel>
-                <NameInput
-                  maxLength={20}
-                  placeholder=" 선호하는 직종 혹은 현재 직종을 입력해 주세요."
+              </ResumeProfileImgAdd>
+              <AboutMeTextWrap>
+                <AboutMeText
+                  placeholder="간단한 자기 소개글을 입력해 주세요."
+                  {...register('introduce', { maxLength: 100 })}
                 />
-              </IdentityDetailCard>
-            </div>
-            <div tw="border my-[48px] border-[#AEB5BC]" />
-            <ProfileInfoList>
-              <CareerInput>
-                <InputLabel>경력 사항</InputLabel>
+              </AboutMeTextWrap>
+              <section>
+                <IdentityDetailCard>
+                  <NameInputLabel>
+                    <InputLabel>성함</InputLabel>
+                    <span tw="text-[#E15241]"> *</span>
+                  </NameInputLabel>
+                  <NameInput
+                    maxLength={20}
+                    placeholder=" 본명을 입력해 주세요."
+                    {...register('name')}
+                  />
+                </IdentityDetailCard>
+                <IdentityDetailCard>
+                  <NameInputLabel>
+                    <InputLabel>직종</InputLabel>
+                    <span tw="text-[#E15241]"> *</span>
+                  </NameInputLabel>
+                  <NameInput
+                    maxLength={20}
+                    placeholder=" 선호하는 직종 혹은 현재 직종을 입력해 주세요."
+                    {...register('occupation')}
+                  />
+                </IdentityDetailCard>
+              </section>
+              <div tw="border my-[48px] border-[#AEB5BC]" />
+              <ProfileInfoList>
+                <CareerInput>
+                  <InputLabel>경력 사항</InputLabel>
+                  <BtnWapper>
+                    <AiFillPlusCircle />
+                    <button tw="ml-1">추가하기</button>
+                  </BtnWapper>
+                </CareerInput>
+              </ProfileInfoList>
+              <div tw="border my-[48px] border-[#AEB5BC]" />
+              <OpenMYResumeSection>
+                <SwitchWrap>
+                  <Switch></Switch>
+                </SwitchWrap>
+                <SwitchDescriptionWrap>
+                  <InputLabel>이력서 공개하기</InputLabel>
+                  <SwitchDescription>
+                    이력서를 공개할 경우, 나에게 관심있는 회원이 내 이력서를 볼
+                    수 있어요.
+                  </SwitchDescription>
+                </SwitchDescriptionWrap>
+              </OpenMYResumeSection>
+              <FormBtnWrap>
+                <TemporaryBtn>임시저장</TemporaryBtn>
                 <BtnWapper>
-                  <AiFillPlusCircle />
-                  <button tw="ml-1">추가하기</button>
+                  <button type="submit" disabled={isSubmitting}>
+                    등록하기
+                  </button>
                 </BtnWapper>
-              </CareerInput>
-            </ProfileInfoList>
-            <div tw="border my-[48px] border-[#AEB5BC]" />
-            <OpenMYResumeSection>
-              <SwitchWrap>
-                <Switch></Switch>
-              </SwitchWrap>
-              <SwitchDescriptionWrap>
-                <InputLabel>이력서 공개하기</InputLabel>
-                <SwitchDescription>
-                  이력서를 공개할 경우, 나에게 관심있는 회원이 내 이력서를 볼 수
-                  있어요.
-                </SwitchDescription>
-              </SwitchDescriptionWrap>
-            </OpenMYResumeSection>
+              </FormBtnWrap>
+            </form>
           </ResumeAddBody>
-          <FormBtnWrap>
-            <TemporaryBtn>임시저장</TemporaryBtn>
-            <BtnWapper>등록하기</BtnWapper>
-          </FormBtnWrap>
         </Wrap>
       </Container>
     </Layout>
@@ -189,7 +266,7 @@ export const getServerSideProps: GetServerSideProps = async (
   try {
     const response = await userValidate(accessToken);
     return {
-      props: { user: response.data },
+      props: { user: response.data, token: accessToken },
     };
   } catch (e) {
     console.log(e);
