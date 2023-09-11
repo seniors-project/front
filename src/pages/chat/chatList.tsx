@@ -1,18 +1,39 @@
 import tw from 'twin.macro';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import ChatListBox from './chatListBox';
 import ResumeWriteButton from '@/components/Button/ResumeWriteButton';
+import { chatCreate } from '@/apis/chat';
 
 function ChatList() {
+  interface ChatBox {
+    id: number;
+    name: string;
+    message: string;
+  }
+  const [chatBoxes, setChatBoxes] = useState<ChatBox[]>([]);
   // 활성화된 채팅방의 ID를 저장하는 상태
   const [activeChatBoxId, setActiveChatBoxId] = useState<number | null>(null);
   // 가정: 각 채팅방에 대한 정보를 가진 배열
-  const chatBoxes = [
-    { id: 1, name: '홍길동', message: '안녕하세요. 이력서 보고...' },
-    { id: 2, name: '이순신', message: '안녕하세요. 이력서 보고...' },
-    // ...
-  ];
+  // const chatBoxes = [
+  //   { id: 1, name: '홍길동', message: '안녕하세요. 이력서 보고...' },
+  //   { id: 2, name: '이순신', message: '안녕하세요. 이력서 보고...' },
+  //   // ...
+  // ];
+
+  useEffect(() => {
+    async function fetchChatData() {
+      try {
+        const response = await chatCreate();
+        setChatBoxes(response.data);
+        console.log(response.data);
+      } catch (error) {
+        console.error('Failed to fetch chat data', error);
+      }
+    }
+
+    fetchChatData();
+  }, []);
 
   const handleClick = (id: number | null) => {
     setActiveChatBoxId(prevId => (prevId === id ? null : id));

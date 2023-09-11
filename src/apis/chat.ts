@@ -8,6 +8,6 @@ export function chatInquiry(page: number, offset: number, code: string) {
   });
 }
 
-export function chatCreate(code: string) {
-  return httpClient.post('/rooms', { authorizationCode: code });
+export function chatCreate() {
+  return httpClient.post('/rooms');
 }
