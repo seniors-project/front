@@ -8,19 +8,16 @@ import parseCookies from '@/utils/parseCookies';
 
 function ChatList() {
   interface ChatBox {
-    id: number;
-    name: string;
+    roomId: number;
+    roomName: string;
     message: string;
+    chatMessageRes: {
+      content: string;
+      createdAt: string;
+    };
   }
   const [chatBoxes, setChatBoxes] = useState<ChatBox[]>([]);
-  // 활성화된 채팅방의 ID를 저장하는 상태
   const [activeChatBoxId, setActiveChatBoxId] = useState<number | null>(null);
-  // 가정: 각 채팅방에 대한 정보를 가진 배열
-  // const chatBoxes = [
-  //   { id: 1, name: '홍길동', message: '안녕하세요. 이력서 보고...' },
-  //   { id: 2, name: '이순신', message: '안녕하세요. 이력서 보고...' },
-  //   // ...
-  // ];
 
   useEffect(() => {
     const cookies = parseCookies(document.cookie || '');
@@ -28,9 +25,8 @@ function ChatList() {
 
     async function fetchChatData() {
       try {
-        const response = await chatCreate(accessToken); // accessToken을 인자로 전달
-        setChatBoxes(response.data);
-        console.log(response.data);
+        const response = await chatCreate(accessToken);
+        setChatBoxes(response.data.data.chatRoomMembers);
       } catch (error) {
         console.error('Failed to fetch chat data', error);
       }
@@ -47,15 +43,16 @@ function ChatList() {
     <StyledChatListContainer>
       <StyledChatListBoxUpText>채팅 목록</StyledChatListBoxUpText>
       <StyledGrayLine />
-      {/* {chatBoxes.map(box => (
+      {chatBoxes.map(box => (
         <ChatListBox
-          key={box.id}
-          isActive={box.id === activeChatBoxId}
-          onClick={() => handleClick(box.id)}
-          name={box.name}
-          message={box.message}
+          key={box.roomId}
+          isActive={box.roomId === activeChatBoxId}
+          onClick={() => handleClick(box.roomId)}
+          name={box.roomName}
+          message={box.chatMessageRes.content}
+          date={box.chatMessageRes.createdAt}
         />
-      ))} */}
+      ))}
       {chatBoxes.length === 0 && (
         <StyledContent>
           <StyledChatListBoxDownText>

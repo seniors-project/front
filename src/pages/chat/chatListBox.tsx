@@ -5,9 +5,16 @@ interface ChatListBoxProps {
   onClick: () => void;
   name: string;
   message: string;
+  date: string;
 }
 
-function ChatListBox({ isActive, onClick, name, message }: ChatListBoxProps) {
+function ChatListBox({
+  isActive,
+  onClick,
+  name,
+  message,
+  date,
+}: ChatListBoxProps) {
   return isActive ? (
     <StyledActiveChatListBox onClick={onClick}>
       <StyledProfileImg src="/images/profile.png" alt="Profile" />
@@ -15,7 +22,7 @@ function ChatListBox({ isActive, onClick, name, message }: ChatListBoxProps) {
         <StyledProfileName>{name}</StyledProfileName>
         <StyledChatPreview>{message}</StyledChatPreview>
       </StyledChatContent>
-      <StyledChatPreviewDate>12월 23일</StyledChatPreviewDate>
+      <StyledChatPreviewDate>{date}</StyledChatPreviewDate>
     </StyledActiveChatListBox>
   ) : (
     <StyledChatListBox onClick={onClick}>
@@ -24,7 +31,7 @@ function ChatListBox({ isActive, onClick, name, message }: ChatListBoxProps) {
         <StyledProfileName>{name}</StyledProfileName>
         <StyledChatPreview>{message}</StyledChatPreview>
       </StyledChatContent>
-      <StyledChatPreviewDate>12월 23일</StyledChatPreviewDate>
+      <StyledChatPreviewDate>{date}</StyledChatPreviewDate>
     </StyledChatListBox>
   );
 }
