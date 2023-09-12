@@ -11,3 +11,11 @@ export function chatCreate(token: string) {
     },
   });
 }
+
+export function chatEnter(token: string, id: number) {
+  return httpClient.get(`/rooms/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+}

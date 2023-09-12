@@ -1,10 +1,38 @@
 import Modal from '@/components/Modal/Modal';
 import InquiryModal from '@/components/Modal/InquiryModal';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { chatEnter } from '@/apis/chat';
+import parseCookies from '@/utils/parseCookies';
 import tw from 'twin.macro';
 
 function ChatRoom() {
+  interface ChatRoomBox {
+    roomId: number;
+    roomName: string;
+    message: string;
+    chatMessageRes: {
+      content: string;
+      createdAt: string;
+    };
+  }
   const [isOpen, setIsOpen] = useState(false);
+  const [chatRoomBoxes, setChatRoomBoxes] = useState<ChatRoomBox[]>([]);
+
+  useEffect(() => {
+    const cookies = parseCookies(document.cookie || '');
+    const accessToken = cookies.accessToken;
+
+    async function fetchChatData() {
+      try {
+        const response = await chatEnter(accessToken, id);
+        setChatRoomBoxes(response.data.data.chatMessages);
+      } catch (error) {
+        console.error('Failed to fetch chat data', error);
+      }
+    }
+
+    fetchChatData();
+  }, []);
 
   return (
     <StyledChatRoomBox>
