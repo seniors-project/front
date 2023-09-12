@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import ChatListBox from './chatListBox';
 import ResumeWriteButton from '@/components/Button/ResumeWriteButton';
 import { chatCreate } from '@/apis/chat';
+import parseCookies from '@/utils/parseCookies';
 
 function ChatList() {
   interface ChatBox {
@@ -22,9 +23,12 @@ function ChatList() {
   // ];
 
   useEffect(() => {
+    const cookies = parseCookies(document.cookie || '');
+    const accessToken = cookies.accessToken;
+
     async function fetchChatData() {
       try {
-        const response = await chatCreate();
+        const response = await chatCreate(accessToken); // accessToken을 인자로 전달
         setChatBoxes(response.data);
         console.log(response.data);
       } catch (error) {
@@ -43,7 +47,7 @@ function ChatList() {
     <StyledChatListContainer>
       <StyledChatListBoxUpText>채팅 목록</StyledChatListBoxUpText>
       <StyledGrayLine />
-      {chatBoxes.map(box => (
+      {/* {chatBoxes.map(box => (
         <ChatListBox
           key={box.id}
           isActive={box.id === activeChatBoxId}
@@ -51,7 +55,7 @@ function ChatList() {
           name={box.name}
           message={box.message}
         />
-      ))}
+      ))} */}
       {chatBoxes.length === 0 && (
         <StyledContent>
           <StyledChatListBoxDownText>

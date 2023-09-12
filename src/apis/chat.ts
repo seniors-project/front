@@ -1,13 +1,13 @@
 import { httpClient } from '@/lib/httpClient';
 
-export function chatInquiry(page: number, offset: number, code: string) {
-  return httpClient.get(`/rooms?page=${page}&offset=${offset}`, {
-    headers: {
-      Authorization: code,
-    },
-  });
+export function chatInquiry(page: number, offset: number) {
+  return httpClient.get(`/rooms?page=${page}&offset=${offset}`);
 }
 
-export function chatCreate() {
-  return httpClient.post('/rooms');
+export function chatCreate(token: string) {
+  return httpClient.get('/rooms', {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 }
