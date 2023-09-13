@@ -5,7 +5,11 @@ import { Layout } from '@/components/Layout';
 import ChatList from './chatList';
 import ChatRoom from './chatRoom';
 
-function chat() {
+import { useRouter } from 'next/router';
+
+function Chat() {
+  const router = useRouter();
+  const { id } = router.query;
   return (
     <>
       <Head>
@@ -22,11 +26,11 @@ function chat() {
             alignItems: 'center',
           }}>
           <ChatList />
-          <ChatRoom />
+          {id && <ChatRoom />}
         </div>
       </Layout>
     </>
   );
 }
 
-export default chat;
+export default Chat;

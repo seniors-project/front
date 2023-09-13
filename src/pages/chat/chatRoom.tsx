@@ -1,13 +1,14 @@
 import Modal from '@/components/Modal/Modal';
 import InquiryModal from '@/components/Modal/InquiryModal';
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import { chatEnter } from '@/apis/chat';
 import parseCookies from '@/utils/parseCookies';
 import tw from 'twin.macro';
 
 function ChatRoom() {
   interface ChatRoomBox {
-    roomId: number;
+    id: number;
     roomName: string;
     message: string;
     chatMessageRes: {
@@ -17,6 +18,8 @@ function ChatRoom() {
   }
   const [isOpen, setIsOpen] = useState(false);
   const [chatRoomBoxes, setChatRoomBoxes] = useState<ChatRoomBox[]>([]);
+  const router = useRouter();
+  const { id } = router.query;
 
   useEffect(() => {
     const cookies = parseCookies(document.cookie || '');
