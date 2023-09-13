@@ -5,6 +5,7 @@ import ChatListBox from './chatListBox';
 import ResumeWriteButton from '@/components/Button/ResumeWriteButton';
 import { chatCreate } from '@/apis/chat';
 import parseCookies from '@/utils/parseCookies';
+import { useRouter } from 'next/router';
 
 function ChatList() {
   interface ChatBox {
@@ -18,6 +19,7 @@ function ChatList() {
   }
   const [chatBoxes, setChatBoxes] = useState<ChatBox[]>([]);
   const [activeChatBoxId, setActiveChatBoxId] = useState<number | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     const cookies = parseCookies(document.cookie || '');
@@ -37,6 +39,10 @@ function ChatList() {
 
   const handleClick = (id: number | null) => {
     setActiveChatBoxId(prevId => (prevId === id ? null : id));
+
+    if (id !== null) {
+      router.push(`/chat/${id}`);
+    }
   };
 
   return (
