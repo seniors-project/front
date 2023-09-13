@@ -1,5 +1,3 @@
-import Modal from '@/components/Modal/Modal';
-import InquiryModal from '@/components/Modal/InquiryModal';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { chatEnter } from '@/apis/chat';
@@ -16,7 +14,6 @@ function ChatRoom() {
       createdAt: string;
     };
   }
-  const [isOpen, setIsOpen] = useState(false);
   const [chatRoomBoxes, setChatRoomBoxes] = useState<ChatRoomBox[]>([]);
   const router = useRouter();
   const { id } = router.query;
@@ -41,20 +38,22 @@ function ChatRoom() {
     <StyledChatRoomBox>
       <StyledMessagesContainer>
         <StyledChatRoomDate>23년 12월 23일 (목)</StyledChatRoomDate>
-        <StyledMessageBox>
-          안녕하세요. 이력서 보고 연락드립니다. 임꺽정님께 부천지사 핸들링
-          포지션을 제안드리고 싶습니다.
-        </StyledMessageBox>
+        {chatRoomBoxes.map(item => (
+          <>
+            <StyledSendMessage>{item.content}</StyledSendMessage>
+            <StyleReceiveMessage>수신메세지</StyleReceiveMessage>
+          </>
+        ))}
+        {/* {chatRoomBoxes.map(item => (
+          <div key={item.chatMessageId}>
+            {item.users.userId === loggedInUserId ? (
+              <StyledSendMessage>{item.content}</StyledSendMessage>
+            ) : (
+              <StyleReceiveMessage>{item.content}</StyleReceiveMessage>
+            )}
+          </div>
+        ))} */}
       </StyledMessagesContainer>
-      <div>
-        <button onClick={() => setIsOpen(true)}>Open modal</button>
-        <Modal
-          isOpen={isOpen}
-          onClose={() => setIsOpen(false)}
-          size={{ width: '732px', height: '890px' }}>
-          <InquiryModal />
-        </Modal>
-      </div>
       <StyledChatInputContainer>
         <StyledChatRoomInputBox
           rows={1}
@@ -110,11 +109,22 @@ const StyledChatRoomDate = tw.div`
 w-[211px] h-[44px] rounded-[100px] bg-gray-200 text-gray-300 flex justify-center items-center self-center
 `;
 
-const StyledMessageBox = tw.div`
+const StyleReceiveMessage = tw.div`
   max-w-[60%]
   bg-white
   text-black
   px-4 py-2
   my-6
   rounded-lg
+`;
+
+const StyledSendMessage = tw.div`
+  max-w-[60%]
+  bg-[#E5F1FF]
+  text-black
+  px-4 py-2
+  my-6
+  rounded-lg
+  self-end
+  text-right
 `;
