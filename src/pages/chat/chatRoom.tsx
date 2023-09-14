@@ -38,6 +38,30 @@ function ChatRoom() {
     fetchChatData();
   }, [id]);
 
+  useEffect(() => {
+    const chatRoomId = id[0];
+    const ws = new WebSocket(
+      `ws://strangehoon.shop/api/sub/chat/room/${chatRoomId}`,
+    );
+
+    ws.onopen = () => {
+      console.log('connected to the websocket server');
+    };
+
+    ws.onmessage = message => {
+      const data = JSON.parse(message.data);
+      setChatRoomBoxes(prev => [...prev, data]);
+    };
+
+    ws.onclose = () => {
+      console.log('disconnected from the websocket server');
+    };
+
+    return () => {
+      ws.close();
+    };
+  }, [id]);
+
   return (
     <StyledChatRoomBox>
       <StyledMessagesContainer>
@@ -56,7 +80,7 @@ function ChatRoom() {
           </>
         ))}
       </StyledMessagesContainer>
-      <ChatInputBox />
+      <ChatInputBox userId={userId} chatRoomId={id} />
     </StyledChatRoomBox>
   );
 }

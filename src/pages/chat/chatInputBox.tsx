@@ -2,14 +2,30 @@ import React from 'react';
 import tw from 'twin.macro';
 import { useState } from 'react';
 
-function ChatInputBox() {
+function ChatInputBox({ userId, chatRoomId }) {
   const [message, setMessage] = useState('');
 
   const handleSendMessage = () => {
-    console.log('Message sent:', message);
-    setMessage('');
+    fetch('http://strangehoon.shop/api/pub/chat/sendMessage', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        chatRoomId: Number(chatRoomId[0]),
+        userId,
+        content: message,
+      }),
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Message sent successfully:', data);
+        setMessage(''); // 메시지 전송 후 입력란 지우기
+      })
+      .catch(error => {
+        console.error('Error sending message:', error);
+      });
   };
-
   return (
     <StyledChatInputContainer>
       <StyledChatRoomInputBox
