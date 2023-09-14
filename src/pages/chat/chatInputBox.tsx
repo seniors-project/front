@@ -1,15 +1,19 @@
 import React from 'react';
 import tw from 'twin.macro';
 import { useState } from 'react';
+import parseCookies from '@/utils/parseCookies';
 
 function ChatInputBox({ userId, chatRoomId }) {
   const [message, setMessage] = useState('');
 
   const handleSendMessage = () => {
+    const cookies = parseCookies(document.cookie || '');
+    const accessToken = cookies.accessToken;
     fetch('http://strangehoon.shop/api/pub/chat/sendMessage', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
       },
       body: JSON.stringify({
         chatRoomId: Number(chatRoomId[0]),

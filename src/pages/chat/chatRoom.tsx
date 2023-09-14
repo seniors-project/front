@@ -39,10 +39,7 @@ function ChatRoom() {
   }, [id]);
 
   useEffect(() => {
-    const chatRoomId = id[0];
-    const ws = new WebSocket(
-      `ws://strangehoon.shop/api/sub/chat/room/${chatRoomId}`,
-    );
+    const ws = new WebSocket('ws://strangehoon.shop/api');
 
     ws.onopen = () => {
       console.log('connected to the websocket server');
