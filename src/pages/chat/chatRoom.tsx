@@ -5,6 +5,7 @@ import parseCookies from '@/utils/parseCookies';
 import tw from 'twin.macro';
 import { useRecoilValue } from 'recoil';
 import { loggedInUserIdState } from '@/atom/chatUser';
+import ChatInputBox from './chatInputBox';
 
 function ChatRoom() {
   interface ChatRoomBox {
@@ -41,12 +42,6 @@ function ChatRoom() {
     <StyledChatRoomBox>
       <StyledMessagesContainer>
         <StyledChatRoomDate>23년 12월 23일 (목)</StyledChatRoomDate>
-        {/* {chatRoomBoxes.map(item => (
-          <>
-            <StyledSendMessage>{item.content}</StyledSendMessage>
-            <StyleReceiveMessage>수신메세지</StyleReceiveMessage>
-          </>
-        ))} */}
         {chatRoomBoxes.map(item => (
           <>
             {item.users.userId === userId ? (
@@ -61,13 +56,7 @@ function ChatRoom() {
           </>
         ))}
       </StyledMessagesContainer>
-      <StyledChatInputContainer>
-        <StyledChatRoomInputBox
-          rows={1}
-          placeholder="메세지를 입력해 주세요."
-        />
-        <StyleChatSendButton>전송</StyleChatSendButton>
-      </StyledChatInputContainer>
+      <ChatInputBox />
     </StyledChatRoomBox>
   );
 }
@@ -86,30 +75,6 @@ const StyledMessagesContainer = tw.div`
   flex flex-col items-start justify-start
   w-full
   overflow-y-auto
-`;
-
-const StyledChatInputContainer = tw.div`
-  w-full
-  h-[134px]
-  rounded-[4px]
-  bg-white
-  relative
-`;
-
-const StyledChatRoomInputBox = tw.textarea`
-  w-full h-full rounded-[4px]
-  pr-[100px] pl-4 py-3
-  resize-none
-  overflow-y-auto
-`;
-
-const StyleChatSendButton = tw.button`
-  w-[80px]
-  h-[45px]
-  rounded-[4px]
-  absolute bottom-4 right-4
-  bg-[#0177FD]
-  text-white
 `;
 
 const StyledChatRoomDate = tw.div`
