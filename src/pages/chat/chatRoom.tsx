@@ -3,6 +3,8 @@ import { useRouter } from 'next/router';
 import { chatEnter } from '@/apis/chat';
 import parseCookies from '@/utils/parseCookies';
 import tw from 'twin.macro';
+import { useRecoilValue } from 'recoil';
+import { loggedInUserIdState } from '@/atom/chatUser';
 
 function ChatRoom() {
   interface ChatRoomBox {
@@ -15,6 +17,7 @@ function ChatRoom() {
     };
   }
   const [chatRoomBoxes, setChatRoomBoxes] = useState<ChatRoomBox[]>([]);
+  const userId = useRecoilValue(loggedInUserIdState);
   const router = useRouter();
   const { id } = router.query;
 
@@ -32,27 +35,31 @@ function ChatRoom() {
     }
 
     fetchChatData();
-  }, []);
+  }, [id]);
 
   return (
     <StyledChatRoomBox>
       <StyledMessagesContainer>
         <StyledChatRoomDate>23년 12월 23일 (목)</StyledChatRoomDate>
-        {chatRoomBoxes.map(item => (
+        {/* {chatRoomBoxes.map(item => (
           <>
             <StyledSendMessage>{item.content}</StyledSendMessage>
             <StyleReceiveMessage>수신메세지</StyleReceiveMessage>
           </>
-        ))}
-        {/* {chatRoomBoxes.map(item => (
-          <div key={item.chatMessageId}>
-            {item.users.userId === loggedInUserId ? (
-              <StyledSendMessage>{item.content}</StyledSendMessage>
-            ) : (
-              <StyleReceiveMessage>{item.content}</StyleReceiveMessage>
-            )}
-          </div>
         ))} */}
+        {chatRoomBoxes.map(item => (
+          <>
+            {item.users.userId === userId ? (
+              <StyledSendMessage key={item.chatMessageId}>
+                {item.content}
+              </StyledSendMessage>
+            ) : (
+              <StyleReceiveMessage key={item.chatMessageId}>
+                {item.content}
+              </StyleReceiveMessage>
+            )}
+          </>
+        ))}
       </StyledMessagesContainer>
       <StyledChatInputContainer>
         <StyledChatRoomInputBox

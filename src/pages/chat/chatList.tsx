@@ -6,6 +6,8 @@ import ResumeWriteButton from '@/components/Button/ResumeWriteButton';
 import { chatCreate } from '@/apis/chat';
 import parseCookies from '@/utils/parseCookies';
 import { useRouter } from 'next/router';
+import { useRecoilState } from 'recoil';
+import { loggedInUserIdState } from '@/atom/chatUser';
 
 function ChatList() {
   interface ChatBox {
@@ -19,6 +21,7 @@ function ChatList() {
   }
   const [chatBoxes, setChatBoxes] = useState<ChatBox[]>([]);
   const [activeChatBoxId, setActiveChatBoxId] = useState<number | null>(null);
+  const [UserId, setUserId] = useRecoilState(loggedInUserIdState);
   const router = useRouter();
 
   useEffect(() => {
@@ -29,6 +32,7 @@ function ChatList() {
       try {
         const response = await chatCreate(accessToken);
         setChatBoxes(response.data.data.chatRoomMembers);
+        setUserId(response.data.data.userId);
       } catch (error) {
         console.error('Failed to fetch chat data', error);
       }
