@@ -1,34 +1,23 @@
 import React from 'react';
 import tw from 'twin.macro';
 import { useState } from 'react';
-import parseCookies from '@/utils/parseCookies';
 
-function ChatInputBox({ userId, chatRoomId }) {
+function ChatInputBox({ userId, chatRoomId, ws }) {
   const [message, setMessage] = useState('');
 
   const handleSendMessage = () => {
-    const cookies = parseCookies(document.cookie || '');
-    const accessToken = cookies.accessToken;
-    fetch('http://strangehoon.shop/api/pub/chat/sendMessage', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${accessToken}`,
-      },
-      body: JSON.stringify({
-        chatRoomId: Number(chatRoomId[0]),
-        userId,
-        content: message,
-      }),
-    })
-      .then(response => response.json())
-      .then(data => {
-        console.log('Message sent successfully:', data);
-        setMessage(''); // 메시지 전송 후 입력란 지우기
-      })
-      .catch(error => {
-        console.error('Error sending message:', error);
+    if (ws?.connected) {
+      ws.publish({
+        destination: `/pub/chat/sendMessage`,
+        body: JSON.stringify({
+          chatRoomId: Number(chatRoomId[0]),
+          userId,
+          content: message,
+        }),
       });
+    }
+
+    setMessage('');
   };
   return (
     <StyledChatInputContainer>

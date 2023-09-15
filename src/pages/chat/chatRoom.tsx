@@ -6,6 +6,7 @@ import tw from 'twin.macro';
 import { useRecoilValue } from 'recoil';
 import { loggedInUserIdState } from '@/atom/chatUser';
 import ChatInputBox from './chatInputBox';
+import { Client } from '@stomp/stompjs';
 
 function ChatRoom() {
   interface ChatRoomBox {
@@ -21,63 +22,86 @@ function ChatRoom() {
   const userId = useRecoilValue(loggedInUserIdState);
   const router = useRouter();
   const { id } = router.query;
+  const [ws, setWs] = useState<Client | null>(null);
 
   useEffect(() => {
-    const cookies = parseCookies(document.cookie || '');
-    const accessToken = cookies.accessToken;
+    if (id) {
+      const cookies = parseCookies(document.cookie || '');
+      const accessToken = cookies.accessToken;
 
-    async function fetchChatData() {
-      try {
-        const response = await chatEnter(accessToken, id);
-        setChatRoomBoxes(response.data.data.chatMessages);
-      } catch (error) {
-        console.error('Failed to fetch chat data', error);
-      }
+      const fetchChatData = async () => {
+        try {
+          const response = await chatEnter(accessToken, id);
+          setChatRoomBoxes(response.data.data.chatMessages);
+
+          initializeWebSocket();
+        } catch (error) {
+          console.error('Failed to fetch chat data', error);
+        }
+      };
+
+      const initializeWebSocket = () => {
+        const client = new Client({
+          brokerURL: 'ws://strangehoon.shop/api',
+          connectHeaders: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+          debug: function (str) {
+            console.log(str);
+          },
+          reconnectDelay: 5000,
+          heartbeatIncoming: 4000,
+          heartbeatOutgoing: 4000,
+        });
+
+        client.onConnect = function (frame) {
+          console.log('Connected: ' + frame);
+          client.subscribe(`/sub/chat/room/${id}`, function (message) {
+            setChatRoomBoxes(prev => [...prev, JSON.parse(message.body)]);
+          });
+        };
+
+        client.onStompError = function (frame) {
+          console.log('Broker reported error: ' + frame.headers['message']);
+          console.log('Additional details: ' + frame.body);
+        };
+
+        client.activate();
+
+        setWs(client);
+
+        return () => {
+          client.deactivate();
+        };
+      };
+
+      fetchChatData();
     }
-
-    fetchChatData();
-  }, [id]);
-
-  useEffect(() => {
-    const ws = new WebSocket('ws://strangehoon.shop/api');
-
-    ws.onopen = () => {
-      console.log('connected to the websocket server');
-    };
-
-    ws.onmessage = message => {
-      const data = JSON.parse(message.data);
-      setChatRoomBoxes(prev => [...prev, data]);
-    };
-
-    ws.onclose = () => {
-      console.log('disconnected from the websocket server');
-    };
-
-    return () => {
-      ws.close();
-    };
   }, [id]);
 
   return (
-    <StyledChatRoomBox>
-      <StyledMessagesContainer>
-        <StyledChatRoomDate>23년 12월 23일 (목)</StyledChatRoomDate>
-        {chatRoomBoxes.map(item => (
-          <>
-            {item.users.userId === userId ? (
-              <StyledSendMessage key={item.chatMessageId}>
-                {item.content}
-              </StyledSendMessage>
-            ) : (
-              <StyleReceiveMessage key={item.chatMessageId}>
-                {item.content}
-              </StyleReceiveMessage>
-            )}
-          </>
-        ))}
-      </StyledMessagesContainer>
-      <ChatInputBox userId={userId} chatRoomId={id} />
+    <StyledChatRoomBox style={{ backgroundColor: id ? '#dfe2e6' : '#F1F3F5' }}>
+      {id ? (
+        <>
+          <StyledMessagesContainer>
+            <StyledChatRoomDate>23년 12월 23일 (목)</StyledChatRoomDate>
+            {chatRoomBoxes.map(item => (
+              <>
+                {item.users.userId === userId ? (
+                  <StyledSendMessage key={item.chatMessageId}>
+                    {item.content}
+                  </StyledSendMessage>
+                ) : (
+                  <StyleReceiveMessage key={item.chatMessageId}>
+                    {item.content}
+                  </StyleReceiveMessage>
+                )}
+              </>
+            ))}
+          </StyledMessagesContainer>
+          <ChatInputBox userId={userId} chatRoomId={id} ws={ws} />
+        </>
+      ) : null}
     </StyledChatRoomBox>
   );
 }
@@ -88,9 +112,9 @@ const StyledChatRoomBox = tw.div`
   w-[803px]
   h-[821px]
   rounded-tr-[20px]
-  bg-[#dfe2e6]
   flex flex-col justify-between p-6
-`;
+  border-t border-r border-solid border-gray-300
+  `;
 
 const StyledMessagesContainer = tw.div`
   flex flex-col items-start justify-start
