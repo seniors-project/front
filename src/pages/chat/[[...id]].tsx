@@ -1,36 +1,29 @@
-import Head from 'next/head';
+import tw from 'twin.macro';
 
 import { Layout } from '@/components/Layout';
 
 import ChatList from './chatList';
 import ChatRoom from './chatRoom';
 
-import { useRouter } from 'next/router';
-
 function Chat() {
-  const router = useRouter();
-  const { id } = router.query;
   return (
     <>
-      <Head>
-        <title>setting-practice</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
       <Layout>
         채팅하기
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
+        <StyledChatContainer>
           <ChatList />
-          {id && <ChatRoom />}
-        </div>
+          <ChatRoom />
+        </StyledChatContainer>
       </Layout>
     </>
   );
 }
 
 export default Chat;
+
+const StyledChatContainer = tw.div`
+  flex
+  flex-row
+  items-center
+  justify-center
+`;
