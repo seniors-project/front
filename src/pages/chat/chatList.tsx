@@ -42,10 +42,14 @@ function ChatList() {
   }, []);
 
   const handleClick = (id: number | null) => {
-    setActiveChatBoxId(prevId => (prevId === id ? null : id));
-
-    if (id !== null) {
-      router.push(`/chat/${id}`);
+    if (activeChatBoxId === id) {
+      router.push('/chat');
+      setActiveChatBoxId(null);
+    } else {
+      setActiveChatBoxId(id);
+      if (id !== null) {
+        router.push(`/chat/${id}`);
+      }
     }
   };
 
