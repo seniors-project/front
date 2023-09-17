@@ -13,10 +13,11 @@ function ChatRoom() {
     id: number;
     roomName: string;
     message: string;
-    chatMessageRes: {
-      content: string;
-      createdAt: string;
+    users: {
+      userId: number;
     };
+    chatMessageId: number;
+    content: string;
   }
   const [chatRoomBoxes, setChatRoomBoxes] = useState<ChatRoomBox[]>([]);
   const userId = useRecoilValue(loggedInUserIdState);
@@ -41,8 +42,10 @@ function ChatRoom() {
       };
 
       const initializeWebSocket = () => {
+        console.log('Initializing WebSocket...'); // WebSocket 초기화 시작 로그 추가
+        
         const client = new Client({
-          brokerURL: 'ws://strangehoon.shop/api',
+          brokerURL: 'wss://strangehoon.shop/api',
           connectHeaders: {
             Authorization: `Bearer ${accessToken}`,
           },
@@ -53,30 +56,39 @@ function ChatRoom() {
           heartbeatIncoming: 4000,
           heartbeatOutgoing: 4000,
         });
-
+      
         client.onConnect = function (frame) {
-          console.log('Connected: ' + frame);
+          console.log('Connected: ' + frame); // 연결 성공 로그 추가
+          console.log(`Subscribing to /sub/chat/room/${id}`); // 구독 시작 로그 추가
           client.subscribe(`/sub/chat/room/${id}`, function (message) {
+            console.log('Received message: ', message); // 수신된 메시지 로그 추가
             setChatRoomBoxes(prev => [...prev, JSON.parse(message.body)]);
           });
         };
-
+      
         client.onStompError = function (frame) {
           console.log('Broker reported error: ' + frame.headers['message']);
           console.log('Additional details: ' + frame.body);
         };
+        client.onWebSocketError = function (error) {
+          console.error('WebSocket Error', error);
+        };
+        console.log('Activating client...');
 
         client.activate();
-
+        
+        console.log('Client activated...'); // 클라이언트 활성화 로그 추가
         setWs(client);
-
-        return () => {
-          client.deactivate();
-        };
       };
-
+      
       fetchChatData();
     }
+
+    return () => {
+      if (ws) {
+        ws.deactivate();
+      }
+    };
   }, [id]);
 
   return (
@@ -86,17 +98,13 @@ function ChatRoom() {
           <StyledMessagesContainer>
             <StyledChatRoomDate>23년 12월 23일 (목)</StyledChatRoomDate>
             {chatRoomBoxes.map(item => (
-              <>
-                {item.users.userId === userId ? (
-                  <StyledSendMessage key={item.chatMessageId}>
-                    {item.content}
-                  </StyledSendMessage>
+              <div key={item.chatMessageId}>
+                {item.users?.userId === userId ? (
+                  <StyledSendMessage>{item.content}</StyledSendMessage>
                 ) : (
-                  <StyleReceiveMessage key={item.chatMessageId}>
-                    {item.content}
-                  </StyleReceiveMessage>
+                  <StyleReceiveMessage>{item.content}</StyleReceiveMessage>
                 )}
-              </>
+              </div>
             ))}
           </StyledMessagesContainer>
           <ChatInputBox userId={userId} chatRoomId={id} ws={ws} />
