@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import tw from 'twin.macro';
 import { GetServerSidePropsContext, GetServerSideProps } from 'next';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import useInfiniteScroll from 'react-infinite-scroll-hook';
 
@@ -153,7 +154,9 @@ const ResumeListPage = ({ token }: { token: string }) => {
             </p>
           </Description>
           <BtnWapper>
-            <RegisterResumeBtn>공개 이력서 등록하기</RegisterResumeBtn>
+            <RegisterResumeBtn>
+              <Link href="/resumes/register">공개 이력서 등록하기</Link>
+            </RegisterResumeBtn>
           </BtnWapper>
         </Container>
       </RegisterResumeBanner>
