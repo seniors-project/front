@@ -4,7 +4,7 @@ export function chatInquiry(page: number, offset: number) {
   return httpClient.get(`/rooms?page=${page}&offset=${offset}`);
 }
 
-export function chatCreate(token: string) {
+export function getChatList(token: string) {
   return httpClient.get('/rooms', {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -18,4 +18,16 @@ export function chatEnter(token: string, id: number) {
       Authorization: `Bearer ${token}`,
     },
   });
+}
+
+export function setCreateChatRoom(token: string, chatUserId: number) {
+  return httpClient.post(
+    `/rooms`,
+    { chatUserId },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
 }

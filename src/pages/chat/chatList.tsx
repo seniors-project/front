@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 
 import ChatListBox from './chatListBox';
 import ResumeWriteButton from '@/components/Button/ResumeWriteButton';
-import { chatCreate } from '@/apis/chat';
+import { getChatList } from '@/apis/chat';
 import parseCookies from '@/utils/parseCookies';
 import { useRouter } from 'next/router';
 import { useRecoilState } from 'recoil';
@@ -30,7 +30,7 @@ function ChatList() {
 
     async function fetchChatData() {
       try {
-        const response = await chatCreate(accessToken);
+        const response = await getChatList(accessToken);
         setChatBoxes(response.data.data.chatRoomMembers);
         setUserId(response.data.data.userId);
       } catch (error) {
