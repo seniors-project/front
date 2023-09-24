@@ -36,9 +36,6 @@ const ContentStyles = `
 `;
 const InputContnet = tw.input`${ContentStyles}`;
 const TextareaContent = tw.textarea`${ContentStyles} h-28`;
-interface CareeListModalProps {
-  clickModal: () => void;
-}
 
 const Wapper = tw.div`
   flex items-center h-16
@@ -61,7 +58,7 @@ interface ChangeEvent {
 }
 
 interface CareeListModalProps {
-  clickModal: () => void;
+  onClose: () => void;
   handleCareerListData: (data: any) => void;
   // 다른 속성 정의
 }
@@ -72,7 +69,7 @@ interface Option {
 }
 
 const CareeListModal: React.FC<CareeListModalProps> = ({
-  clickModal,
+  onClose,
   handleCareerListData,
 }) => {
   const [inputs, setInputs] = useState<ResumeFormCareer>({
@@ -135,14 +132,21 @@ const CareeListModal: React.FC<CareeListModalProps> = ({
   const yearOptions = generateYearOptions();
 
   const submitData = () => {
-    clickModal();
+    onClose();
     handleCareerListData(inputs);
   };
 
   console.log('inputs' + JSON.stringify(inputs));
 
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, []);
+
   return (
-    <CareeListModalBox onClick={clickModal}>
+    <CareeListModalBox onClick={onClose}>
       <CareeCard onClick={e => e.stopPropagation()}>
         <CareeCardHeader>경력 등록하기</CareeCardHeader>
         <CareeCardBody>

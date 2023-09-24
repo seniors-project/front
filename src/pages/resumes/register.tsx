@@ -113,7 +113,8 @@ const ResumeRegisterPage = ({ token }: { token: string }) => {
     formState: { isSubmitting },
     // errors,
   } = useForm<ResumeForm>();
-  const [showModal, setShowModal] = useState<boolean>(false);
+  const [showCareeModal, setShowCareeModal] = useState<boolean>(false);
+  const [showEducationModal, setshowEducationModal] = useState<boolean>(false);
   const [careerList, setCareerList] = useState<ResumeFormCareer[]>([]);
   const [educationList, setEducationList] = useState<ResumeFormEducation[]>([]);
 
@@ -157,16 +158,15 @@ const ResumeRegisterPage = ({ token }: { token: string }) => {
     setEducationList(educationListData);
   };
 
-  const clickModal = () => {
-    if (!showModal) {
-      console.log('hidden');
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'auto';
-      console.log('auto');
-    }
-    setShowModal(!showModal);
-  };
+  // const clickModal = (data: string) => {
+  //   if (data === 'caree') {
+  //     setShowCareeModal(!showCareeModal);
+  //   }
+
+  //   if (data === 'education') {
+  //     setshowEducationModal(!showEducationModal);
+  //   }
+  // };
 
   return (
     <Layout>
@@ -244,18 +244,18 @@ const ResumeRegisterPage = ({ token }: { token: string }) => {
                   <InputLabel>경력 사항</InputLabel>
                   <BtnWapper>
                     <AiFillPlusCircle />
-                    <div tw="ml-1" onClick={clickModal}>
+                    <div tw="ml-1" onClick={() => setShowCareeModal(true)}>
                       추가하기
+                      {/* <input
+                        type="hidden"
+                        value={careerList}
+                        data={...register('careerList')}
+                      /> */}
                     </div>
-                    {/* <input
-                      type="hidden"
-                      value={careerList}
-                      data={...register('careerList')}
-                    /> */}
                   </BtnWapper>
-                  {showModal && (
+                  {showCareeModal && (
                     <CareeListModal
-                      clickModal={clickModal}
+                      onClose={() => setShowCareeModal(false)}
                       handleCareerListData={handleCareerListData}
                     />
                   )}
@@ -282,16 +282,17 @@ const ResumeRegisterPage = ({ token }: { token: string }) => {
                     ))}
                   </ul>
                 )}
+                <div tw="h-10"></div>
                 <CareerInput>
                   <InputLabel>교육 이수</InputLabel>
                   <BtnWapper>
                     <AiFillPlusCircle />
-                    <div tw="ml-1" onClick={clickModal}>
+                    <div tw="ml-1" onClick={() => setshowEducationModal(true)}>
                       추가하기
                     </div>
-                    {showModal && (
+                    {showEducationModal && (
                       <EducationListModal
-                        clickModal={clickModal}
+                        onClose={() => setshowEducationModal(false)}
                         handleEducationListData={handleEducationListData}
                       />
                     )}
