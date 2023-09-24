@@ -32,6 +32,7 @@
     "react-hook-form": "^7.46.0",
     "react-icons": "^4.10.1",
     "react-infinite-scroll-hook": "^4.1.1",
+    "react-select": "^5.7.4",
     "recoil": "^0.7.7",
     "styled-components": "^6.0.0-rc.5",
     "styled-reset": "^4.4.7",
