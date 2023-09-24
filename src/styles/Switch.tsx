@@ -1,16 +1,16 @@
 import styled from '@emotion/styled';
 
-const SwitchLabel = styled.label`
+export const SwitchLabel = styled.label`
   position: relative;
   display: inline-block;
   width: 46px;
   height: 24px;
 
-  // input {
-  //   opacity: 0;
-  //   width: 0;
-  //   height: 0;
-  // }
+  input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
 
   .slider {
     position: absolute;
@@ -59,12 +59,3 @@ const SwitchLabel = styled.label`
     border-radius: 50%;
   }
 `;
-
-export default function Switch() {
-  return (
-    <SwitchLabel>
-      <input type="checkbox" checked />
-      <span className="slider round"></span>
-    </SwitchLabel>
-  );
-}
