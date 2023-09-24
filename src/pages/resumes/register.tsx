@@ -8,12 +8,18 @@ import { AiFillPlusCircle } from 'react-icons/Ai';
 
 import { userValidate } from '@/apis/auth';
 import parseCookies from '@/utils/parseCookies';
-import { ResumeForm } from '@/types/resumeForm';
+import {
+  ResumeForm,
+  ResumeFormCareer,
+  ResumeFormEducation,
+} from '@/types/resumeForm';
 
 import { Layout } from '@/components/Layout';
 import { Container } from '@/styles';
-import Switch from '@/components/Switch/Switch';
 import { postResume } from '@/apis/resume';
+import CareeListModal from '@/components/Modal/resume/CareeListModal';
+import EducationListModal from '@/components/Modal/resume/EducationListModal';
+import { SwitchLabel } from '@/styles/Switch';
 
 const ResumeAddHeader = tw.div`
   font-semibold text-3xl mt-16 mb-8
@@ -89,12 +95,12 @@ const SwitchDescription = tw.div`
 const FormBtnWrap = tw.div`
   flex mx-auto max-w-sm my-16
   `;
-const TemporaryBtn = tw.div`
-  w-40 h-11 flex
-  items-center justify-center
-  p-2 bg-[#EAECEF] rounded
-  text-[#515A64] text-xl font-semibold
-`;
+// const TemporaryBtn = tw.div`
+//   w-40 h-11 flex
+//   items-center justify-center
+//   p-2 bg-[#EAECEF] rounded
+//   text-[#515A64] text-xl font-semibold
+// `;
 
 const ResumeRegisterPage = ({ token }: { token: string }) => {
   const router = useRouter();
@@ -107,9 +113,12 @@ const ResumeRegisterPage = ({ token }: { token: string }) => {
     formState: { isSubmitting },
     // errors,
   } = useForm<ResumeForm>();
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [careerList, setCareerList] = useState<ResumeFormCareer[]>([]);
+  const [educationList, setEducationList] = useState<ResumeFormEducation[]>([]);
 
   const onSubmit = async (data: ResumeForm) => {
-    console.log(data);
+    console.log('onSubmitdata' + data);
     try {
       const response = await postResume(token, data);
       if (response.status === 200) {
@@ -136,6 +145,27 @@ const ResumeRegisterPage = ({ token }: { token: string }) => {
 
       setValue('image', file);
     }
+  };
+
+  const handleCareerListData = (data: any) => {
+    const careerListData = [...careerList, data];
+    setCareerList(careerListData);
+  };
+
+  const handleEducationListData = (data: any) => {
+    const educationListData = [...educationList, data];
+    setEducationList(educationListData);
+  };
+
+  const clickModal = () => {
+    if (!showModal) {
+      console.log('hidden');
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+      console.log('auto');
+    }
+    setShowModal(!showModal);
   };
 
   return (
@@ -214,14 +244,93 @@ const ResumeRegisterPage = ({ token }: { token: string }) => {
                   <InputLabel>경력 사항</InputLabel>
                   <BtnWapper>
                     <AiFillPlusCircle />
-                    <button tw="ml-1">추가하기</button>
+                    <div tw="ml-1" onClick={clickModal}>
+                      추가하기
+                    </div>
+                    {/* <input
+                      type="hidden"
+                      value={careerList}
+                      data={...register('careerList')}
+                    /> */}
+                  </BtnWapper>
+                  {showModal && (
+                    <CareeListModal
+                      clickModal={clickModal}
+                      handleCareerListData={handleCareerListData}
+                    />
+                  )}
+                </CareerInput>
+                {careerList.length > 0 && (
+                  <ul>
+                    {careerList.map((career, index) => (
+                      <li
+                        key={index}
+                        tw="flex flex-col mt-4  font-regular text-2xl text-[#515A64]">
+                        <div tw="flex font-regular text-2xl">
+                          <div tw="w-60 mr-14">
+                            {`${career.startedAt} ~ ${career.endedAt}`}
+                          </div>
+                          <div tw="font-semibold text-black">
+                            {career.company}
+                          </div>
+                        </div>
+                        <div tw="flex">
+                          <div tw="w-60 mr-14">{career.title}</div>
+                          <div>{career.content}</div>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                <CareerInput>
+                  <InputLabel>교육 이수</InputLabel>
+                  <BtnWapper>
+                    <AiFillPlusCircle />
+                    <div tw="ml-1" onClick={clickModal}>
+                      추가하기
+                    </div>
+                    {showModal && (
+                      <EducationListModal
+                        clickModal={clickModal}
+                        handleEducationListData={handleEducationListData}
+                      />
+                    )}
                   </BtnWapper>
                 </CareerInput>
+                {educationList.length > 0 && (
+                  <ul>
+                    {educationList.map((education, index) => (
+                      <li
+                        key={index}
+                        tw="flex flex-col mt-4  font-regular text-2xl text-[#515A64]">
+                        <div tw="flex font-regular text-2xl">
+                          <div tw="w-60 mr-14">
+                            {`${education.startedAt} ~ ${education.endedAt}`}
+                          </div>
+                          <div tw="font-semibold text-black">
+                            {education.institution}
+                          </div>
+                        </div>
+                        <div tw="flex">
+                          <div tw="w-60 mr-14">{education.process}t</div>
+                          <div>{education.content}c</div>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </ProfileInfoList>
               <div tw="border my-[48px] border-[#AEB5BC]" />
               <OpenMYResumeSection>
                 <SwitchWrap>
-                  <Switch></Switch>
+                  <SwitchLabel>
+                    <input
+                      type="checkbox"
+                      defaultChecked={true}
+                      {...register('isOpened')}
+                    />
+                    <span className="slider round"></span>
+                  </SwitchLabel>
                 </SwitchWrap>
                 <SwitchDescriptionWrap>
                   <InputLabel>이력서 공개하기</InputLabel>
@@ -232,7 +341,7 @@ const ResumeRegisterPage = ({ token }: { token: string }) => {
                 </SwitchDescriptionWrap>
               </OpenMYResumeSection>
               <FormBtnWrap>
-                <TemporaryBtn>임시저장</TemporaryBtn>
+                {/* <TemporaryBtn>임시저장</TemporaryBtn> */}
                 <BtnWapper>
                   <button type="submit" disabled={isSubmitting}>
                     등록하기
