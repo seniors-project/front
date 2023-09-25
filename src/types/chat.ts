@@ -19,9 +19,6 @@ export interface ChatListBoxProps {
 }
 
 export interface ChatRoomBox {
-  id: number;
-  roomName: string;
-  message: string;
   users: {
     userId: number;
   };

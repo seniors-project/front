@@ -26,15 +26,23 @@ function ChatRoom() {
         try {
           const response = await chatEnter(accessToken, roomId);
           setChatRoomBoxes(response.data.data.chatMessages);
-
-          initializeWebSocket();
+          console.log(`chat1: ${JSON.stringify(chatRoomBoxes)}`);
         } catch (error) {
           console.error('Failed to fetch chat data', error);
         }
       };
 
+      fetchChatData();
+    }
+  }, [id]);
+
+  useEffect(() => {
+    if (id) {
+      const cookies = parseCookies(document.cookie || '');
+      const accessToken = cookies.accessToken;
+
       const initializeWebSocket = () => {
-        console.log('Initializing WebSocket...'); // WebSocket 초기화 시작 로그 추가
+        console.log('Initializing WebSocket...');
 
         const client = new Client({
           brokerURL: 'wss://strangehoon.shop/api',
@@ -50,11 +58,12 @@ function ChatRoom() {
         });
 
         client.onConnect = function (frame) {
-          console.log('Connected: ' + frame); // 연결 성공 로그 추가
-          console.log(`Subscribing to /sub/chat/room/${id}`); // 구독 시작 로그 추가
+          console.log('Connected: ' + frame);
+          console.log(`Subscribing to /sub/chat/room/${id}`);
           client.subscribe(`/sub/chat/room/${id}`, function (message) {
-            console.log('Received message: ', message); // 수신된 메시지 로그 추가
+            console.log('Received message: ', message);
             setChatRoomBoxes(prev => [...prev, JSON.parse(message.body)]);
+            console.log(`chat2:`, chatRoomBoxes);
           });
         };
 
@@ -62,26 +71,30 @@ function ChatRoom() {
           console.log('Broker reported error: ' + frame.headers['message']);
           console.log('Additional details: ' + frame.body);
         };
+
         client.onWebSocketError = function (error) {
           console.error('WebSocket Error', error);
         };
+
         console.log('Activating client...');
-
         client.activate();
-
-        console.log('Client activated...'); // 클라이언트 활성화 로그 추가
+        console.log('Client activated...');
         setWs(client);
       };
 
-      fetchChatData();
-    }
+      initializeWebSocket();
 
-    return () => {
-      if (ws) {
-        ws.deactivate();
-      }
-    };
+      return () => {
+        if (ws) {
+          ws.deactivate();
+        }
+      };
+    }
   }, [id]);
+
+  useEffect(() => {
+    console.log('chatRoomBoxes updated:', chatRoomBoxes);
+  }, [chatRoomBoxes]);
 
   return (
     <StyledChatRoomBox style={{ backgroundColor: id ? '#dfe2e6' : '#F1F3F5' }}>
@@ -117,7 +130,7 @@ const StyledChatRoomBox = tw.div`
   `;
 
 const StyledMessagesContainer = tw.div`
-  flex flex-col items-start justify-start
+  flex flex-col items-start
   w-full
   overflow-y-auto
 `;
@@ -126,8 +139,27 @@ const StyledChatRoomDate = tw.div`
   w-[211px] h-[44px] rounded-[100px] bg-gray-200 text-gray-300 flex justify-center items-center self-center
 `;
 
+// const StyleReceiveMessage = tw.div`
+//   max-w-[60%]
+//   bg-white
+//   text-black
+//   px-4 py-2
+//   my-6
+//   rounded-lg
+// `;
+
+// const StyledSendMessage = tw.div`
+//   max-w-[60%]
+//   bg-[#E5F1FF]
+//   text-black
+//   px-4 py-2
+//   my-6
+//   rounded-lg
+//   self-end
+//   text-right
+// `;
 const StyleReceiveMessage = tw.div`
-  max-w-[60%]
+max-w-[60%]
   bg-white
   text-black
   px-4 py-2
@@ -136,12 +168,11 @@ const StyleReceiveMessage = tw.div`
 `;
 
 const StyledSendMessage = tw.div`
-  max-w-[60%]
+max-w-[60%]
   bg-[#E5F1FF]
   text-black
   px-4 py-2
   my-6
   rounded-lg
-  self-end
-  text-right
+  ml-auto
 `;
