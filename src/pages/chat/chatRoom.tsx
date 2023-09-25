@@ -7,18 +7,9 @@ import { useRecoilValue } from 'recoil';
 import { loggedInUserIdState } from '@/atom/chatUser';
 import ChatInputBox from './chatInputBox';
 import { Client } from '@stomp/stompjs';
+import { ChatRoomBox } from '@/types/chat';
 
 function ChatRoom() {
-  interface ChatRoomBox {
-    id: number;
-    roomName: string;
-    message: string;
-    users: {
-      userId: number;
-    };
-    chatMessageId: number;
-    content: string;
-  }
   const [chatRoomBoxes, setChatRoomBoxes] = useState<ChatRoomBox[]>([]);
   const userId = useRecoilValue(loggedInUserIdState);
   const router = useRouter();
@@ -29,10 +20,11 @@ function ChatRoom() {
     if (id) {
       const cookies = parseCookies(document.cookie || '');
       const accessToken = cookies.accessToken;
+      const roomId = Number(id);
 
       const fetchChatData = async () => {
         try {
-          const response = await chatEnter(accessToken, id);
+          const response = await chatEnter(accessToken, roomId);
           setChatRoomBoxes(response.data.data.chatMessages);
 
           initializeWebSocket();
@@ -43,7 +35,7 @@ function ChatRoom() {
 
       const initializeWebSocket = () => {
         console.log('Initializing WebSocket...'); // WebSocket 초기화 시작 로그 추가
-        
+
         const client = new Client({
           brokerURL: 'wss://strangehoon.shop/api',
           connectHeaders: {
@@ -56,7 +48,7 @@ function ChatRoom() {
           heartbeatIncoming: 4000,
           heartbeatOutgoing: 4000,
         });
-      
+
         client.onConnect = function (frame) {
           console.log('Connected: ' + frame); // 연결 성공 로그 추가
           console.log(`Subscribing to /sub/chat/room/${id}`); // 구독 시작 로그 추가
@@ -65,7 +57,7 @@ function ChatRoom() {
             setChatRoomBoxes(prev => [...prev, JSON.parse(message.body)]);
           });
         };
-      
+
         client.onStompError = function (frame) {
           console.log('Broker reported error: ' + frame.headers['message']);
           console.log('Additional details: ' + frame.body);
@@ -76,11 +68,11 @@ function ChatRoom() {
         console.log('Activating client...');
 
         client.activate();
-        
+
         console.log('Client activated...'); // 클라이언트 활성화 로그 추가
         setWs(client);
       };
-      
+
       fetchChatData();
     }
 
@@ -131,7 +123,7 @@ const StyledMessagesContainer = tw.div`
 `;
 
 const StyledChatRoomDate = tw.div`
-w-[211px] h-[44px] rounded-[100px] bg-gray-200 text-gray-300 flex justify-center items-center self-center
+  w-[211px] h-[44px] rounded-[100px] bg-gray-200 text-gray-300 flex justify-center items-center self-center
 `;
 
 const StyleReceiveMessage = tw.div`

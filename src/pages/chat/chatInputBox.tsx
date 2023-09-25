@@ -1,16 +1,17 @@
 import React from 'react';
 import tw from 'twin.macro';
 import { useState } from 'react';
+import { ChatRoomBoxProps } from '@/types/chat';
 
-function ChatInputBox({ userId, chatRoomId, ws }) {
-  const [message, setMessage] = useState('');
+function ChatInputBox({ userId, chatRoomId, ws }: ChatRoomBoxProps) {
+  const [message, setMessage] = useState<string>('');
 
   const handleSendMessage = () => {
     if (ws?.connected) {
       ws.publish({
         destination: `/pub/chat/sendMessage`,
         body: JSON.stringify({
-          chatRoomId: Number(chatRoomId[0]),
+          chatRoomId: Number(chatRoomId),
           userId,
           content: message,
         }),

@@ -1,22 +1,8 @@
 import tw from 'twin.macro';
 import { setCreateChatRoom } from '@/apis/chat';
 import { useRouter } from 'next/router';
+import { ChatButtonProps } from '@/types/chat';
 
-interface ChatButtonProps {
-  token: string;
-  chatUserId: number;
-  backgroundColor?: string;
-  color?: string;
-  padding?: string;
-  fontSize?: string;
-  borderRadius?: string;
-}
-
-interface ChatRoomResponse {
-  data: {
-    roomId: number;
-  };
-}
 function ChatButton({
   token,
   chatUserId,
@@ -30,10 +16,10 @@ function ChatButton({
   const handleChatClick = async () => {
     try {
       const response = await setCreateChatRoom(token, chatUserId);
-      const responseData: ChatRoomResponse = response.data;
+      const roomId: number = response.data.data.roomId;
 
-      if (responseData.data && responseData.data.roomId) {
-        router.push(`/chat/${responseData.data.roomId}`);
+      if (roomId) {
+        router.push(`/chat/${roomId}`);
       } else {
         console.error('Chat room creation response is missing data.');
       }

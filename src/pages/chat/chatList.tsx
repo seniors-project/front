@@ -8,20 +8,12 @@ import parseCookies from '@/utils/parseCookies';
 import { useRouter } from 'next/router';
 import { useRecoilState } from 'recoil';
 import { loggedInUserIdState } from '@/atom/chatUser';
+import { ChatBox } from '@/types/chat';
 
 function ChatList() {
-  interface ChatBox {
-    roomId: number;
-    roomName: string;
-    message: string;
-    chatMessageRes: {
-      content: string;
-      createdAt: string;
-    };
-  }
   const [chatBoxes, setChatBoxes] = useState<ChatBox[]>([]);
   const [activeChatBoxId, setActiveChatBoxId] = useState<number | null>(null);
-  const [UserId, setUserId] = useRecoilState(loggedInUserIdState);
+  const [, setUserId] = useRecoilState(loggedInUserIdState);
   const router = useRouter();
 
   useEffect(() => {
