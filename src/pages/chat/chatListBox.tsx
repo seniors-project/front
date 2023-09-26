@@ -1,6 +1,7 @@
 import tw from 'twin.macro';
 import styled from '@emotion/styled';
 import { ChatListBoxProps } from '@/types/chat';
+import { dateconversion } from '@/utils/dateconversion';
 
 function ChatListBox({
   isActive,
@@ -9,6 +10,8 @@ function ChatListBox({
   message,
   date,
 }: ChatListBoxProps) {
+  const lastDate = dateconversion(date);
+
   return (
     <ChatListBoxWrapper isActive={isActive} onClick={onClick}>
       <StyledProfileImg src="/images/profile.png" alt="Profile" />
@@ -16,7 +19,7 @@ function ChatListBox({
         <StyledProfileName>{name}</StyledProfileName>
         <StyledChatPreview>{message}</StyledChatPreview>
       </StyledChatContent>
-      <StyledChatPreviewDate>{date}</StyledChatPreviewDate>
+      <StyledChatPreviewDate>{lastDate}</StyledChatPreviewDate>
     </ChatListBoxWrapper>
   );
 }
