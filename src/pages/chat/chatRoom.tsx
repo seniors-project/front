@@ -8,6 +8,7 @@ import { loggedInUserIdState } from '@/atom/chatUser';
 import ChatInputBox from './chatInputBox';
 import { Client } from '@stomp/stompjs';
 import { ChatRoomBox } from '@/types/chat';
+import { dateconversion } from '@/utils/dateconversion';
 
 function ChatRoom() {
   const [chatRoomBoxes, setChatRoomBoxes] = useState<ChatRoomBox[]>([]);
@@ -96,21 +97,39 @@ function ChatRoom() {
     console.log('chatRoomBoxes updated:', chatRoomBoxes);
   }, [chatRoomBoxes]);
 
+  let lastDate: string | null = null;
+
   return (
     <StyledChatRoomBox style={{ backgroundColor: id ? '#dfe2e6' : '#F1F3F5' }}>
       {id ? (
         <>
           <StyledMessagesContainer>
-            <StyledChatRoomDate>23년 12월 23일 (목)</StyledChatRoomDate>
-            {chatRoomBoxes.map(item => (
-              <div key={item.chatMessageId}>
-                {item.users?.userId === userId ? (
-                  <StyledSendMessage>{item.content}</StyledSendMessage>
-                ) : (
-                  <StyleReceiveMessage>{item.content}</StyleReceiveMessage>
-                )}
-              </div>
-            ))}
+            {chatRoomBoxes.map(item => {
+              const currentDate = dateconversion(item.createdAt);
+
+              const showDateSeparator = !lastDate || currentDate !== lastDate;
+              lastDate = currentDate;
+
+              return (
+                <div key={item.chatMessageId}>
+                  {showDateSeparator && (
+                    <StyleChatRoomDateWrapper>
+                      <StyledChatRoomDate>{currentDate}</StyledChatRoomDate>
+                    </StyleChatRoomDateWrapper>
+                  )}
+
+                  {item.users?.userId === userId ? (
+                    <StyledSendMessageWrapper>
+                      <StyledSendMessage>{item.content}</StyledSendMessage>
+                    </StyledSendMessageWrapper>
+                  ) : (
+                    <StyleReceiveMessageWrapper>
+                      <StyleReceiveMessage>{item.content}</StyleReceiveMessage>
+                    </StyleReceiveMessageWrapper>
+                  )}
+                </div>
+              );
+            })}
           </StyledMessagesContainer>
           <ChatInputBox userId={userId} chatRoomId={id} ws={ws} />
         </>
@@ -125,41 +144,20 @@ const StyledChatRoomBox = tw.div`
   w-[803px]
   h-[821px]
   rounded-tr-[20px]
-  flex flex-col justify-between p-6
+  flex flex-col p-6
   border-t border-r border-solid border-gray-300
   `;
 
 const StyledMessagesContainer = tw.div`
-  flex flex-col items-start
-  w-full
+  flex flex-col
   overflow-y-auto
 `;
 
 const StyledChatRoomDate = tw.div`
-  w-[211px] h-[44px] rounded-[100px] bg-gray-200 text-gray-300 flex justify-center items-center self-center
+  w-[211px] h-[44px] rounded-[100px] bg-gray-200 text-gray-300 flex justify-center items-center
 `;
 
-// const StyleReceiveMessage = tw.div`
-//   max-w-[60%]
-//   bg-white
-//   text-black
-//   px-4 py-2
-//   my-6
-//   rounded-lg
-// `;
-
-// const StyledSendMessage = tw.div`
-//   max-w-[60%]
-//   bg-[#E5F1FF]
-//   text-black
-//   px-4 py-2
-//   my-6
-//   rounded-lg
-//   self-end
-//   text-right
-// `;
 const StyleReceiveMessage = tw.div`
-max-w-[60%]
   bg-white
   text-black
   px-4 py-2
@@ -168,11 +166,21 @@ max-w-[60%]
 `;
 
 const StyledSendMessage = tw.div`
-max-w-[60%]
   bg-[#E5F1FF]
   text-black
   px-4 py-2
-  my-6
+  my-6 
+  mr-4
   rounded-lg
-  ml-auto
 `;
+
+const StyledSendMessageWrapper = tw.div`
+  flex justify-end
+`;
+
+const StyleReceiveMessageWrapper = tw.div`
+  flex justify-start
+`;
+
+const StyleChatRoomDateWrapper = tw.div`
+  flex justify-center items-center self-center`;

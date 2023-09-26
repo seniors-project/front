@@ -24,6 +24,7 @@ export interface ChatRoomBox {
   };
   chatMessageId: number;
   content: string;
+  createdAt: string;
 }
 
 export interface ChatRoomBoxProps {
