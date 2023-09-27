@@ -142,7 +142,7 @@ export default ChatRoom;
 
 const StyledChatRoomBox = tw.div`
   w-[803px]
-  h-[821px]
+  h-[769px]
   rounded-tr-[20px]
   flex flex-col p-6
   border-t border-r border-solid border-gray-300

@@ -76,7 +76,7 @@ function ChatList() {
 export default ChatList;
 
 const StyledChatListContainer = tw.div`
-w-[396px] h-[820px] rounded-tl-[20px] bg-white flex flex-col border-t border-l border-gray-300
+w-[396px] rounded-tl-[20px] bg-white flex flex-col border-t border-l border-gray-300
 `;
 
 const StyledGrayLine = tw.div`

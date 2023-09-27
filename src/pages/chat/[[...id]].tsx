@@ -7,15 +7,15 @@ import ChatRoom from './chatRoom';
 
 function Chat() {
   return (
-    <>
-      <Layout>
-        채팅하기
-        <StyledChatContainer>
+    <Layout>
+      <StyledChatContainer>
+        <StyledChatHeaderWrapper>채팅하기</StyledChatHeaderWrapper>
+        <StyledChatWrapper>
           <ChatList />
           <ChatRoom />
-        </StyledChatContainer>
-      </Layout>
-    </>
+        </StyledChatWrapper>
+      </StyledChatContainer>
+    </Layout>
   );
 }
 
@@ -23,7 +23,16 @@ export default Chat;
 
 const StyledChatContainer = tw.div`
   flex
-  flex-row
-  items-center
-  justify-center
+  flex-col	
+  mx-auto
+  max-w-screen-xl
+`;
+
+const StyledChatWrapper = tw.div`
+  flex
+  mt-8
+`;
+
+const StyledChatHeaderWrapper = tw.div`
+mt-8
 `;
