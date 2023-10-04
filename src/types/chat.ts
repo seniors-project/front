@@ -16,6 +16,7 @@ export interface ChatListBoxProps {
   name: string;
   message: string;
   date: string;
+  chatRoomId: number;
 }
 
 export interface ChatRoomBox {

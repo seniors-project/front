@@ -6,8 +6,8 @@ import { ChatButtonProps } from '@/types/chat';
 function ChatButton({
   token,
   chatUserId,
-  backgroundColor = 'transparent',
-  color = 'black',
+  backgroundColor = 'blue',
+  color = 'white',
   padding = '8px',
   fontSize = '16px',
   borderRadius = '4px',

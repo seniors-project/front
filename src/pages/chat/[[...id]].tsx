@@ -1,9 +1,11 @@
+import styled from '@emotion/styled';
 import tw from 'twin.macro';
 
 import { Layout } from '@/components/Layout';
 
 import ChatList from './chatList';
 import ChatRoom from './chatRoom';
+import { pretenderedSemiBold } from '@/styles/fonts';
 
 function Chat() {
   return (
@@ -33,6 +35,7 @@ const StyledChatWrapper = tw.div`
   mt-8
 `;
 
-const StyledChatHeaderWrapper = tw.div`
-mt-8
+const StyledChatHeaderWrapper = styled.div`
+  ${tw`mt-8 text-[30px]`}
+  font-family: "${pretenderedSemiBold}", sans-serif;
 `;

@@ -1,3 +1,4 @@
+import styled from '@emotion/styled';
 import tw from 'twin.macro';
 import { useState, useEffect } from 'react';
 
@@ -9,6 +10,8 @@ import { useRouter } from 'next/router';
 import { useRecoilState } from 'recoil';
 import { loggedInUserIdState } from '@/atom/chatUser';
 import { ChatBox } from '@/types/chat';
+
+import { pretenderedSemiBold } from '@/styles/fonts';
 
 function ChatList() {
   const [chatBoxes, setChatBoxes] = useState<ChatBox[]>([]);
@@ -57,6 +60,7 @@ function ChatList() {
           name={box.roomName}
           message={box.chatMessageRes.content}
           date={box.chatMessageRes.createdAt}
+          chatRoomId={box.roomId}
         />
       ))}
       {chatBoxes.length === 0 && (
@@ -83,8 +87,9 @@ const StyledGrayLine = tw.div`
 w-full border-t border-gray-300
 `;
 
-const StyledChatListBoxUpText = tw.div`
-w-full mb-4 my-[30px] ml-[24px]
+const StyledChatListBoxUpText = styled.div`
+  ${tw`w-full mb-4 my-[30px] ml-[24px] text-[26px]`}
+  font-family: "${pretenderedSemiBold}", sans-serif;
 `;
 
 const StyledChatListBoxDownText = tw.div`
