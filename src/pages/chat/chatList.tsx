@@ -1,21 +1,51 @@
+import styled from '@emotion/styled';
 import tw from 'twin.macro';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import ChatListBox from './chatListBox';
 import ResumeWriteButton from '@/components/Button/ResumeWriteButton';
+import { getChatList } from '@/apis/chat';
+import parseCookies from '@/utils/parseCookies';
+import { useRouter } from 'next/router';
+import { useRecoilState } from 'recoil';
+import { loggedInUserIdState } from '@/atom/chatUser';
+import { ChatBox } from '@/types/chat';
+
+import { pretenderedSemiBold } from '@/styles/fonts';
 
 function ChatList() {
-  // 활성화된 채팅방의 ID를 저장하는 상태
+  const [chatBoxes, setChatBoxes] = useState<ChatBox[]>([]);
   const [activeChatBoxId, setActiveChatBoxId] = useState<number | null>(null);
-  // 가정: 각 채팅방에 대한 정보를 가진 배열
-  const chatBoxes = [
-    { id: 1, name: '홍길동', message: '안녕하세요. 이력서 보고...' },
-    { id: 2, name: '이순신', message: '안녕하세요. 이력서 보고...' },
-    // ...
-  ];
+  const [, setUserId] = useRecoilState(loggedInUserIdState);
+  const router = useRouter();
+
+  useEffect(() => {
+    const cookies = parseCookies(document.cookie || '');
+    const accessToken = cookies.accessToken;
+
+    async function fetchChatData() {
+      try {
+        const response = await getChatList(accessToken);
+        setChatBoxes(response.data.data.chatRoomMembers);
+        setUserId(response.data.data.userId);
+      } catch (error) {
+        console.error('Failed to fetch chat data', error);
+      }
+    }
+
+    fetchChatData();
+  }, []);
 
   const handleClick = (id: number | null) => {
-    setActiveChatBoxId(prevId => (prevId === id ? null : id));
+    if (activeChatBoxId === id) {
+      router.push('/chat');
+      setActiveChatBoxId(null);
+    } else {
+      setActiveChatBoxId(id);
+      if (id !== null) {
+        router.push(`/chat/${id}`);
+      }
+    }
   };
 
   return (
@@ -24,11 +54,13 @@ function ChatList() {
       <StyledGrayLine />
       {chatBoxes.map(box => (
         <ChatListBox
-          key={box.id}
-          isActive={box.id === activeChatBoxId}
-          onClick={() => handleClick(box.id)}
-          name={box.name}
-          message={box.message}
+          key={box.roomId}
+          isActive={box.roomId === activeChatBoxId}
+          onClick={() => handleClick(box.roomId)}
+          name={box.roomName}
+          message={box.chatMessageRes.content}
+          date={box.chatMessageRes.createdAt}
+          chatRoomId={box.roomId}
         />
       ))}
       {chatBoxes.length === 0 && (
@@ -48,15 +80,16 @@ function ChatList() {
 export default ChatList;
 
 const StyledChatListContainer = tw.div`
-w-[396px] h-[820px] rounded-tl-[20px] bg-white flex flex-col border-t border-l border-gray-300
+w-[396px] rounded-tl-[20px] bg-white flex flex-col border-t border-l border-gray-300
 `;
 
 const StyledGrayLine = tw.div`
 w-full border-t border-gray-300
 `;
 
-const StyledChatListBoxUpText = tw.div`
-w-full mb-4 my-[30px] ml-[24px]
+const StyledChatListBoxUpText = styled.div`
+  ${tw`w-full mb-4 my-[30px] ml-[24px] text-[26px]`}
+  font-family: "${pretenderedSemiBold}", sans-serif;
 `;
 
 const StyledChatListBoxDownText = tw.div`
