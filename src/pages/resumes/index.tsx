@@ -67,6 +67,7 @@ const ViewCount = tw.div`
   text-[#515A64]
   text-xl
   my-auto
+  mr-5
   // ml-auto
 `;
 const ResumeCardChatButton = tw.div`
