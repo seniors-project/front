@@ -83,7 +83,7 @@ const BtnWapper = tw.div`
 
 const OpenMYResumeSection = tw.div` flex`;
 const SwitchWrap = tw.div`
-  w-11 h-11
+  mt-2 w-11 h-11
 `;
 const SwitchDescriptionWrap = tw.div`
   ml-5
