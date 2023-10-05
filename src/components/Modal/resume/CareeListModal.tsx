@@ -9,6 +9,7 @@ const CareeListModalBox = tw.div`
   bg-black bg-opacity-40 
   flex justify-center items-center
   overflow-auto
+  z-50
 `;
 
 const CareeCard = tw.div`

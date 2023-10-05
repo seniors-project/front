@@ -9,7 +9,7 @@ const EducationListModalBox = tw.div`
   bg-black bg-opacity-40 
   flex justify-center items-center
   overflow-auto
-  text-black
+  text-black z-50
 `;
 
 const EducationCard = tw.div`
