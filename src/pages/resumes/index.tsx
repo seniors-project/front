@@ -143,6 +143,8 @@ const ResumeListPage = ({ token }: { token: string }) => {
     setLimit(str.length);
   };
 
+  // 배너 본인 이력서 데이터
+
   return (
     <Layout>
       <RegisterResumeBanner>
@@ -188,7 +190,7 @@ const ResumeListPage = ({ token }: { token: string }) => {
                         </p>
                       </div>
                     </ResumeCardHeaderProfile>
-                    {data.viewCount && (
+                    {(data?.viewCount ?? 0) > 0 && (
                       <ViewCount>조회수 {data.viewCount}회</ViewCount>
                     )}
                     <ResumeCardChatButton>
