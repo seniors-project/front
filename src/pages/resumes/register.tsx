@@ -125,12 +125,14 @@ const ResumeRegisterPage = ({ token }: { token: string }) => {
       if (response.status === 200) {
         alert('이력서 등록이 완료되었습니다.');
         router.push('/resumes');
-      } else if (response.status === 400) {
-        alert('이미 해당 유저의 이력서가 존재합니다.');
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
-      alert('이력서 등록에 실패했습니다.');
+      if (err.response && err.response.status === 400) {
+        alert('이미 해당 유저의 이력서가 존재합니다.');
+      } else {
+        alert('이력서 등록에 실패했습니다. 다시 시도해주세요.');
+      }
     }
   };
 
