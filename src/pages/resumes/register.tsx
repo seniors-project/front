@@ -124,7 +124,7 @@ const ResumeRegisterPage = ({ token }: { token: string }) => {
       const response = await postResume(token, data);
       if (response.status === 200) {
         alert('이력서 등록이 완료되었습니다.');
-        router.push('./resume');
+        router.push('/resumes');
       } else if (response.status === 400) {
         alert('이미 해당 유저의 이력서가 존재합니다.');
       }
@@ -313,8 +313,8 @@ const ResumeRegisterPage = ({ token }: { token: string }) => {
                           </div>
                         </div>
                         <div tw="flex">
-                          <div tw="w-60 mr-14">{education.process}t</div>
-                          <div>{education.content}c</div>
+                          <div tw="w-60 mr-14">{education.process}</div>
+                          <div>{education.content}</div>
                         </div>
                       </li>
                     ))}
