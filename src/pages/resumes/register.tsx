@@ -273,7 +273,8 @@ const ResumeRegisterPage = ({ token }: { token: string }) => {
                         tw="flex flex-col mt-4  font-regular text-2xl text-[#515A64]">
                         <div tw="flex font-regular text-2xl">
                           <div tw="w-60 mr-14">
-                            {`${career.startedAt} ~ ${career.endedAt}`}
+                            {career.startedAt} ~{' '}
+                            {career.endedAt ? career.endedAt : '재직중'}
                           </div>
                           <div tw="font-semibold text-black">
                             {career.company}
@@ -310,7 +311,8 @@ const ResumeRegisterPage = ({ token }: { token: string }) => {
                         tw="flex flex-col mt-4  font-regular text-2xl text-[#515A64]">
                         <div tw="flex font-regular text-2xl">
                           <div tw="w-60 mr-14">
-                            {`${education.startedAt} ~ ${education.endedAt}`}
+                            {education.startedAt} ~{' '}
+                            {education.endedAt ? education.endedAt : '진행중'}
                           </div>
                           <div tw="font-semibold text-black">
                             {education.institution}

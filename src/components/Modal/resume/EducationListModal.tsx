@@ -43,8 +43,14 @@ const Wapper = tw.div`
 `;
 
 const SelectWrap = tw.div`
-  w-48
-  font-medium text-2xl
+  w-48 font-medium text-2xl
+`;
+
+const InProgressInputWrap = tw.div`
+  ml-5
+`;
+const InProgressLabel = tw.label`
+  text-2xl font-medium
 `;
 
 const BtnWapper = tw.div`
@@ -76,8 +82,8 @@ const EducationListModal: React.FC<EducationListModalProps> = ({
   const [inputs, setInputs] = useState<ResumeFormEducation>({
     institution: '',
     process: '',
-    startedAt: 0,
-    endedAt: 0,
+    startedAt: null,
+    endedAt: null,
     content: '',
     isProcessed: false,
   });
@@ -202,6 +208,23 @@ const EducationListModal: React.FC<EducationListModalProps> = ({
                     placeholder="퇴사연도"
                   />
                 </SelectWrap>
+                <InProgressInputWrap>
+                  <InProgressLabel>
+                    <input
+                      type="checkbox"
+                      checked={inputs.isProcessed}
+                      onChange={() =>
+                        setInputs({
+                          ...inputs,
+                          endedAt: null,
+                          isProcessed: !inputs.isProcessed,
+                        })
+                      }
+                      tw="mr-1"
+                    />
+                    진행중
+                  </InProgressLabel>
+                </InProgressInputWrap>
               </Wapper>
             </InputWrap>
             <InputWrap>

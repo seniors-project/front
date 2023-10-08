@@ -10,8 +10,8 @@ export interface ResumeForm {
 }
 
 export interface ResumeFormCareer {
-  startedAt: number;
-  endedAt: number;
+  startedAt: number | null;
+  endedAt: number | null;
   company: string;
   title: string;
   isAttendanced: boolean;
@@ -21,8 +21,8 @@ export interface ResumeFormCareer {
 export interface ResumeFormEducation {
   institution: string;
   process: string;
-  startedAt: number;
-  endedAt: number;
+  startedAt: number | null;
+  endedAt: number | null;
   content: string;
   isProcessed: boolean;
 }
@@ -30,7 +30,7 @@ export interface ResumeFormEducation {
 export interface ResumeFormCertificate {
   name: string;
   rating: string;
-  issuedYear: number;
-  issuedMonth: number;
+  issuedYear: number | null;
+  issuedMonth: number | null;
   isIssued: boolean;
 }

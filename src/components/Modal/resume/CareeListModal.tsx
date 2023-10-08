@@ -43,8 +43,14 @@ const Wapper = tw.div`
 `;
 
 const SelectWrap = tw.div`
-  w-48
-  font-medium text-2xl
+  w-48 font-medium text-2xl
+`;
+
+const EmployedInputWrap = tw.div`
+  ml-5
+`;
+const EmployedLabel = tw.label`
+  text-2xl font-medium
 `;
 
 const BtnWapper = tw.div`
@@ -74,8 +80,8 @@ const CareeListModal: React.FC<CareeListModalProps> = ({
   handleCareerListData,
 }) => {
   const [inputs, setInputs] = useState<ResumeFormCareer>({
-    startedAt: 0,
-    endedAt: 0,
+    startedAt: null,
+    endedAt: null,
     company: '',
     title: '',
     isAttendanced: false,
@@ -203,6 +209,23 @@ const CareeListModal: React.FC<CareeListModalProps> = ({
                     placeholder="퇴사연도"
                   />
                 </SelectWrap>
+                <EmployedInputWrap>
+                  <EmployedLabel>
+                    <input
+                      type="checkbox"
+                      checked={inputs.isAttendanced}
+                      onChange={() =>
+                        setInputs({
+                          ...inputs,
+                          endedAt: null,
+                          isAttendanced: !inputs.isAttendanced,
+                        })
+                      }
+                      tw="mr-1"
+                    />
+                    재직중
+                  </EmployedLabel>
+                </EmployedInputWrap>
               </Wapper>
             </InputWrap>
             <InputWrap>
