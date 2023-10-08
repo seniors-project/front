@@ -71,8 +71,8 @@ interface EducationListModalProps {
 }
 
 interface Option {
-  label: number;
-  value: number;
+  label: number | null;
+  value: number | null;
 }
 
 const EducationListModal: React.FC<EducationListModalProps> = ({
@@ -87,14 +87,13 @@ const EducationListModal: React.FC<EducationListModalProps> = ({
     content: '',
     isProcessed: false,
   });
-  const [startYear, setStartYear] = useState<number>(0);
-  const [endYear, setEndYear] = useState<number>(0);
+  const [startYear, setStartYear] = useState<number | null>(null);
+  const [endYear, setEndYear] = useState<number | null>(null);
 
   const generateYearOptions = () => {
     const currentYear = new Date().getFullYear();
     const options = [];
     for (let year = currentYear; year >= 1960; year--) {
-      // options.push({ value: Number(year), label: Number(year) });
       options.push({ value: year, label: year });
     }
     return options;
@@ -111,7 +110,7 @@ const EducationListModal: React.FC<EducationListModalProps> = ({
   };
 
   useEffect(() => {
-    const startYearValue = startYear; //parseInt(startYear, 10);
+    const startYearValue = startYear;
     const nextInputs = {
       ...inputs,
       startedAt: startYearValue,
@@ -120,7 +119,7 @@ const EducationListModal: React.FC<EducationListModalProps> = ({
   }, [startYear]);
 
   useEffect(() => {
-    const endYearValue = endYear; //parseInt(endYear.value, 10);
+    const endYearValue = endYear;
     const nextInputs = {
       ...inputs,
       endedAt: endYearValue,
@@ -194,7 +193,9 @@ const EducationListModal: React.FC<EducationListModalProps> = ({
                 <SelectWrap>
                   <Select
                     options={yearOptions}
-                    value={{ label: startYear, value: startYear }}
+                    value={
+                      startYear ? { label: startYear, value: startYear } : null
+                    }
                     onChange={handleStartYearChange}
                     placeholder="입사연도"
                   />
@@ -203,9 +204,10 @@ const EducationListModal: React.FC<EducationListModalProps> = ({
                 <SelectWrap>
                   <Select
                     options={yearOptions}
-                    value={{ label: endYear, value: endYear }}
+                    value={endYear ? { label: endYear, value: endYear } : null}
                     onChange={handleEndYearChange}
                     placeholder="퇴사연도"
+                    isDisabled={inputs.isProcessed}
                   />
                 </SelectWrap>
                 <InProgressInputWrap>

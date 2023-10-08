@@ -71,8 +71,8 @@ interface CareeListModalProps {
 }
 
 interface Option {
-  label: number;
-  value: number;
+  label: number | null;
+  value: number | null;
 }
 
 const CareeListModal: React.FC<CareeListModalProps> = ({
@@ -87,8 +87,8 @@ const CareeListModal: React.FC<CareeListModalProps> = ({
     isAttendanced: false,
     content: '',
   });
-  const [startYear, setStartYear] = useState<number>(0);
-  const [endYear, setEndYear] = useState<number>(0);
+  const [startYear, setStartYear] = useState<number | null>(null);
+  const [endYear, setEndYear] = useState<number | null>(null);
 
   const generateYearOptions = () => {
     const currentYear = new Date().getFullYear();
@@ -195,7 +195,9 @@ const CareeListModal: React.FC<CareeListModalProps> = ({
                 <SelectWrap>
                   <Select
                     options={yearOptions}
-                    value={{ label: startYear, value: startYear }}
+                    value={
+                      startYear ? { label: startYear, value: startYear } : null
+                    }
                     onChange={handleStartYearChange}
                     placeholder="입사연도"
                   />
@@ -204,9 +206,10 @@ const CareeListModal: React.FC<CareeListModalProps> = ({
                 <SelectWrap>
                   <Select
                     options={yearOptions}
-                    value={{ label: endYear, value: endYear }}
+                    value={endYear ? { label: endYear, value: endYear } : null}
                     onChange={handleEndYearChange}
                     placeholder="퇴사연도"
+                    isDisabled={inputs.isAttendanced}
                   />
                 </SelectWrap>
                 <EmployedInputWrap>
