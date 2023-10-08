@@ -17,6 +17,7 @@ import { postResume } from '@/apis/resume';
 import CareeListModal from '@/components/Modal/resume/CareeListModal';
 import EducationListModal from '@/components/Modal/resume/EducationListModal';
 import { SwitchLabel } from '@/styles/Switch';
+import { Career, Education } from '@/types/resume';
 
 import { Layout } from '@/components/Layout';
 import { Container } from '@/styles';
@@ -154,12 +155,12 @@ const ResumeRegisterPage = ({ token }: { token: string }) => {
     }
   };
 
-  const handleCareerListData = (data: any) => {
+  const handleCareerListData = (data: Career) => {
     const careerListData = [...careerList, data];
     setCareerList(careerListData);
   };
 
-  const handleEducationListData = (data: any) => {
+  const handleEducationListData = (data: Education) => {
     const educationListData = [...educationList, data];
     setEducationList(educationListData);
   };
