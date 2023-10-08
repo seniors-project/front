@@ -65,16 +65,16 @@ const InputLabel = tw.span`
 `;
 
 const IdentityDetailCard = tw.div`mb-5`;
-const NameInputLabel = tw.div`
-  mb-3
-`;
+const NameInputLabel = tw.div`mb-3`;
 const NameInput = tw.input`
   focus:outline-none rounded-lg
   w-full h-16 border p-2 bg-[#F1F3F5]
   placeholder:text-[#878E95] placeholder:font-medium text-2xl
 `;
 const ProfileInfoList = tw.div``;
-const CareerInput = tw.div`flex m-auto`;
+const InfoInputWrap = tw.div`
+  flex m-auto mt-10
+`;
 const BtnWapper = tw.div`
   w-40 h-11 flex
   items-center justify-center
@@ -121,6 +121,14 @@ const ResumeRegisterPage = ({ token }: { token: string }) => {
 
   const onSubmit = async (data: ResumeForm) => {
     console.log('onSubmitdata' + data);
+    console.log(
+      'onSubmitdata 최종' +
+        {
+          ...data,
+          careerList,
+          educationList,
+        },
+    );
     try {
       const response = await postResume(token, {
         ...data,
@@ -237,7 +245,7 @@ const ResumeRegisterPage = ({ token }: { token: string }) => {
               </section>
               <div tw="border my-[48px] border-[#AEB5BC]" />
               <ProfileInfoList>
-                <CareerInput>
+                <InfoInputWrap>
                   <InputLabel>경력 사항</InputLabel>
                   <BtnWapper>
                     <AiFillPlusCircle />
@@ -256,7 +264,7 @@ const ResumeRegisterPage = ({ token }: { token: string }) => {
                       handleCareerListData={handleCareerListData}
                     />
                   )}
-                </CareerInput>
+                </InfoInputWrap>
                 {careerList.length > 0 && (
                   <ul>
                     {careerList.map((career, index) => (
@@ -279,8 +287,7 @@ const ResumeRegisterPage = ({ token }: { token: string }) => {
                     ))}
                   </ul>
                 )}
-                <div tw="h-10"></div>
-                <CareerInput>
+                <InfoInputWrap>
                   <InputLabel>교육 이수</InputLabel>
                   <BtnWapper>
                     <AiFillPlusCircle />
@@ -294,7 +301,7 @@ const ResumeRegisterPage = ({ token }: { token: string }) => {
                       />
                     )}
                   </BtnWapper>
-                </CareerInput>
+                </InfoInputWrap>
                 {educationList.length > 0 && (
                   <ul>
                     {educationList.map((education, index) => (
