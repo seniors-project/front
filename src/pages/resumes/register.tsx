@@ -13,13 +13,13 @@ import {
   ResumeFormCareer,
   ResumeFormEducation,
 } from '@/types/resumeForm';
-
-import { Layout } from '@/components/Layout';
-import { Container } from '@/styles';
 import { postResume } from '@/apis/resume';
 import CareeListModal from '@/components/Modal/resume/CareeListModal';
 import EducationListModal from '@/components/Modal/resume/EducationListModal';
 import { SwitchLabel } from '@/styles/Switch';
+
+import { Layout } from '@/components/Layout';
+import { Container } from '@/styles';
 
 const ResumeAddHeader = tw.div`
   font-semibold text-3xl mt-16 mb-8
@@ -121,7 +121,11 @@ const ResumeRegisterPage = ({ token }: { token: string }) => {
   const onSubmit = async (data: ResumeForm) => {
     console.log('onSubmitdata' + data);
     try {
-      const response = await postResume(token, data);
+      const response = await postResume(token, {
+        ...data,
+        careerList,
+        educationList,
+      });
       if (response.status === 200) {
         alert('이력서 등록이 완료되었습니다.');
         router.push('/resumes');
@@ -159,16 +163,6 @@ const ResumeRegisterPage = ({ token }: { token: string }) => {
     const educationListData = [...educationList, data];
     setEducationList(educationListData);
   };
-
-  // const clickModal = (data: string) => {
-  //   if (data === 'caree') {
-  //     setShowCareeModal(!showCareeModal);
-  //   }
-
-  //   if (data === 'education') {
-  //     setshowEducationModal(!showEducationModal);
-  //   }
-  // };
 
   return (
     <Layout>
