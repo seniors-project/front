@@ -1,6 +1,7 @@
 import { httpClient } from '@/lib/httpClient';
 import { ResumeResponse } from '@/types/resume';
 import { ResumeForm } from '@/types/resumeForm';
+import { MeResumeResponse } from '@/types/meResume';
 
 export const getResumes = async (token: string, lastId?: number) => {
   const response = await httpClient.get<ResumeResponse>(
@@ -28,6 +29,15 @@ export const postResume = async (token: string, data: ResumeForm) => {
     },
   });
 
-  console.log('response' + response);
   return response;
+};
+
+export const getMeResume = async (token: string) => {
+  const response = await httpClient.get<MeResumeResponse>('/resumes/mine', {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data;
 };

@@ -3,10 +3,10 @@ import tw from 'twin.macro';
 import { GetServerSidePropsContext, GetServerSideProps } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import useInfiniteScroll from 'react-infinite-scroll-hook';
 
-import { getResumes } from '@/apis/resume';
+import { getResumes, getMeResume } from '@/apis/resume';
 import { userValidate } from '@/apis/auth';
 import parseCookies from '@/utils/parseCookies';
 
@@ -120,8 +120,19 @@ const ResumeListPage = ({ token }: { token: string }) => {
       },
     },
   );
-
   const resumes = data?.pages?.flatMap(page => page.resumes);
+
+  const {
+    status: meResuneStatus,
+    data: meResuneData,
+    error: meResuneError,
+  } = useQuery(['meResume'], async () => {
+    const response = await getMeResume(token);
+    const meResume = response.data;
+    return { meResume };
+  });
+  const meResume = meResuneData?.meResume;
+  console.log('meResume json @@@' + JSON.stringify(meResume));
 
   const [sentryRef] = useInfiniteScroll({
     loading: status === 'loading',
@@ -129,9 +140,14 @@ const ResumeListPage = ({ token }: { token: string }) => {
     onLoadMore: fetchNextPage,
   });
 
-  if (status === 'loading') return <span>Loading...</span>;
+  if ((status || meResuneStatus) === 'loading') return <span>Loading...</span>;
 
-  if (status === 'error') return <span>Error: {Object(error).message}</span>;
+  if (status === 'error') {
+    return <span>Error: {Object(error).message}</span>;
+  }
+  if (meResuneStatus === 'error') {
+    return <span>Error: {Object(meResuneError).message}</span>;
+  }
 
   const toggleEllipsis = (str: string, limit: number) => {
     return {
@@ -144,25 +160,85 @@ const ResumeListPage = ({ token }: { token: string }) => {
     setLimit(str.length);
   };
 
-  // 배너 본인 이력서 데이터
-
   return (
     <Layout>
-      <RegisterResumeBanner>
+      {meResume ? (
         <Container>
-          <Description>
-            <p>
-              인생 2모작에 도전하는 <br />
-              시니어스에 이력서를 등록해 보세요!
-            </p>
-          </Description>
-          <BtnWapper>
-            <RegisterResumeBtn>
-              <Link href="/resumes/register">공개 이력서 등록하기</Link>
-            </RegisterResumeBtn>
-          </BtnWapper>
+          <ResumeList>
+            <div>
+              <h2 tw="font-semibold text-3xl">나의 공개 이력서</h2>
+            </div>
+            <ul>
+              <ResumeCard key={meResume.id}>
+                <ResumeCardHeader>
+                  <ResumeCardHeaderProfileImg>
+                    <Image
+                      src={meResume.photoUrl}
+                      alt="profile img"
+                      width={500}
+                      height={100}
+                    />
+                  </ResumeCardHeaderProfileImg>
+                  <ResumeCardHeaderProfile>
+                    <p tw="font-bold text-2xl">{meResume.name}</p>
+                    <div tw="flex flex-nowrap mt-1">
+                      <p tw="font-semibold text-base">{meResume.occupation}</p>
+                      <p tw="font-medium text-base text-[#878E95] ml-1.5">
+                        선호
+                      </p>
+                    </div>
+                  </ResumeCardHeaderProfile>
+                </ResumeCardHeader>
+                <ResumeCardBody>
+                  <ResumeDe>
+                    <p>
+                      {toggleEllipsis(meResume.introduce, limit).string}
+                      {toggleEllipsis(meResume.introduce, limit).isShowMore && (
+                        <span
+                          onClick={() => onClickMore(meResume.introduce)}
+                          tw="text-slate-500 cursor-pointer">
+                          <span tw="text-black">...</span>
+                          더보기
+                        </span>
+                      )}
+                    </p>
+                  </ResumeDe>
+                  <ResumeHistory>
+                    {meResume.careers.length > 0 && (
+                      <ul>
+                        {meResume.careers.map(career => (
+                          <ResumeHistoryLi key={career.id}>
+                            <HistoryPeriod>
+                              {`${career.startedAt} ~ ${career.endedAt}`}
+                            </HistoryPeriod>
+                            <div>{career.company}</div>
+                          </ResumeHistoryLi>
+                        ))}
+                      </ul>
+                    )}
+                  </ResumeHistory>
+                </ResumeCardBody>
+              </ResumeCard>
+            </ul>
+          </ResumeList>
         </Container>
-      </RegisterResumeBanner>
+      ) : (
+        <RegisterResumeBanner>
+          <Container>
+            <Description>
+              <p>
+                인생 2모작에 도전하는 <br />
+                시니어스에 이력서를 등록해 보세요!
+              </p>
+            </Description>
+            <BtnWapper>
+              <RegisterResumeBtn>
+                <Link href="/resumes/register">공개 이력서 등록하기</Link>
+              </RegisterResumeBtn>
+            </BtnWapper>
+          </Container>
+        </RegisterResumeBanner>
+      )}
 
       <Container>
         <ResumeList>
