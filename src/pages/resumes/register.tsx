@@ -11,13 +11,15 @@ import parseCookies from '@/utils/parseCookies';
 import {
   ResumeForm,
   ResumeFormCareer,
+  ResumeFormCertificate,
   ResumeFormEducation,
 } from '@/types/resumeForm';
 import { postResume } from '@/apis/resume';
 import CareeListModal from '@/components/Modal/resume/CareeListModal';
 import EducationListModal from '@/components/Modal/resume/EducationListModal';
+import CertificateListModal from '@/components/Modal/resume/CertificateModal';
 import { SwitchLabel } from '@/styles/Switch';
-import { Career, Education } from '@/types/resume';
+import { Career, Certificate, Education } from '@/types/resume';
 
 import { Layout } from '@/components/Layout';
 import { Container } from '@/styles';
@@ -115,9 +117,14 @@ const ResumeRegisterPage = ({ token }: { token: string }) => {
     // errors,
   } = useForm<ResumeForm>();
   const [showCareeModal, setShowCareeModal] = useState<boolean>(false);
-  const [showEducationModal, setshowEducationModal] = useState<boolean>(false);
+  const [showEducationModal, setShowEducationModal] = useState<boolean>(false);
+  const [showCertificateModal, setShowCertificateModal] =
+    useState<boolean>(false);
   const [careerList, setCareerList] = useState<ResumeFormCareer[]>([]);
   const [educationList, setEducationList] = useState<ResumeFormEducation[]>([]);
+  const [certificateList, setCertificateList] = useState<
+    ResumeFormCertificate[]
+  >([]);
 
   const onSubmit = async (data: ResumeForm) => {
     console.log('onSubmitdata' + data);
@@ -171,6 +178,11 @@ const ResumeRegisterPage = ({ token }: { token: string }) => {
   const handleEducationListData = (data: Education) => {
     const educationListData = [...educationList, data];
     setEducationList(educationListData);
+  };
+
+  const handleCertificateListData = (data: Certificate) => {
+    const certificateListData = [...certificateList, data];
+    setCertificateList(certificateListData);
   };
 
   return (
@@ -292,12 +304,12 @@ const ResumeRegisterPage = ({ token }: { token: string }) => {
                   <InputLabel>교육 이수</InputLabel>
                   <BtnWapper>
                     <AiFillPlusCircle />
-                    <div tw="ml-1" onClick={() => setshowEducationModal(true)}>
+                    <div tw="ml-1" onClick={() => setShowEducationModal(true)}>
                       추가하기
                     </div>
                     {showEducationModal && (
                       <EducationListModal
-                        onClose={() => setshowEducationModal(false)}
+                        onClose={() => setShowEducationModal(false)}
                         handleEducationListData={handleEducationListData}
                       />
                     )}
@@ -321,6 +333,43 @@ const ResumeRegisterPage = ({ token }: { token: string }) => {
                         <div tw="flex">
                           <div tw="w-60 mr-14">{education.process}</div>
                           <div>{education.content}</div>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                <InfoInputWrap>
+                  <InputLabel>자격증</InputLabel>
+                  <BtnWapper>
+                    <AiFillPlusCircle />
+                    <div
+                      tw="ml-1"
+                      onClick={() => setShowCertificateModal(true)}>
+                      추가하기
+                    </div>
+                    {showCertificateModal && (
+                      <CertificateListModal
+                        onClose={() => setShowCertificateModal(false)}
+                        handleCertificateListData={handleCertificateListData}
+                      />
+                    )}
+                  </BtnWapper>
+                </InfoInputWrap>
+                {certificateList.length > 0 && (
+                  <ul>
+                    {certificateList.map((certificate, index) => (
+                      <li
+                        key={index}
+                        tw="flex flex-col mt-4  font-regular text-2xl text-[#515A64]">
+                        <div tw="flex font-regular text-2xl">
+                          <div tw="w-60 mr-14">
+                            {certificate.issuedYear
+                              ? `${certificate.issuedYear}.${certificate.issuedMonth}`
+                              : '발행예정'}
+                          </div>
+                          <div tw="font-semibold text-black">
+                            {certificate.name}
+                          </div>
                         </div>
                       </li>
                     ))}
