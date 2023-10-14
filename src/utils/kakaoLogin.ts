@@ -1,5 +1,5 @@
 export function kakaoLogin() {
   window.Kakao.Auth.authorize({
-    redirectUri: 'http://localhost:3000/auth/kakao/callback',
+    redirectUri: process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI,
   });
 }

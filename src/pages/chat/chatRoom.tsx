@@ -1,36 +1,139 @@
-import Modal from '@/components/Modal/Modal';
-import InquiryModal from '@/components/Modal/InquiryModal';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
+import { chatEnter } from '@/apis/chat';
+import parseCookies from '@/utils/parseCookies';
 import tw from 'twin.macro';
+import { useRecoilValue } from 'recoil';
+import { loggedInUserIdState } from '@/atom/chatUser';
+import ChatInputBox from './chatInputBox';
+import { Client } from '@stomp/stompjs';
+import { ChatRoomBox } from '@/types/chat';
+import { dateconversion } from '@/utils/dateconversion';
 
 function ChatRoom() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [chatRoomBoxes, setChatRoomBoxes] = useState<ChatRoomBox[]>([]);
+  const userId = useRecoilValue(loggedInUserIdState);
+  const router = useRouter();
+  const { id } = router.query;
+  const [ws, setWs] = useState<Client | null>(null);
+
+  useEffect(() => {
+    if (id) {
+      const cookies = parseCookies(document.cookie || '');
+      const accessToken = cookies.accessToken;
+      const roomId = Number(id);
+
+      const fetchChatData = async () => {
+        try {
+          const response = await chatEnter(accessToken, roomId);
+          setChatRoomBoxes(response.data.data.chatMessages);
+          console.log(`chat1: ${JSON.stringify(chatRoomBoxes)}`);
+        } catch (error) {
+          console.error('Failed to fetch chat data', error);
+        }
+      };
+
+      fetchChatData();
+    }
+  }, [id]);
+
+  useEffect(() => {
+    if (id) {
+      const cookies = parseCookies(document.cookie || '');
+      const accessToken = cookies.accessToken;
+
+      const initializeWebSocket = () => {
+        console.log('Initializing WebSocket...');
+
+        const client = new Client({
+          brokerURL: 'wss://strangehoon.shop/api',
+          connectHeaders: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+          debug: function (str) {
+            console.log(str);
+          },
+          reconnectDelay: 5000,
+          heartbeatIncoming: 4000,
+          heartbeatOutgoing: 4000,
+        });
+
+        client.onConnect = function (frame) {
+          console.log('Connected: ' + frame);
+          console.log(`Subscribing to /sub/chat/room/${id}`);
+          client.subscribe(`/sub/chat/room/${id}`, function (message) {
+            console.log('Received message: ', message);
+            setChatRoomBoxes(prev => [...prev, JSON.parse(message.body)]);
+            console.log(`chat2:`, chatRoomBoxes);
+          });
+        };
+
+        client.onStompError = function (frame) {
+          console.log('Broker reported error: ' + frame.headers['message']);
+          console.log('Additional details: ' + frame.body);
+        };
+
+        client.onWebSocketError = function (error) {
+          console.error('WebSocket Error', error);
+        };
+
+        console.log('Activating client...');
+        client.activate();
+        console.log('Client activated...');
+        setWs(client);
+      };
+
+      initializeWebSocket();
+
+      return () => {
+        if (ws) {
+          ws.deactivate();
+        }
+      };
+    }
+  }, [id]);
+
+  useEffect(() => {
+    console.log('chatRoomBoxes updated:', chatRoomBoxes);
+  }, [chatRoomBoxes]);
+
+  let lastDate: string | null = null;
 
   return (
-    <StyledChatRoomBox>
-      <StyledMessagesContainer>
-        <StyledChatRoomDate>23년 12월 23일 (목)</StyledChatRoomDate>
-        <StyledMessageBox>
-          안녕하세요. 이력서 보고 연락드립니다. 임꺽정님께 부천지사 핸들링
-          포지션을 제안드리고 싶습니다.
-        </StyledMessageBox>
-      </StyledMessagesContainer>
-      <div>
-        <button onClick={() => setIsOpen(true)}>Open modal</button>
-        <Modal
-          isOpen={isOpen}
-          onClose={() => setIsOpen(false)}
-          size={{ width: '732px', height: '890px' }}>
-          <InquiryModal />
-        </Modal>
-      </div>
-      <StyledChatInputContainer>
-        <StyledChatRoomInputBox
-          rows={1}
-          placeholder="메세지를 입력해 주세요."
-        />
-        <StyleChatSendButton>전송</StyleChatSendButton>
-      </StyledChatInputContainer>
+    <StyledChatRoomBox style={{ backgroundColor: id ? '#dfe2e6' : '#F1F3F5' }}>
+      {id ? (
+        <>
+          <StyledMessagesContainer>
+            {chatRoomBoxes.map(item => {
+              const currentDate = dateconversion(item.createdAt);
+
+              const showDateSeparator = !lastDate || currentDate !== lastDate;
+              lastDate = currentDate;
+
+              return (
+                <div key={item.chatMessageId}>
+                  {showDateSeparator && (
+                    <StyleChatRoomDateWrapper>
+                      <StyledChatRoomDate>{currentDate}</StyledChatRoomDate>
+                    </StyleChatRoomDateWrapper>
+                  )}
+
+                  {item.users?.userId === userId ? (
+                    <StyledSendMessageWrapper>
+                      <StyledSendMessage>{item.content}</StyledSendMessage>
+                    </StyledSendMessageWrapper>
+                  ) : (
+                    <StyleReceiveMessageWrapper>
+                      <StyleReceiveMessage>{item.content}</StyleReceiveMessage>
+                    </StyleReceiveMessageWrapper>
+                  )}
+                </div>
+              );
+            })}
+          </StyledMessagesContainer>
+          <ChatInputBox userId={userId} chatRoomId={id} ws={ws} />
+        </>
+      ) : null}
     </StyledChatRoomBox>
   );
 }
@@ -39,51 +142,45 @@ export default ChatRoom;
 
 const StyledChatRoomBox = tw.div`
   w-[803px]
-  h-[821px]
+  h-[769px]
   rounded-tr-[20px]
-  bg-[#dfe2e6]
-  flex flex-col justify-between p-6
-`;
+  flex flex-col p-6
+  border-t border-r border-solid border-gray-300
+  `;
 
 const StyledMessagesContainer = tw.div`
-  flex flex-col items-start justify-start
-  w-full
+  flex flex-col
   overflow-y-auto
-`;
-
-const StyledChatInputContainer = tw.div`
-  w-full
-  h-[134px]
-  rounded-[4px]
-  bg-white
-  relative
-`;
-
-const StyledChatRoomInputBox = tw.textarea`
-  w-full h-full rounded-[4px]
-  pr-[100px] pl-4 py-3
-  resize-none
-  overflow-y-auto
-`;
-
-const StyleChatSendButton = tw.button`
-  w-[80px]
-  h-[45px]
-  rounded-[4px]
-  absolute bottom-4 right-4
-  bg-[#0177FD]
-  text-white
 `;
 
 const StyledChatRoomDate = tw.div`
-w-[211px] h-[44px] rounded-[100px] bg-gray-200 text-gray-300 flex justify-center items-center self-center
+  w-[211px] h-[44px] rounded-[100px] bg-gray-200 text-gray-300 flex justify-center items-center
 `;
 
-const StyledMessageBox = tw.div`
-  max-w-[60%]
+const StyleReceiveMessage = tw.div`
   bg-white
   text-black
   px-4 py-2
   my-6
   rounded-lg
 `;
+
+const StyledSendMessage = tw.div`
+  bg-[#E5F1FF]
+  text-black
+  px-4 py-2
+  my-6 
+  mr-4
+  rounded-lg
+`;
+
+const StyledSendMessageWrapper = tw.div`
+  flex justify-end
+`;
+
+const StyleReceiveMessageWrapper = tw.div`
+  flex justify-start
+`;
+
+const StyleChatRoomDateWrapper = tw.div`
+  flex justify-center items-center self-center`;
