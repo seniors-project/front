@@ -44,6 +44,7 @@ export interface ResumeItem {
   careers: Career[];
   educations: Education[];
   viewCount?: number;
+  userId: number;
 }
 
 export interface Education {

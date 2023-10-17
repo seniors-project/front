@@ -71,18 +71,18 @@ const ViewCount = tw.div`
   mr-5
   // ml-auto
 `;
-const ResumeCardChatButton = tw.div`
-  w-48
-  h-14
-  font-medium
-  text-[#515A64]
-  text-2xl
-  my-auto
-  flex
-  ml-auto
-  bg-[#EAECEF]
-  rounded-sm
-`;
+// const ResumeCardChatButton = tw.div`
+//   w-48
+//   h-14
+//   font-medium
+//   text-[#515A64]
+//   text-2xl
+//   my-auto
+//   flex
+//   ml-auto
+//   bg-[#EAECEF]
+//   rounded-sm
+// `;
 
 const ResumeCardBody = tw.div`
   border-t p-6
@@ -133,7 +133,7 @@ const ResumeListPage = ({ token }: { token: string }) => {
     return { meResume };
   });
   const meResume = meResuneData?.meResume;
-  console.log('meResume json @@@' + JSON.stringify(meResume));
+  // console.log('meResume json @@@' + JSON.stringify(meResume));
 
   const [sentryRef] = useInfiniteScroll({
     loading: status === 'loading',
@@ -276,7 +276,7 @@ const ResumeListPage = ({ token }: { token: string }) => {
                     </ResumeCardChatButton> */}
                     <ChatButton
                       token={token}
-                      chatUserId={data.id}
+                      chatUserId={data.userId}
                       backgroundColor="red"
                       color="black"
                       padding="10px"
