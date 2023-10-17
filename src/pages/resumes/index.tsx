@@ -9,6 +9,7 @@ import useInfiniteScroll from 'react-infinite-scroll-hook';
 import { getResumes, getMeResume } from '@/apis/resume';
 import { userValidate } from '@/apis/auth';
 import parseCookies from '@/utils/parseCookies';
+import ChatButton from '@/components/Button/ChatButton';
 
 import { Layout } from '@/components/Layout';
 import { Container } from '@/styles';
@@ -270,9 +271,19 @@ const ResumeListPage = ({ token }: { token: string }) => {
                     {(data?.viewCount ?? 0) > 0 && (
                       <ViewCount>조회수 {data.viewCount}회</ViewCount>
                     )}
-                    <ResumeCardChatButton>
+                    {/* <ResumeCardChatButton>
                       <button tw="mx-auto">채팅하기</button>
-                    </ResumeCardChatButton>
+                    </ResumeCardChatButton> */}
+                    <ChatButton
+                      token={token}
+                      chatUserId={data.id}
+                      backgroundColor="red"
+                      color="black"
+                      padding="10px"
+                      fontSize="18px"
+                      borderRadius="5px"
+                      // tw=""
+                    />
                   </ResumeCardHeader>
                   <ResumeCardBody>
                     <ResumeDe>
