@@ -155,7 +155,7 @@ const CertificateListModal: React.FC<CertificateListModalProps> = ({
         inputs[field] === '' //||
         // isNaN(inputs[field] as number)
       ) {
-        alert(`필수값 ${field}를 입력해주세요.`);
+        alert(`필수값을 입력해주세요.`);
         return false;
       }
     }

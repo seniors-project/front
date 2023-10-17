@@ -138,9 +138,35 @@ const EducationListModal: React.FC<EducationListModalProps> = ({
 
   const yearOptions = generateYearOptions();
 
+  const validateInputs = (): boolean => {
+    const requiredFields: (keyof ResumeFormEducation)[] = [
+      'institution',
+      'process',
+      // 'startedAt',
+      // 'endedAt',
+      'content',
+      // 'isProcessed',
+    ];
+
+    for (const field of requiredFields) {
+      if (
+        inputs[field] === null ||
+        inputs[field] === '' //||
+        // isNaN(inputs[field] as number)
+      ) {
+        alert(`필수값을 입력해주세요.`);
+        return false;
+      }
+    }
+
+    return true;
+  };
+
   const submitData = () => {
-    onClose();
-    handleEducationListData(inputs);
+    if (validateInputs()) {
+      onClose();
+      handleEducationListData(inputs);
+    }
   };
 
   useEffect(() => {

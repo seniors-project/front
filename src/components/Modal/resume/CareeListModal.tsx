@@ -138,9 +138,35 @@ const CareeListModal: React.FC<CareeListModalProps> = ({
 
   const yearOptions = generateYearOptions();
 
+  const validateInputs = (): boolean => {
+    const requiredFields: (keyof ResumeFormCareer)[] = [
+      'title',
+      'company',
+      'startedAt',
+      // 'endedAt',
+      'content',
+      // 'isAttendanced',
+    ];
+
+    for (const field of requiredFields) {
+      if (
+        inputs[field] === null ||
+        inputs[field] === '' //||
+        // isNaN(inputs[field] as number)
+      ) {
+        alert(`필수값을 입력해주세요.`);
+        return false;
+      }
+    }
+
+    return true;
+  };
+
   const submitData = () => {
-    onClose();
-    handleCareerListData(inputs);
+    if (validateInputs()) {
+      onClose();
+      handleCareerListData(inputs);
+    }
   };
 
   console.log('inputs' + JSON.stringify(inputs));
