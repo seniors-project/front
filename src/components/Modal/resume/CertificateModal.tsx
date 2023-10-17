@@ -141,9 +141,33 @@ const CertificateListModal: React.FC<CertificateListModalProps> = ({
 
   const yearOptions = generateYearOptions();
 
+  const validateInputs = (): boolean => {
+    const requiredFields: (keyof ResumeFormCertificate)[] = [
+      'name',
+      'rating',
+      // 'issuedYear',
+      // 'issuedMonth',
+    ];
+
+    for (const field of requiredFields) {
+      if (
+        inputs[field] === null ||
+        inputs[field] === '' //||
+        // isNaN(inputs[field] as number)
+      ) {
+        alert(`필수값 ${field}를 입력해주세요.`);
+        return false;
+      }
+    }
+
+    return true;
+  };
+
   const submitData = () => {
-    onClose();
-    handleCertificateListData(inputs);
+    if (validateInputs()) {
+      onClose();
+      handleCertificateListData(inputs);
+    }
   };
 
   useEffect(() => {

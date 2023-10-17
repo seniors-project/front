@@ -136,6 +136,16 @@ const ResumeRegisterPage = ({ token }: { token: string }) => {
           educationList,
         },
     );
+
+    // 필수값 체크
+    if (!data.name) {
+      alert('성함은 필수 입력값입니다.');
+      return;
+    }
+    if (!data.occupation) {
+      alert('직종은 필수 입력값입니다.');
+      return;
+    }
     try {
       const response = await postResume(token, {
         ...data,
