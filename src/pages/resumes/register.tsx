@@ -44,6 +44,7 @@ const ResumeProfileImg = tw.div`
   rounded-full
   overflow-hidden
   mr-2 mb-4
+  relative
 `;
 const ResumeProfileAddBtn = tw.label`
   w-[150px]
@@ -127,16 +128,6 @@ const ResumeRegisterPage = ({ token }: { token: string }) => {
   >([]);
 
   const onSubmit = async (data: ResumeForm) => {
-    console.log('onSubmitdata' + data);
-    console.log(
-      'onSubmitdata 최종' +
-        {
-          ...data,
-          careerList,
-          educationList,
-        },
-    );
-
     // 필수값 체크
     if (!data.name) {
       alert('성함은 필수 입력값입니다.');
@@ -205,20 +196,14 @@ const ResumeRegisterPage = ({ token }: { token: string }) => {
               <ResumeProfileImgAdd>
                 {imgFile ? (
                   <ResumeProfileImg>
-                    <Image
-                      src={imgFile as string}
-                      alt="profile img"
-                      width={120}
-                      height={120}
-                    />
+                    <Image src={imgFile as string} alt="profile img" fill />
                   </ResumeProfileImg>
                 ) : (
                   <ResumeProfileImg>
                     <Image
                       src="/images/basicProfile.png"
                       alt="default profile img"
-                      width={120}
-                      height={120}
+                      fill
                     />
                   </ResumeProfileImg>
                 )}
