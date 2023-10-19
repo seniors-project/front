@@ -58,8 +58,8 @@ const ResumeCardHeaderProfileImg = tw.div`
   h-20
   rounded-full
   overflow-hidden
-  bg-amber-500
   mr-2
+  relative
 `;
 const ResumeCardHeaderProfile = tw.div`
   p-2 flex-auto
@@ -177,12 +177,7 @@ const ResumeListPage = (
               <ResumeCard key={meResume.id}>
                 <ResumeCardHeader>
                   <ResumeCardHeaderProfileImg>
-                    <Image
-                      src={meResume.photoUrl}
-                      alt="profile img"
-                      width={500}
-                      height={100}
-                    />
+                    <Image src={meResume.photoUrl} alt="profile img" fill />
                   </ResumeCardHeaderProfileImg>
                   <ResumeCardHeaderProfile>
                     <p tw="font-bold text-2xl">{meResume.name}</p>
@@ -256,12 +251,7 @@ const ResumeListPage = (
                 <ResumeCard key={data.id}>
                   <ResumeCardHeader>
                     <ResumeCardHeaderProfileImg>
-                      <Image
-                        src={data.photoUrl}
-                        alt="profile img"
-                        width={500}
-                        height={100}
-                      />
+                      <Image src={data.photoUrl} alt="profile img" fill />
                     </ResumeCardHeaderProfileImg>
                     <ResumeCardHeaderProfile>
                       <p tw="font-bold text-2xl">{data.name}</p>
