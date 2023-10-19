@@ -10,12 +10,14 @@ const Main = tw.main`
 
 interface Props {
   children: ReactNode;
+  token: string;
+  profileImg: string;
 }
 
-export function Layout({ children }: Props) {
+export function Layout({ children, token, profileImg }: Props) {
   return (
     <>
-      <Header />
+      <Header token={token} profileImg={profileImg} />
       <Main>{children}</Main>
     </>
   );

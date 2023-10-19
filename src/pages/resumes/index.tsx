@@ -13,6 +13,7 @@ import ChatButton from '@/components/Button/ChatButton';
 
 import { Layout } from '@/components/Layout';
 import { Container } from '@/styles';
+import { ValidateUserResponse } from '@/types/auth';
 
 const RegisterResumeBanner = tw.div`
   py-10 bg-white
@@ -103,7 +104,10 @@ const HistoryPeriod = tw.div`
   w-60 mr-14
 `;
 
-const ResumeListPage = ({ token }: { token: string }) => {
+const ResumeListPage = (
+  { token }: { token: string },
+  { user }: { user: ValidateUserResponse },
+) => {
   const [limit, setLimit] = useState(150);
 
   const { status, data, error, fetchNextPage } = useInfiniteQuery(
@@ -162,7 +166,7 @@ const ResumeListPage = ({ token }: { token: string }) => {
   };
 
   return (
-    <Layout>
+    <Layout token={token} profileImg={user?.profileImageUrl}>
       {meResume ? (
         <Container>
           <ResumeList>

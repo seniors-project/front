@@ -11,7 +11,7 @@ const StyledHeader = tw.header`
 `;
 
 const ContainerInner = tw.div`
-flex justify-between items-center
+  flex justify-between items-center
 `;
 
 const Logo = tw.div`
@@ -21,7 +21,18 @@ const Logo = tw.div`
 const Menu = tw.ul`block text-lg font-semibold`;
 const MenuItem = tw.li`inline-block p-0 pl-6`;
 
-export function Header() {
+const ResumeCardHeaderProfileImg = tw.div`
+  w-11 h-11 mr-2
+  rounded-full
+  overflow-hidden
+`;
+
+interface Props {
+  token: string;
+  profileImg: string;
+}
+
+export function Header({ token, profileImg }: Props) {
   return (
     <StyledHeader>
       <Container>
@@ -44,9 +55,31 @@ export function Header() {
               <Link href="/chat">채팅하기</Link>
             </MenuItem>
             <MenuItem>알림</MenuItem>
-            <MenuItem>
-              <Link href="/auth/login">로그인/회원가입</Link>
-            </MenuItem>
+            {token ? (
+              <MenuItem>
+                <ResumeCardHeaderProfileImg>
+                  {profileImg ? (
+                    <Image
+                      src={profileImg}
+                      alt="profile img"
+                      width={500}
+                      height={100}
+                    />
+                  ) : (
+                    <Image
+                      src="/images/basicProfile.png"
+                      alt="profile img"
+                      width={500}
+                      height={100}
+                    />
+                  )}
+                </ResumeCardHeaderProfileImg>
+              </MenuItem>
+            ) : (
+              <MenuItem>
+                <Link href="/auth/login">로그인/회원가입</Link>
+              </MenuItem>
+            )}
           </Menu>
         </ContainerInner>
       </Container>
