@@ -15,16 +15,19 @@ const ContainerInner = tw.div`
 `;
 
 const Logo = tw.div`
-  w-28
+  w-28 ml-10
 `;
 
-const Menu = tw.ul`block text-lg font-semibold`;
-const MenuItem = tw.li`inline-block p-0 pl-6`;
+const Menu = tw.ul`
+  flex text-lg font-semibold
+`;
+const MenuItem = tw.li`
+  p-0 ml-10 my-auto
+`;
 
 const ResumeCardHeaderProfileImg = tw.div`
   w-11 h-11 mr-2
-  rounded-full
-  overflow-hidden
+  rounded-full overflow-hidden
 `;
 
 interface Props {
@@ -40,10 +43,10 @@ export function Header({ token, profileImg }: Props) {
           <Logo>
             <Link href="/">
               <Image
-                src="/images/logo.png"
+                src="/images/main_logo.png"
                 alt="Logo picture"
-                width={300}
-                height={100}
+                width={50}
+                height={50}
               />
             </Link>
           </Logo>
