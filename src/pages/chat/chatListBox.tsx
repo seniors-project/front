@@ -2,10 +2,11 @@ import tw from 'twin.macro';
 import styled from '@emotion/styled';
 import { httpClient } from '@/lib/httpClient';
 import { useState } from 'react';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { ChatListBoxProps } from '@/types/chat';
 import { dateconversion } from '@/utils/dateconversion';
 import parseCookies from '@/utils/parseCookies';
+import { useRouter } from 'next/router';
 
 function ChatListBox({
   isActive,
@@ -19,23 +20,12 @@ function ChatListBox({
   const lastDate = dateconversion(date);
   const cookies = parseCookies(document.cookie || '');
   const accessToken = cookies.accessToken;
-
-  // const handleLeaveChat = async () => {
-  //   try {
-  //     await httpClient.delete(`rooms/${chatRoomId}`, {
-  //       headers: {
-  //         Authorization: `Bearer ${accessToken}`,
-  //       },
-  //     });
-  //     console.log('Successfully left the chat room.');
-  //   } catch (error) {
-  //     console.error('Failed to leave chat room:', error);
-  //   }
-  // };
+  const queryClient = useQueryClient();
+  const router = useRouter();
 
   const leaveChatMutation = useMutation(
     () =>
-      httpClient.delete(`rooms/${chatRoomId}`, {
+      httpClient.delete(`chat/rooms/${chatRoomId}`, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
@@ -43,6 +33,8 @@ function ChatListBox({
     {
       onSuccess: () => {
         console.log('성공적으로 채팅방을 나갔습니다.');
+        queryClient.invalidateQueries(['chatList']);
+        router.push('/chat');
       },
       onError: error => {
         console.error('채팅방 나가기에 실패했습니다:', error);
@@ -82,6 +74,7 @@ function ChatListBox({
         </OptionsDropdown>
       )}
     </ChatListBoxWrapper>
+
     // <ChatListBoxcontainer>
     //   <ChatListBoxWrapper isActive={isActive} onClick={onClick}>
     //     <StyledProfileImgWrapper>
