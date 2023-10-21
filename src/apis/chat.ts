@@ -31,3 +31,11 @@ export function setCreateChatRoom(token: string, chatUserId: number) {
     },
   );
 }
+
+export function setDeleteChatRoom(token: string, chatRoomId: number) {
+  return httpClient.delete(`chat/rooms/${chatRoomId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+}

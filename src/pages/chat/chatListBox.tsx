@@ -1,35 +1,32 @@
 import tw from 'twin.macro';
 import styled from '@emotion/styled';
-import { httpClient } from '@/lib/httpClient';
 import { useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { ChatListBoxProps } from '@/types/chat';
 import { dateconversion } from '@/utils/dateconversion';
 import parseCookies from '@/utils/parseCookies';
 import { useRouter } from 'next/router';
+import { setDeleteChatRoom } from '@/apis/chat';
 
-function ChatListBox({
+const ChatListBox = ({
   isActive,
   onClick,
   name,
   message,
   date,
   chatRoomId,
-}: ChatListBoxProps) {
+}: ChatListBoxProps) => {
   const [showDropdown, setShowDropdown] = useState(false);
   const lastDate = dateconversion(date);
-  const cookies = parseCookies(document.cookie || '');
-  const accessToken = cookies.accessToken;
   const queryClient = useQueryClient();
   const router = useRouter();
 
   const leaveChatMutation = useMutation(
-    () =>
-      httpClient.delete(`chat/rooms/${chatRoomId}`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }),
+    () => {
+      const cookies = parseCookies(document.cookie || '');
+      const accessToken = cookies.accessToken;
+      return setDeleteChatRoom(accessToken, chatRoomId);
+    },
     {
       onSuccess: () => {
         console.log('성공적으로 채팅방을 나갔습니다.');
@@ -90,7 +87,7 @@ function ChatListBox({
     //   </ChatListBoxWrapper>
     // </ChatListBoxcontainer>
   );
-}
+};
 
 export default ChatListBox;
 

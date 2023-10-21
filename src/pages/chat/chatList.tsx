@@ -14,7 +14,7 @@ import { ChatBox } from '@/types/chat';
 import { pretenderedSemiBold } from '@/styles/fonts';
 import { useQuery } from '@tanstack/react-query';
 
-function ChatList() {
+const ChatList = () => {
   const [chatBoxes, setChatBoxes] = useState<ChatBox[]>([]);
   const [activeChatBoxId, setActiveChatBoxId] = useState<number | null>(null);
   const [, setUserId] = useRecoilState(loggedInUserIdState);
@@ -80,7 +80,7 @@ function ChatList() {
       )}
     </StyledChatListContainer>
   );
-}
+};
 
 export default ChatList;
 
