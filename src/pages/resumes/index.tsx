@@ -72,18 +72,6 @@ const ViewCount = tw.div`
   mr-5
   // ml-auto
 `;
-// const ResumeCardChatButton = tw.div`
-//   w-48
-//   h-14
-//   font-medium
-//   text-[#515A64]
-//   text-2xl
-//   my-auto
-//   flex
-//   ml-auto
-//   bg-[#EAECEF]
-//   rounded-sm
-// `;
 
 const ResumeCardBody = tw.div`
   border-t p-6
@@ -265,19 +253,7 @@ const ResumeListPage = (
                     {(data?.viewCount ?? 0) > 0 && (
                       <ViewCount>조회수 {data.viewCount}회</ViewCount>
                     )}
-                    {/* <ResumeCardChatButton>
-                      <button tw="mx-auto">채팅하기</button>
-                    </ResumeCardChatButton> */}
-                    <ChatButton
-                      token={token}
-                      chatUserId={data.userId}
-                      backgroundColor="red"
-                      color="black"
-                      padding="10px"
-                      fontSize="18px"
-                      borderRadius="5px"
-                      // tw=""
-                    />
+                    <ChatButton token={token} chatUserId={data.userId} />
                   </ResumeCardHeader>
                   <ResumeCardBody>
                     <ResumeDe>
