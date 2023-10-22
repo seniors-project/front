@@ -34,5 +34,5 @@ const StyledChatButton = styled.div<{ twCustom: string | undefined }>`
   ${({ twCustom }) =>
     twCustom
       ? tw`${twCustom}`
-      : tw`w-48 h-14 font-medium  text-[#515A64] text-2xl my-auto flex ml-auto bg-[#EAECEF] rounded-sm`};
+      : tw`h-14 font-medium  text-[#515A64] text-2xl my-auto flex ml-auto bg-[#EAECEF] rounded-sm py-3 px-9`};
 `;
