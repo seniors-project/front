@@ -37,9 +37,5 @@ export interface ChatRoomBoxProps {
 export interface ChatButtonProps {
   token: string;
   chatUserId: number;
-  backgroundColor?: string;
-  color?: string;
-  padding?: string;
-  fontSize?: string;
-  borderRadius?: string;
+  twCustom?: string | undefined;
 }
