@@ -1,6 +1,9 @@
+import { useRecoilValue } from 'recoil';
 import tw from 'twin.macro';
 import Link from 'next/link';
 import Image from 'next/image';
+
+import { userState } from '@/atom/user';
 
 const Container = tw.div`
   max-w-7xl mx-auto py-4 px-6
@@ -30,12 +33,8 @@ const ResumeCardHeaderProfileImg = tw.div`
   rounded-full overflow-hidden
 `;
 
-interface Props {
-  token: string;
-  profileImg: string;
-}
-
-export function Header({ token, profileImg }: Props) {
+export function Header() {
+  const user = useRecoilValue(userState);
   return (
     <StyledHeader>
       <Container>
@@ -58,12 +57,12 @@ export function Header({ token, profileImg }: Props) {
               <Link href="/chat">채팅하기</Link>
             </MenuItem>
             <MenuItem>알림</MenuItem>
-            {token ? (
+            {user != null ? (
               <MenuItem>
                 <ResumeCardHeaderProfileImg>
-                  {profileImg ? (
+                  {user.profileImageUrl ? (
                     <Image
-                      src={profileImg}
+                      src={user.profileImageUrl}
                       alt="profile img"
                       width={500}
                       height={100}
