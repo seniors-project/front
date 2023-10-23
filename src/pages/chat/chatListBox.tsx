@@ -15,6 +15,7 @@ const ChatListBox = ({
   message,
   date,
   chatRoomId,
+  profileImageUrl,
 }: ChatListBoxProps) => {
   const [showDropdown, setShowDropdown] = useState(false);
   const lastDate = dateconversion(date);
@@ -52,7 +53,7 @@ const ChatListBox = ({
       onMouseLeave={() => {
         setShowDropdown(false); // Hide the dropdown when mouse leaves
       }}>
-      <StyledProfileImg src="/images/profile.png" alt="Profile" />
+      <StyledProfileImg src={profileImageUrl} alt="Profile" />
       <StyledChatContent>
         <StyledProfileName>{name}</StyledProfileName>
         <StyledChatPreview>{message}</StyledChatPreview>

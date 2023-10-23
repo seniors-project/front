@@ -66,6 +66,7 @@ const ChatList = () => {
           message={box.chatMessageRes.content}
           date={box.chatMessageRes.createdAt}
           chatRoomId={box.roomId}
+          profileImageUrl={box.profileImageUrl}
         />
       ))}
       {chatBoxes.length === 0 && (
