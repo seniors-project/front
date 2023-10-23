@@ -106,7 +106,7 @@ const FormBtnWrap = tw.div`
 //   text-[#515A64] text-xl font-semibold
 // `;
 
-const ResumeRegisterPage = ({ token }: { token: string }) => {
+const ResumeRegisterPage = () => {
   const router = useRouter();
   const [imgFile, setImgFile] = useState<string | ArrayBuffer | null>('');
   const imgRef = useRef<HTMLInputElement>(null);
@@ -128,7 +128,6 @@ const ResumeRegisterPage = ({ token }: { token: string }) => {
   >([]);
 
   const onSubmit = async (data: ResumeForm) => {
-    // 필수값 체크
     if (!data.name) {
       alert('성함은 필수 입력값입니다.');
       return;
@@ -138,7 +137,7 @@ const ResumeRegisterPage = ({ token }: { token: string }) => {
       return;
     }
     try {
-      const response = await postResume(token, {
+      const response = await postResume({
         ...data,
         careerList,
         educationList,

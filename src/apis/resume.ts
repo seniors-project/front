@@ -3,19 +3,14 @@ import { ResumeResponse } from '@/types/resume';
 import { ResumeForm } from '@/types/resumeForm';
 import { MeResumeResponse } from '@/types/meResume';
 
-export const getResumes = async (token: string, lastId?: number) => {
+export const getResumes = async (lastId?: number) => {
   const response = await httpClient.get<ResumeResponse>(
     `/resumes?size=3&lastId=${lastId ? `${lastId}` : ''}`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    },
   );
   return response.data;
 };
 
-export const postResume = async (token: string, data: ResumeForm) => {
+export const postResume = async (data: ResumeForm) => {
   const { image, ...rest } = data;
 
   const formdata = new FormData();
@@ -27,7 +22,6 @@ export const postResume = async (token: string, data: ResumeForm) => {
 
   const response = await httpClient.post<ResumeForm>('/resumes', formdata, {
     headers: {
-      Authorization: `Bearer ${token}`,
       'Content-Type': 'multipart/form-data',
     },
   });
@@ -35,12 +29,8 @@ export const postResume = async (token: string, data: ResumeForm) => {
   return response;
 };
 
-export const getMeResume = async (token: string) => {
-  const response = await httpClient.get<MeResumeResponse>('/resumes/mine', {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+export const getMeResume = async () => {
+  const response = await httpClient.get<MeResumeResponse>('/resumes/mine');
 
   return response.data;
 };

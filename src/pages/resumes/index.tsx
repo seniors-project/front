@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import { useRecoilValue } from 'recoil';
 import tw from 'twin.macro';
-import { GetServerSidePropsContext, GetServerSideProps } from 'next';
+import { GetServerSidePropsContext, GetServerSideProps, NextPage } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
@@ -13,7 +14,7 @@ import ChatButton from '@/components/Button/ChatButton';
 
 import { Layout } from '@/components/Layout';
 import { Container } from '@/styles';
-import { ValidateUserResponse } from '@/types/auth';
+import { tokenState } from '@/atom/user';
 
 const RegisterResumeBanner = tw.div`
   py-10 bg-white
@@ -92,16 +93,14 @@ const HistoryPeriod = tw.div`
   w-60 mr-14
 `;
 
-const ResumeListPage = (
-  { token }: { token: string },
-  { user }: { user: ValidateUserResponse },
-) => {
+const ResumeListPage: NextPage = () => {
+  const token = useRecoilValue(tokenState) ?? '';
   const [limit, setLimit] = useState(150);
 
   const { status, data, error, fetchNextPage } = useInfiniteQuery(
     ['resumes'],
     async ({ pageParam }) => {
-      const response = await getResumes(token, pageParam);
+      const response = await getResumes(pageParam);
       const resumes = response.data.content;
       const nextCursor = response.data?.lastId;
 
@@ -120,12 +119,11 @@ const ResumeListPage = (
     data: meResuneData,
     error: meResuneError,
   } = useQuery(['meResume'], async () => {
-    const response = await getMeResume(token);
+    const response = await getMeResume();
     const meResume = response.data;
     return { meResume };
   });
   const meResume = meResuneData?.meResume;
-  // console.log('meResume json @@@' + JSON.stringify(meResume));
 
   const [sentryRef] = useInfiniteScroll({
     loading: status === 'loading',
@@ -154,7 +152,7 @@ const ResumeListPage = (
   };
 
   return (
-    <Layout token={token} profileImg={user?.profileImageUrl}>
+    <Layout>
       {meResume ? (
         <Container>
           <ResumeList>
