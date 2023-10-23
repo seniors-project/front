@@ -149,9 +149,9 @@ const ResumeRegisterPage = () => {
     } catch (err: any) {
       console.error(err);
       if (err.response && err.response.status === 400) {
-        alert('이미 해당 유저의 이력서가 존재합니다.');
+        alert(`${err.response.data.message} 다시 시도해주세요.`);
       } else {
-        alert('이력서 등록에 실패했습니다. 다시 시도해주세요.');
+        alert(`이력서 등록에 실패했습니다. 다시 시도해주세요.`);
       }
     }
   };
