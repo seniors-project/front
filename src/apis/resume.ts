@@ -14,7 +14,9 @@ export const postResume = async (data: ResumeForm) => {
   const { image, ...rest } = data;
 
   const formdata = new FormData();
-  formdata.append('image', image);
+  if (image) {
+    formdata.append('image', image);
+  }
   formdata.append(
     'data',
     new Blob([JSON.stringify(rest)], { type: 'application/json' }),

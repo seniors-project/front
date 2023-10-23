@@ -147,8 +147,11 @@ const ResumeRegisterPage = () => {
         router.push('/resumes');
       }
     } catch (err: any) {
-      console.error(err);
-      if (err.response && err.response.status === 400) {
+      if (
+        err.response &&
+        err.response.status === 400 &&
+        err.response.data.message
+      ) {
         alert(`${err.response.data.message} 다시 시도해주세요.`);
       } else {
         alert(`이력서 등록에 실패했습니다. 다시 시도해주세요.`);
