@@ -32,7 +32,13 @@ const Resumes = () => {
                   안녕하세요. 홍길동입니다. 잘 부탁드립니다.
                 </StyledResumesBoxDcp>
               </StyledResumesBoxHeader>
-              <StyledResumesBoxContent>경력사항</StyledResumesBoxContent>
+              <StyledResumesBoxContent>
+                <div>경력사항</div>
+                <StyledResumesBoxContentLine>
+                  <StyledPageTitle1>ddd</StyledPageTitle1>
+                  <StyledPageTitle2>ddd</StyledPageTitle2>
+                </StyledResumesBoxContentLine>
+              </StyledResumesBoxContent>
             </StyledResumesBoxWrapper>
           </StyledResumesBox>
         </StyledResumesWrapper>
@@ -82,6 +88,7 @@ border-2
 const StyledResumesBoxImg = tw.div`
 border-2
   border-black
+  grid justify-items-center
 `;
 
 const StyledResumesBoxContent = tw.div`
@@ -92,12 +99,13 @@ border-2
 const StyledResumesBoxHeaderTop = tw.div`
 border-2
   border-black 
- flex flex-row justify-between
+  grid grid-cols-3 grid-flow-col
 `;
 
 const StyledResumesBoxHeaderRight = tw.div`
 border-2
   border-black
+  grid justify-items-end
 `;
 
 const StyledResumesBoxName = tw.div`
@@ -117,8 +125,18 @@ border-2
   border-black
   flex justify-center
 `;
-
-// const StyledPageTitle = tw.div`
-// border-2
-//   border-black
-// `;
+const StyledResumesBoxContentLine = tw.div`
+border-2
+  border-black
+  flex space-x-4
+`;
+const StyledPageTitle1 = tw.div`
+border-2
+  border-black
+  w-1/3
+     `;
+const StyledPageTitle2 = tw.div`
+border-2
+  border-black
+  w-2/3
+    `;
