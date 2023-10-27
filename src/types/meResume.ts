@@ -1,50 +1,21 @@
-export interface ResumeResponse {
+export interface MeResumeResponse {
   success: boolean;
   code: number;
   message: string;
-  data: ResumeData;
+  data: MeResumeData;
 }
 
-export interface ResumeData {
-  content: ResumeItem[];
-  pageable: Pageable;
-  size: number;
-  number: number;
-  sort: Sort;
-  first: boolean;
-  last: boolean;
-  numberOfElements: number;
-  empty: boolean;
-  lastId: number;
-}
-
-export interface Pageable {
-  sort: Sort;
-  offset: number;
-  pageNumber: number;
-  pageSize: number;
-  paged: boolean;
-  unpaged: boolean;
-}
-
-export interface Sort {
-  empty: boolean;
-  sorted: boolean;
-  unsorted: boolean;
-}
-
-export interface ResumeItem {
+export interface MeResumeData {
   id: number;
   introduce: string;
   photoUrl: string;
   occupation: string;
   isOpened: boolean;
   name: string;
+  viewCount: number;
   certificates: Certificate[];
   careers: Career[];
   educations: Education[];
-  viewCount?: number;
-  userId: number;
 }
 
 export interface Education {
