@@ -3,7 +3,12 @@ import styled from '@emotion/styled';
 
 import { Layout } from '@/components/Layout';
 
-import { pretenderedSemiBold } from '@/styles/fonts';
+import {
+  pretenderedSemiBold,
+  pretenderedBold,
+  pretenderedMedium,
+  pretenderedRegular,
+} from '@/styles/fonts';
 
 const Resumes = () => {
   return (
@@ -20,7 +25,12 @@ const Resumes = () => {
               <StyledResumesBoxHeader>
                 <StyledResumesBoxHeaderTop>
                   <div></div>
-                  <StyledResumesBoxImg>사진</StyledResumesBoxImg>
+                  <StyledResumesBoxImgWrap>
+                    <StyledResumesBoxImg
+                      src="/images/profile.png"
+                      alt="Profile"
+                    />
+                  </StyledResumesBoxImgWrap>
                   <StyledResumesBoxHeaderRight>
                     <div>버튼</div>
                     <div>조회수</div>
@@ -33,10 +43,28 @@ const Resumes = () => {
                 </StyledResumesBoxDcp>
               </StyledResumesBoxHeader>
               <StyledResumesBoxContent>
-                <div>경력사항</div>
+                <StyledResumesBoxContentTitle>
+                  경력사항
+                </StyledResumesBoxContentTitle>
                 <StyledResumesBoxContentLine>
-                  <StyledPageTitle1>ddd</StyledPageTitle1>
-                  <StyledPageTitle2>ddd</StyledPageTitle2>
+                  <StyledResumesBoxContentPeriod>
+                    <StyledpretenderedRegular24>
+                      2022.04 ~ 재직 중
+                    </StyledpretenderedRegular24>
+                    <StyledpretenderedRegulard24>
+                      팀장
+                    </StyledpretenderedRegulard24>
+                  </StyledResumesBoxContentPeriod>
+                  <StyledResumesBoxContentinfor>
+                    <StyledpretenderedSemiBold24>
+                      뫄뫄IT 기업
+                    </StyledpretenderedSemiBold24>
+                    <StyledpretenderedMedium24>
+                      개발팀 리드로 버그 수정 및 팀원 관리, 유관부서와
+                      커뮤니케이션 조절, 개발 스터디 운영, 버그해결사 커뮤니티
+                      운영 등
+                    </StyledpretenderedMedium24>
+                  </StyledResumesBoxContentinfor>
                 </StyledResumesBoxContentLine>
               </StyledResumesBoxContent>
             </StyledResumesBoxWrapper>
@@ -73,6 +101,7 @@ border-2
   border-black
   p-6
   flex flex-col
+  bg-white
 `;
 const StyledResumesBoxWrapper = tw.div`
 border-2
@@ -85,10 +114,13 @@ border-2
   border-black
   `;
 
-const StyledResumesBoxImg = tw.div`
+const StyledResumesBoxImgWrap = tw.div`
 border-2
   border-black
   grid justify-items-center
+`;
+const StyledResumesBoxImg = tw.img`
+w-[120px] h-[120px] rounded-full
 `;
 
 const StyledResumesBoxContent = tw.div`
@@ -108,27 +140,56 @@ border-2
   grid justify-items-end
 `;
 
-const StyledResumesBoxName = tw.div`
-border-2
-  border-black
-  flex justify-center
+const StyledResumesBoxName = styled.div`
+  ${tw`border-2 border-black text-[30px] flex justify-center`}
+  font-family: "${pretenderedBold}", sans-serif;
 `;
 
-const StyledResumesBoxWish = tw.div`
-border-2
-  border-black
-  flex justify-center
+const StyledResumesBoxWish = styled.div`
+  ${tw`border-2 border-black text-[18px] flex justify-center`}
+  font-family: "${pretenderedSemiBold}", sans-serif;
 `;
 
-const StyledResumesBoxDcp = tw.div`
-border-2
-  border-black
-  flex justify-center
+const StyledResumesBoxDcp = styled.div`
+  ${tw`border-2 border-black text-[22px] flex justify-center`}
+  font-family: "${pretenderedMedium}", sans-serif;
 `;
+
+const StyledResumesBoxContentTitle = styled.div`
+  ${tw`text-[26px]`}
+  font-family: "${pretenderedSemiBold}", sans-serif;
+`;
+
+const StyledResumesBoxContentPeriod = styled.div``;
+const StyledpretenderedRegular24 = styled.div`
+  ${tw` text-[24px]`}
+  font-family: "${pretenderedRegular}", sans-serif;
+`;
+
+const StyledResumesBoxContentinfor = styled.div`
+border-2
+border-black
+`;
+const StyledpretenderedMedium24 = styled.div`
+  ${tw`border-2 border-black text-[24px]`}
+  font-family: "${pretenderedMedium}", sans-serif;
+`;
+
+const StyledpretenderedSemiBold24 = styled.div`
+  ${tw`border-2 border-black text-[26px]`}
+  font-family: "${pretenderedSemiBold}", sans-serif;
+`;
+
+const StyledpretenderedRegulard24 = styled.div`
+  ${tw`border-2 border-black text-[26px]`}
+  font-family: "${pretenderedRegular}", sans-serif;
+`;
+
 const StyledResumesBoxContentLine = tw.div`
-border-2
-  border-black
-  flex space-x-4
+border-t-2
+border-t-gray-300
+border-opacity-100
+flex space-x-4
 `;
 const StyledPageTitle1 = tw.div`
 border-2
