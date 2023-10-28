@@ -12,29 +12,34 @@ import { loggedInUserIdState } from '@/atom/chatUser';
 import { ChatBox } from '@/types/chat';
 
 import { pretenderedSemiBold } from '@/styles/fonts';
+import { useQuery } from '@tanstack/react-query';
 
-function ChatList() {
+const ChatList = () => {
   const [chatBoxes, setChatBoxes] = useState<ChatBox[]>([]);
   const [activeChatBoxId, setActiveChatBoxId] = useState<number | null>(null);
   const [, setUserId] = useRecoilState(loggedInUserIdState);
   const router = useRouter();
+  const currentRoomId = router.query.id ? Number(router.query.id) : null;
+
+  const { data } = useQuery(
+    ['chatList'],
+    () => {
+      const cookies = parseCookies(document.cookie || '');
+      const accessToken = cookies.accessToken;
+      return getChatList(accessToken);
+    },
+    {
+      onSuccess: data => console.log(data),
+      onError: error => console.error('Failed to fetch chat data', error),
+    },
+  );
 
   useEffect(() => {
-    const cookies = parseCookies(document.cookie || '');
-    const accessToken = cookies.accessToken;
-
-    async function fetchChatData() {
-      try {
-        const response = await getChatList(accessToken);
-        setChatBoxes(response.data.data.chatRoomMembers);
-        setUserId(response.data.data.userId);
-      } catch (error) {
-        console.error('Failed to fetch chat data', error);
-      }
+    if (data) {
+      setChatBoxes(data.data.data.chatRoomMembers);
+      setUserId(data.data.data.userId);
     }
-
-    fetchChatData();
-  }, []);
+  }, [data, setUserId]);
 
   const handleClick = (id: number | null) => {
     if (activeChatBoxId === id) {
@@ -52,10 +57,10 @@ function ChatList() {
     <StyledChatListContainer>
       <StyledChatListBoxUpText>채팅 목록</StyledChatListBoxUpText>
       <StyledGrayLine />
-      {chatBoxes.map(box => (
+      {chatBoxes?.map(box => (
         <ChatListBox
           key={box.roomId}
-          isActive={box.roomId === activeChatBoxId}
+          isActive={box.roomId === currentRoomId}
           onClick={() => handleClick(box.roomId)}
           name={box.roomName}
           message={box.chatMessageRes.content}
@@ -75,7 +80,7 @@ function ChatList() {
       )}
     </StyledChatListContainer>
   );
-}
+};
 
 export default ChatList;
 

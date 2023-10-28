@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
 import { chatEnter } from '@/apis/chat';
 import parseCookies from '@/utils/parseCookies';
@@ -16,6 +16,7 @@ function ChatRoom() {
   const router = useRouter();
   const { id } = router.query;
   const [ws, setWs] = useState<Client | null>(null);
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (id) {
@@ -46,7 +47,7 @@ function ChatRoom() {
         console.log('Initializing WebSocket...');
 
         const client = new Client({
-          brokerURL: 'wss://strangehoon.shop/api',
+          brokerURL: 'wss://strangehoon.shop/api/chat',
           connectHeaders: {
             Authorization: `Bearer ${accessToken}`,
           },
@@ -97,13 +98,19 @@ function ChatRoom() {
     console.log('chatRoomBoxes updated:', chatRoomBoxes);
   }, [chatRoomBoxes]);
 
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
+    }
+  }, [chatRoomBoxes]);
+
   let lastDate: string | null = null;
 
   return (
     <StyledChatRoomBox style={{ backgroundColor: id ? '#dfe2e6' : '#F1F3F5' }}>
       {id ? (
         <>
-          <StyledMessagesContainer>
+          <StyledMessagesContainer ref={messagesEndRef}>
             {chatRoomBoxes.map(item => {
               const currentDate = dateconversion(item.createdAt);
 
@@ -144,7 +151,7 @@ const StyledChatRoomBox = tw.div`
   w-[803px]
   h-[769px]
   rounded-tr-[20px]
-  flex flex-col p-6
+  flex flex-col justify-between p-6  // <-- 이 부분을 추가했습니다.
   border-t border-r border-solid border-gray-300
   `;
 

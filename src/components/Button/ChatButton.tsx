@@ -1,17 +1,10 @@
+import styled from '@emotion/styled';
 import tw from 'twin.macro';
 import { setCreateChatRoom } from '@/apis/chat';
 import { useRouter } from 'next/router';
 import { ChatButtonProps } from '@/types/chat';
 
-function ChatButton({
-  token,
-  chatUserId,
-  backgroundColor = 'blue',
-  color = 'white',
-  padding = '8px',
-  fontSize = '16px',
-  borderRadius = '4px',
-}: ChatButtonProps) {
+function ChatButton({ token, chatUserId, twCustom }: ChatButtonProps) {
   const router = useRouter();
   const handleChatClick = async () => {
     try {
@@ -29,15 +22,7 @@ function ChatButton({
   };
 
   return (
-    <StyledChatButton
-      style={{
-        backgroundColor,
-        color,
-        padding,
-        fontSize,
-        borderRadius,
-      }}
-      onClick={handleChatClick}>
+    <StyledChatButton twCustom={twCustom} onClick={handleChatClick}>
       채팅하기
     </StyledChatButton>
   );
@@ -45,6 +30,9 @@ function ChatButton({
 
 export default ChatButton;
 
-const StyledChatButton = tw.div`
-cursor-pointer transition-all duration-300 ease-in-out hover:opacity-80
+const StyledChatButton = styled.div<{ twCustom: string | undefined }>`
+  ${({ twCustom }) =>
+    twCustom
+      ? tw`${twCustom}`
+      : tw`h-14 font-medium  text-[#515A64] text-2xl my-auto flex ml-auto bg-[#EAECEF] rounded-sm py-3 px-9`};
 `;
