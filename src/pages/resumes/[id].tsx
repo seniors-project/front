@@ -11,8 +11,29 @@ import {
 } from '@/styles/fonts';
 import SwitchButton from '@/components/Button/SwitchButton';
 import ChatButton from '@/components/Button/ChatButton';
+import { useQuery } from '@tanstack/react-query';
+import parseCookies from '@/utils/parseCookies';
+import { getUserResume } from '@/apis/resume';
+import { useRouter } from 'next/router';
 
 const Resumes = () => {
+  const router = useRouter();
+  const { id } = router.query;
+
+  const { data } = useQuery(
+    ['Resumes'],
+    () => {
+      const cookies = parseCookies(document.cookie || '');
+      const accessToken = cookies.accessToken;
+      const roomId = Number(id);
+      return getUserResume(accessToken, roomId);
+    },
+    {
+      onSuccess: data => console.log(data),
+      onError: error => console.error('Failed to fetch chat data', error),
+    },
+  );
+
   return (
     <Layout>
       <StyledResumesContainer>

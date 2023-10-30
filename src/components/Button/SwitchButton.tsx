@@ -1,15 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from '@emotion/styled';
 
 const SwitchButton = () => {
-  const [isToggled, setToggled] = useState<boolean>(false);
-
-  const toggleSwitch = () => {
-    setToggled(!isToggled);
-  };
+  const isToggled = true;
 
   return (
-    <SwitchButtonContainer onClick={toggleSwitch} isToggled={isToggled}>
+    <SwitchButtonContainer isToggled={isToggled}>
       <SwitchCircle isToggled={isToggled} />
     </SwitchButtonContainer>
   );
@@ -21,7 +17,7 @@ const SwitchButtonContainer = styled.div<{ isToggled: boolean }>`
   background-color: ${props => (props.isToggled ? '#0177FD' : '#ccc')};
   border-radius: 12px;
   position: relative;
-  cursor: pointer;
+  cursor: not-allowed;
 `;
 
 const SwitchCircle = styled.div<{ isToggled: boolean }>`

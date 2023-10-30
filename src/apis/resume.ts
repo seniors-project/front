@@ -36,3 +36,12 @@ export const getMeResume = async () => {
 
   return response.data;
 };
+
+//타인 이력서 조회
+export const getUserResume = (token: string, id: number) => {
+  return httpClient.get(`resumes/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
