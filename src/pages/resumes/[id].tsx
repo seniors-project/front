@@ -9,6 +9,7 @@ import {
   pretenderedMedium,
   pretenderedRegular,
 } from '@/styles/fonts';
+import SwitchButton from '@/components/Button/SwitchButton';
 
 const Resumes = () => {
   return (
@@ -66,6 +67,15 @@ const Resumes = () => {
                     </StyledpretenderedMedium24>
                   </StyledResumesBoxContentinfor>
                 </StyledResumesBoxContentLine>
+                <StyledResumesBoxContentTitle>
+                  그 외
+                </StyledResumesBoxContentTitle>
+                <StyledResumesBoxContentLine>
+                  <div>
+                    <SwitchButton />
+                    <div>이력서 공개 중</div>
+                  </div>
+                </StyledResumesBoxContentLine>
               </StyledResumesBoxContent>
             </StyledResumesBoxWrapper>
           </StyledResumesBox>
@@ -78,110 +88,99 @@ const Resumes = () => {
 export default Resumes;
 
 const StyledResumesContainer = tw.div`
-border-2
-  border-black
   flex justify-center
 `;
 
 const StyledResumesWrapper = tw.div`
-border-2
-  border-black
 `;
 const StyledPageTitle = tw.div`
-  border-2
-  border-black
   py-8
 `;
 const StyledPageTitleText = styled.div`
-  ${tw`border-2 border-black text-[30px]`}
+  ${tw`text-[30px]`}
   font-family: "${pretenderedSemiBold}", sans-serif;
 `;
 const StyledResumesBox = tw.div`
-border-2
-  border-black
   p-6
   flex flex-col
   bg-white
+  rounded-2xl
+  mb-16
+  border
+  border-[#DFE2E6]
 `;
 const StyledResumesBoxWrapper = tw.div`
-border-2
-  border-black
   p-2
   
 `;
 const StyledResumesBoxHeader = tw.div`
-border-2
-  border-black
   `;
 
 const StyledResumesBoxImgWrap = tw.div`
-border-2
-  border-black
   grid justify-items-center
 `;
 const StyledResumesBoxImg = tw.img`
 w-[120px] h-[120px] rounded-full
 `;
 
-const StyledResumesBoxContent = tw.div`
-border-2
-  border-black
-`;
-
-const StyledResumesBoxHeaderTop = tw.div`
-border-2
-  border-black 
-  grid grid-cols-3 grid-flow-col
-`;
-
 const StyledResumesBoxHeaderRight = tw.div`
-border-2
-  border-black
   grid justify-items-end
 `;
 
+const StyledResumesBoxHeaderTop = tw.div`
+  grid grid-cols-3 grid-flow-col
+`;
+
+const StyledResumesBoxContent = tw.div`
+  w-9/12
+  mx-auto
+`;
+
 const StyledResumesBoxName = styled.div`
-  ${tw`border-2 border-black text-[30px] flex justify-center`}
+  ${tw`text-[30px] flex justify-center`}
   font-family: "${pretenderedBold}", sans-serif;
 `;
 
 const StyledResumesBoxWish = styled.div`
-  ${tw`border-2 border-black text-[18px] flex justify-center`}
+  ${tw`text-[18px] flex justify-center`}
   font-family: "${pretenderedSemiBold}", sans-serif;
 `;
 
 const StyledResumesBoxDcp = styled.div`
-  ${tw`border-2 border-black text-[22px] flex justify-center`}
+  ${tw`text-[22px] flex justify-center`}
   font-family: "${pretenderedMedium}", sans-serif;
 `;
 
 const StyledResumesBoxContentTitle = styled.div`
-  ${tw`text-[26px]`}
+  ${tw`text-[26px]
+  `}
   font-family: "${pretenderedSemiBold}", sans-serif;
 `;
 
-const StyledResumesBoxContentPeriod = styled.div``;
+const StyledResumesBoxContentPeriod = tw.div`
+w-1/3
+`;
+
 const StyledpretenderedRegular24 = styled.div`
   ${tw` text-[24px]`}
   font-family: "${pretenderedRegular}", sans-serif;
 `;
 
-const StyledResumesBoxContentinfor = styled.div`
-border-2
-border-black
+const StyledResumesBoxContentinfor = tw.div`
+w-2/3
 `;
 const StyledpretenderedMedium24 = styled.div`
-  ${tw`border-2 border-black text-[24px]`}
+  ${tw`text-[24px]`}
   font-family: "${pretenderedMedium}", sans-serif;
 `;
 
 const StyledpretenderedSemiBold24 = styled.div`
-  ${tw`border-2 border-black text-[26px]`}
+  ${tw`text-[26px]`}
   font-family: "${pretenderedSemiBold}", sans-serif;
 `;
 
 const StyledpretenderedRegulard24 = styled.div`
-  ${tw`border-2 border-black text-[26px]`}
+  ${tw`text-[26px]`}
   font-family: "${pretenderedRegular}", sans-serif;
 `;
 
@@ -191,13 +190,3 @@ border-t-gray-300
 border-opacity-100
 flex space-x-4
 `;
-const StyledPageTitle1 = tw.div`
-border-2
-  border-black
-  w-1/3
-     `;
-const StyledPageTitle2 = tw.div`
-border-2
-  border-black
-  w-2/3
-    `;

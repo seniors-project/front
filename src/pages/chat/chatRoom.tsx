@@ -151,7 +151,7 @@ const StyledChatRoomBox = tw.div`
   w-[803px]
   h-[769px]
   rounded-tr-[20px]
-  flex flex-col justify-between p-6  // <-- 이 부분을 추가했습니다.
+  flex flex-col justify-between p-6
   border-t border-r border-solid border-gray-300
   `;
 
