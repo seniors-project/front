@@ -10,6 +10,7 @@ import {
   pretenderedRegular,
 } from '@/styles/fonts';
 import SwitchButton from '@/components/Button/SwitchButton';
+import ChatButton from '@/components/Button/ChatButton';
 
 const Resumes = () => {
   return (
@@ -33,7 +34,7 @@ const Resumes = () => {
                     />
                   </StyledResumesBoxImgWrap>
                   <StyledResumesBoxHeaderRight>
-                    <div>버튼</div>
+                    <ChatButton />
                     <div>조회수</div>
                   </StyledResumesBoxHeaderRight>
                 </StyledResumesBoxHeaderTop>
@@ -48,33 +49,36 @@ const Resumes = () => {
                   경력사항
                 </StyledResumesBoxContentTitle>
                 <StyledResumesBoxContentLine>
-                  <StyledResumesBoxContentPeriod>
-                    <StyledpretenderedRegular24>
-                      2022.04 ~ 재직 중
-                    </StyledpretenderedRegular24>
-                    <StyledpretenderedRegulard24>
-                      팀장
-                    </StyledpretenderedRegulard24>
-                  </StyledResumesBoxContentPeriod>
-                  <StyledResumesBoxContentinfor>
-                    <StyledpretenderedSemiBold24>
-                      뫄뫄IT 기업
-                    </StyledpretenderedSemiBold24>
-                    <StyledpretenderedMedium24>
-                      개발팀 리드로 버그 수정 및 팀원 관리, 유관부서와
-                      커뮤니케이션 조절, 개발 스터디 운영, 버그해결사 커뮤니티
-                      운영 등
-                    </StyledpretenderedMedium24>
-                  </StyledResumesBoxContentinfor>
+                  <div css={tw`flex mt-2`}>
+                    <StyledResumesBoxContentPeriod>
+                      <StyledpretenderedRegular24>
+                        2022.04 ~ 재직 중
+                      </StyledpretenderedRegular24>
+                      <StyledpretenderedRegulard24>
+                        팀장
+                      </StyledpretenderedRegulard24>
+                    </StyledResumesBoxContentPeriod>
+                    <StyledResumesBoxContentinfor>
+                      <StyledpretenderedSemiBold24>
+                        뫄뫄IT 기업
+                      </StyledpretenderedSemiBold24>
+                      <StyledpretenderedMedium24>
+                        개발팀 리드로 버그 수정 및 팀원 관리, 유관부서와
+                        커뮤니케이션 조절, 개발 스터디 운영, 버그해결사 커뮤니티
+                        운영 등
+                      </StyledpretenderedMedium24>
+                    </StyledResumesBoxContentinfor>
+                  </div>
                 </StyledResumesBoxContentLine>
                 <StyledResumesBoxContentTitle>
                   그 외
                 </StyledResumesBoxContentTitle>
                 <StyledResumesBoxContentLine>
-                  <div>
+                  <StyledResumesEtc>
                     <SwitchButton />
                     <div>이력서 공개 중</div>
-                  </div>
+                  </StyledResumesEtc>
+                  <div>현재 내 이력서가 다른 회원들에게 보여지고 있어요.</div>
                 </StyledResumesBoxContentLine>
               </StyledResumesBoxContent>
             </StyledResumesBoxWrapper>
@@ -114,6 +118,7 @@ const StyledResumesBoxWrapper = tw.div`
   
 `;
 const StyledResumesBoxHeader = tw.div`
+gap-y-1 grid
   `;
 
 const StyledResumesBoxImgWrap = tw.div`
@@ -152,7 +157,7 @@ const StyledResumesBoxDcp = styled.div`
 `;
 
 const StyledResumesBoxContentTitle = styled.div`
-  ${tw`text-[26px]
+  ${tw`text-[26px] mb-2
   `}
   font-family: "${pretenderedSemiBold}", sans-serif;
 `;
@@ -169,6 +174,7 @@ const StyledpretenderedRegular24 = styled.div`
 const StyledResumesBoxContentinfor = tw.div`
 w-2/3
 `;
+
 const StyledpretenderedMedium24 = styled.div`
   ${tw`text-[24px]`}
   font-family: "${pretenderedMedium}", sans-serif;
@@ -188,5 +194,10 @@ const StyledResumesBoxContentLine = tw.div`
 border-t-2
 border-t-gray-300
 border-opacity-100
-flex space-x-4
+ space-x-4
+`;
+
+const StyledResumesEtc = tw.div`
+flex
+mt-14
 `;
