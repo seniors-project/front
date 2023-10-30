@@ -7,7 +7,6 @@ import {
   pretenderedSemiBold,
   pretenderedBold,
   pretenderedMedium,
-  pretenderedRegular,
 } from '@/styles/fonts';
 import SwitchButton from '@/components/Button/SwitchButton';
 import ChatButton from '@/components/Button/ChatButton';
@@ -15,13 +14,14 @@ import { useQuery } from '@tanstack/react-query';
 import parseCookies from '@/utils/parseCookies';
 import { getUserResume } from '@/apis/resume';
 import { useRouter } from 'next/router';
+import ResumesInforBox from '@/components/Resumes/ResumesInforBox';
 
 const Resumes = () => {
   const router = useRouter();
   const { id } = router.query;
 
   const { data } = useQuery(
-    ['Resumes'],
+    ['Resumes', id],
     () => {
       const cookies = parseCookies(document.cookie || '');
       const accessToken = cookies.accessToken;
@@ -40,7 +40,7 @@ const Resumes = () => {
         <StyledResumesWrapper>
           <StyledPageTitle>
             <StyledPageTitleText>
-              홍길동님의 이력서 페이지 입니다.
+              {data?.data.data.name}님의 이력서 페이지 입니다.
             </StyledPageTitleText>
           </StyledPageTitle>
           <StyledResumesBox>
@@ -50,56 +50,42 @@ const Resumes = () => {
                   <div></div>
                   <StyledResumesBoxImgWrap>
                     <StyledResumesBoxImg
-                      src="/images/profile.png"
+                      src={data?.data.data.photoUrl}
                       alt="Profile"
                     />
                   </StyledResumesBoxImgWrap>
                   <StyledResumesBoxHeaderRight>
                     <ChatButton />
-                    <div>조회수</div>
+                    <StyledHits>
+                      조회수 {data?.data.data.viewCount}회
+                    </StyledHits>
                   </StyledResumesBoxHeaderRight>
                 </StyledResumesBoxHeaderTop>
-                <StyledResumesBoxName>홍길동</StyledResumesBoxName>
-                <StyledResumesBoxWish>IT 개발자</StyledResumesBoxWish>
+                <StyledResumesBoxName>
+                  {data?.data.data.name}
+                </StyledResumesBoxName>
+                <StyledResumesBoxWish>
+                  {data?.data.data.occupation}
+                </StyledResumesBoxWish>
                 <StyledResumesBoxDcp>
-                  안녕하세요. 홍길동입니다. 잘 부탁드립니다.
+                  {data?.data.data.introduce}{' '}
                 </StyledResumesBoxDcp>
               </StyledResumesBoxHeader>
               <StyledResumesBoxContent>
-                <StyledResumesBoxContentTitle>
-                  경력사항
-                </StyledResumesBoxContentTitle>
-                <StyledResumesBoxContentLine>
-                  <div css={tw`flex mt-2`}>
-                    <StyledResumesBoxContentPeriod>
-                      <StyledpretenderedRegular24>
-                        2022.04 ~ 재직 중
-                      </StyledpretenderedRegular24>
-                      <StyledpretenderedRegulard24>
-                        팀장
-                      </StyledpretenderedRegulard24>
-                    </StyledResumesBoxContentPeriod>
-                    <StyledResumesBoxContentinfor>
-                      <StyledpretenderedSemiBold24>
-                        뫄뫄IT 기업
-                      </StyledpretenderedSemiBold24>
-                      <StyledpretenderedMedium24>
-                        개발팀 리드로 버그 수정 및 팀원 관리, 유관부서와
-                        커뮤니케이션 조절, 개발 스터디 운영, 버그해결사 커뮤니티
-                        운영 등
-                      </StyledpretenderedMedium24>
-                    </StyledResumesBoxContentinfor>
-                  </div>
-                </StyledResumesBoxContentLine>
+                <ResumesInforBox title="경력 사항" />
+                <ResumesInforBox title="교육 이수" />
+                <ResumesInforBox title="자격증" />
                 <StyledResumesBoxContentTitle>
                   그 외
                 </StyledResumesBoxContentTitle>
                 <StyledResumesBoxContentLine>
                   <StyledResumesEtc>
                     <SwitchButton />
-                    <div>이력서 공개 중</div>
+                    <StyledEtTitle>이력서 공개 중</StyledEtTitle>
                   </StyledResumesEtc>
-                  <div>현재 내 이력서가 다른 회원들에게 보여지고 있어요.</div>
+                  <StyledHits>
+                    현재 내 이력서가 다른 회원들에게 보여지고 있어요.
+                  </StyledHits>
                 </StyledResumesBoxContentLine>
               </StyledResumesBoxContent>
             </StyledResumesBoxWrapper>
@@ -118,35 +104,42 @@ const StyledResumesContainer = tw.div`
 
 const StyledResumesWrapper = tw.div`
 `;
+
 const StyledPageTitle = tw.div`
   py-8
 `;
+
 const StyledPageTitleText = styled.div`
-  ${tw`text-[30px]`}
+  ${tw`text-[30px] mt-8`}
   font-family: "${pretenderedSemiBold}", sans-serif;
 `;
+
 const StyledResumesBox = tw.div`
   p-6
   flex flex-col
   bg-white
   rounded-2xl
-  mb-16
+  mb-20
   border
   border-[#DFE2E6]
 `;
+
 const StyledResumesBoxWrapper = tw.div`
   p-2
-  
+  mb-14
+  mt-4
 `;
+
 const StyledResumesBoxHeader = tw.div`
-gap-y-1 grid
-  `;
+  gap-y-1 grid
+`;
 
 const StyledResumesBoxImgWrap = tw.div`
   grid justify-items-center
 `;
+
 const StyledResumesBoxImg = tw.img`
-w-[120px] h-[120px] rounded-full
+  w-[120px] h-[120px] rounded-full
 `;
 
 const StyledResumesBoxHeaderRight = tw.div`
@@ -173,52 +166,35 @@ const StyledResumesBoxWish = styled.div`
 `;
 
 const StyledResumesBoxDcp = styled.div`
-  ${tw`text-[22px] flex justify-center`}
+  ${tw`text-[22px] flex justify-center text-[#515A64]`}
   font-family: "${pretenderedMedium}", sans-serif;
 `;
 
 const StyledResumesBoxContentTitle = styled.div`
-  ${tw`text-[26px] mb-2
-  `}
+  ${tw`text-[26px] mb-2 mt-8`}
   font-family: "${pretenderedSemiBold}", sans-serif;
-`;
-
-const StyledResumesBoxContentPeriod = tw.div`
-w-1/3
-`;
-
-const StyledpretenderedRegular24 = styled.div`
-  ${tw` text-[24px]`}
-  font-family: "${pretenderedRegular}", sans-serif;
-`;
-
-const StyledResumesBoxContentinfor = tw.div`
-w-2/3
-`;
-
-const StyledpretenderedMedium24 = styled.div`
-  ${tw`text-[24px]`}
-  font-family: "${pretenderedMedium}", sans-serif;
-`;
-
-const StyledpretenderedSemiBold24 = styled.div`
-  ${tw`text-[26px]`}
-  font-family: "${pretenderedSemiBold}", sans-serif;
-`;
-
-const StyledpretenderedRegulard24 = styled.div`
-  ${tw`text-[26px]`}
-  font-family: "${pretenderedRegular}", sans-serif;
 `;
 
 const StyledResumesBoxContentLine = tw.div`
-border-t-2
-border-t-gray-300
-border-opacity-100
- space-x-4
+  border-t-2
+  border-t-gray-300
+  border-opacity-100
+  space-x-4
+  mt-10
 `;
 
 const StyledResumesEtc = tw.div`
-flex
-mt-14
+  flex
+  items-center
+  mt-14
+`;
+
+const StyledHits = styled.div`
+  ${tw`text-[20px] text-[#515A64] mt-2`}
+  font-family: "${pretenderedMedium}", sans-serif;
+`;
+
+const StyledEtTitle = styled.div`
+  ${tw`text-[26px] text-[#0177FD]  ml-2`}
+  font-family: "${pretenderedBold}", sans-serif;
 `;

@@ -38,10 +38,10 @@ export const getMeResume = async () => {
 };
 
 //타인 이력서 조회
-export const getUserResume = (token: string, id: number) => {
-  return httpClient.get(`resumes/${id}`, {
+export const getUserResume = (accessToken: string, roomId: number) => {
+  return httpClient.get(`resumes/${roomId}`, {
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${accessToken}`,
     },
   });
 };
