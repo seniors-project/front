@@ -29,7 +29,7 @@ const MenuItem = tw.li`
 `;
 
 const ResumeCardHeaderProfileImg = tw.div`
-  w-11 h-11 mr-2
+  w-11 h-11 mr-2 relative
   rounded-full overflow-hidden
 `;
 
@@ -61,18 +61,12 @@ export function Header() {
               <MenuItem>
                 <ResumeCardHeaderProfileImg>
                   {user.profileImageUrl ? (
-                    <Image
-                      src={user.profileImageUrl}
-                      alt="profile img"
-                      width={500}
-                      height={100}
-                    />
+                    <Image src={user.profileImageUrl} alt="profile img" fill />
                   ) : (
                     <Image
                       src="/images/basicProfile.png"
                       alt="profile img"
-                      width={500}
-                      height={100}
+                      fill
                     />
                   )}
                 </ResumeCardHeaderProfileImg>
