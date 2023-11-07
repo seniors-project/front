@@ -1,6 +1,10 @@
 import tw from 'twin.macro';
 import styled from '@emotion/styled';
 
+import { GetServerSidePropsContext, GetServerSideProps } from 'next';
+import { userValidate } from '@/apis/auth';
+import parseCookies from '@/utils/parseCookies';
+
 import { Layout } from '@/components/Layout';
 
 import {
@@ -11,7 +15,6 @@ import {
 import SwitchButton from '@/components/Button/SwitchButton';
 import ChatButton from '@/components/Button/ChatButton';
 import { useQuery } from '@tanstack/react-query';
-import parseCookies from '@/utils/parseCookies';
 import { getUserResume } from '@/apis/resume';
 import { useRouter } from 'next/router';
 import ResumesInforBox from '@/components/Resumes/ResumesInforBox';
@@ -23,10 +26,8 @@ const Resumes = () => {
   const { data } = useQuery(
     ['Resumes', id],
     () => {
-      const cookies = parseCookies(document.cookie || '');
-      const accessToken = cookies.accessToken;
       const roomId = Number(id);
-      return getUserResume(accessToken, roomId);
+      return getUserResume(roomId);
     },
     {
       onSuccess: data => console.log(data),
@@ -55,7 +56,7 @@ const Resumes = () => {
                     />
                   </StyledResumesBoxImgWrap>
                   <StyledResumesBoxHeaderRight>
-                    <ChatButton />
+                    <ChatButton chatUserId={data?.data.data.id} />
                     <StyledHits>
                       조회수 {data?.data.data.viewCount}회
                     </StyledHits>
@@ -94,6 +95,38 @@ const Resumes = () => {
       </StyledResumesContainer>
     </Layout>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async (
+  context: GetServerSidePropsContext,
+) => {
+  const cookies = parseCookies(context.req.headers.cookie || '');
+
+  const accessToken = cookies.accessToken;
+
+  if (!accessToken) {
+    return {
+      redirect: {
+        destination: '/auth/login',
+        permanent: false,
+      },
+    };
+  }
+
+  try {
+    const response = await userValidate(accessToken);
+    return {
+      props: { user: response.data, token: accessToken },
+    };
+  } catch (e) {
+    console.log(e);
+    return {
+      redirect: {
+        destination: '/auth/login',
+        permanent: false,
+      },
+    };
+  }
 };
 
 export default Resumes;

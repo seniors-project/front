@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
 import { chatEnter } from '@/apis/chat';
-import parseCookies from '@/utils/parseCookies';
 import tw from 'twin.macro';
 import { useRecoilValue } from 'recoil';
 import { loggedInUserIdState } from '@/atom/chatUser';
@@ -20,13 +19,11 @@ function ChatRoom() {
 
   useEffect(() => {
     if (id) {
-      const cookies = parseCookies(document.cookie || '');
-      const accessToken = cookies.accessToken;
       const roomId = Number(id);
 
       const fetchChatData = async () => {
         try {
-          const response = await chatEnter(accessToken, roomId);
+          const response = await chatEnter(roomId);
           setChatRoomBoxes(response.data.data.chatMessages);
           console.log(`chat1: ${JSON.stringify(chatRoomBoxes)}`);
         } catch (error) {
@@ -40,17 +37,14 @@ function ChatRoom() {
 
   useEffect(() => {
     if (id) {
-      const cookies = parseCookies(document.cookie || '');
-      const accessToken = cookies.accessToken;
-
       const initializeWebSocket = () => {
         console.log('Initializing WebSocket...');
 
         const client = new Client({
           brokerURL: 'wss://strangehoon.shop/api/chat',
-          connectHeaders: {
-            Authorization: `Bearer ${accessToken}`,
-          },
+          // connectHeaders: {
+          //   Authorization: `Bearer ${accessToken}`,
+          // },
           debug: function (str) {
             console.log(str);
           },

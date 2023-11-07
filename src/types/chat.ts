@@ -37,7 +37,6 @@ export interface ChatRoomBoxProps {
 }
 
 export interface ChatButtonProps {
-  token: string;
   chatUserId: number;
   twCustom?: string | undefined;
 }

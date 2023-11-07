@@ -2,6 +2,9 @@ import styled from '@emotion/styled';
 import tw from 'twin.macro';
 
 import { Layout } from '@/components/Layout';
+import { GetServerSidePropsContext, GetServerSideProps } from 'next';
+import { userValidate } from '@/apis/auth';
+import parseCookies from '@/utils/parseCookies';
 
 import ChatList from './chatList';
 import ChatRoom from './chatRoom';
@@ -20,6 +23,38 @@ function Chat() {
     </Layout>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async (
+  context: GetServerSidePropsContext,
+) => {
+  const cookies = parseCookies(context.req.headers.cookie || '');
+
+  const accessToken = cookies.accessToken;
+
+  if (!accessToken) {
+    return {
+      redirect: {
+        destination: '/auth/login',
+        permanent: false,
+      },
+    };
+  }
+
+  try {
+    const response = await userValidate(accessToken);
+    return {
+      props: { user: response.data, token: accessToken },
+    };
+  } catch (e) {
+    console.log(e);
+    return {
+      redirect: {
+        destination: '/auth/login',
+        permanent: false,
+      },
+    };
+  }
+};
 
 export default Chat;
 

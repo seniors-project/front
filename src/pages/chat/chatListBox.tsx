@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { ChatListBoxProps } from '@/types/chat';
 import { dateconversion } from '@/utils/dateconversion';
-import parseCookies from '@/utils/parseCookies';
 import { useRouter } from 'next/router';
 import { setDeleteChatRoom } from '@/apis/chat';
 
@@ -24,9 +23,7 @@ const ChatListBox = ({
 
   const leaveChatMutation = useMutation(
     () => {
-      const cookies = parseCookies(document.cookie || '');
-      const accessToken = cookies.accessToken;
-      return setDeleteChatRoom(accessToken, chatRoomId);
+      return setDeleteChatRoom(chatRoomId);
     },
     {
       onSuccess: () => {
