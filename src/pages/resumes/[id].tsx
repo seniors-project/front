@@ -73,9 +73,27 @@ const Resumes = () => {
                 </StyledResumesBoxDcp>
               </StyledResumesBoxHeader>
               <StyledResumesBoxContent>
-                <ResumesInforBox title="경력 사항" />
-                <ResumesInforBox title="교육 이수" />
-                <ResumesInforBox title="자격증" />
+                <ResumesInforBox
+                  title="경력 사항"
+                  period=""
+                  subPeriod=""
+                  content=""
+                  subContent=""
+                />
+                <ResumesInforBox
+                  title="교육 이수"
+                  period=""
+                  subPeriod=""
+                  content=""
+                  subContent=""
+                />
+                <ResumesInforBox
+                  title="자격증"
+                  period=""
+                  subPeriod=""
+                  content=""
+                  subContent=""
+                />
                 <StyledResumesBoxContentTitle>
                   그 외
                 </StyledResumesBoxContentTitle>
