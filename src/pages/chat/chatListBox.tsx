@@ -70,17 +70,38 @@ const ChatListBox = ({
       )}
     </ChatListBoxWrapper>
 
-    // <ChatListBoxcontainer>
-    //   <ChatListBoxWrapper isActive={isActive} onClick={onClick}>
+    // <ChatListBoxcontainer
+    //   isActive={isActive}
+    //   onClick={onClick}
+    //   className="group"
+    //   onMouseEnter={() => setShowDropdown(false)} // Hide dropdown but show the MoreOptionsButton on hover
+    //   onMouseLeave={() => {
+    //     setShowDropdown(false); // Hide the dropdown when mouse leaves
+    //   }}>
+    //   <ChatListBoxWrapper>
     //     <StyledProfileImgWrapper>
-    //       <StyledProfileImg src="/images/profile.png" alt="Profile" />
+    //       <StyledProfileImg src={profileImageUrl} alt="Profile" />
     //     </StyledProfileImgWrapper>
     //     <StyledChatListBoxContentWrapper>
     //       <StyledChatListBoxContent>
     //         <StyledProfileName>{name}</StyledProfileName>
     //         <StyledChatPreview>{message}</StyledChatPreview>
     //       </StyledChatListBoxContent>
-    //       <StyledChatListDate>{lastDate}</StyledChatListDate>
+    //       <StyledChatListDate>
+    //         {lastDate}
+    //         <MoreOptionsButton
+    //           onClick={e => {
+    //             e.stopPropagation(); // Prevents the outer onClick from being triggered
+    //             setShowDropdown(!showDropdown);
+    //           }}>
+    //           ...
+    //         </MoreOptionsButton>
+    //         {showDropdown && (
+    //           <OptionsDropdown>
+    //             <OptionItem onClick={handleLeaveChat}>채팅방 나가기</OptionItem>
+    //           </OptionsDropdown>
+    //         )}
+    //       </StyledChatListDate>
     //     </StyledChatListBoxContentWrapper>
     //   </ChatListBoxWrapper>
     // </ChatListBoxcontainer>
@@ -126,21 +147,20 @@ const MoreOptionsButton = tw.button`
   hidden group-hover:block ml-auto mr-4
 `;
 
-// const ChatListBoxcontainer = tw.div`
-// border-black border-2
-// px-[15px] py-[24px]
+// const ChatListBoxcontainer = styled.div<{ isActive: boolean }>`
+//   ${tw`border-black border-2 px-[15px] py-[24px]`}
+//   ${({ isActive }) => (isActive ? tw`bg-[#E5F1FF]` : '')};
 // `;
 
-// const ChatListBoxWrapper = styled.div<{ isActive: boolean }>`
-//   ${tw`border-black border-2 flex gap-[12px] overflow-hidden`}
-//   ${({ isActive }) => (isActive ? tw`bg-[#E5F1FF]` : '')};
+// const ChatListBoxWrapper = tw.div`
+//   border-black border-2 flex gap-[12px] overflow-hidden relative hover:group-hover:block
 // `;
 
 // const StyledProfileImgWrapper = tw.div`
 // border-black border-2
 // `;
 // const StyledProfileImg = tw.img`
-// border-black border-2	rounded-full
+//   w-[60px] h-[60px] rounded-full mr-4
 // `;
 // const StyledChatListBoxContentWrapper = tw.div`
 // border-black border-2 flex gap-[4px]
@@ -157,4 +177,15 @@ const MoreOptionsButton = tw.button`
 // `;
 // const StyledChatPreview = tw.div`
 // border-black border-2
+// `;
+// const OptionsDropdown = tw.div`
+//   absolute right-0 mt-2 w-28 border rounded-md shadow-md bg-white border-black
+// `;
+
+// const OptionItem = tw.div`
+//   p-2 hover:bg-gray-200 cursor-pointer border-black border-2
+// `;
+
+// const MoreOptionsButton = tw.button`
+//   hidden group-hover:block ml-auto mr-4 border-black border-2
 // `;

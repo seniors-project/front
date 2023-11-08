@@ -42,9 +42,6 @@ function ChatRoom() {
 
         const client = new Client({
           brokerURL: 'wss://strangehoon.shop/api/chat',
-          // connectHeaders: {
-          //   Authorization: `Bearer ${accessToken}`,
-          // },
           debug: function (str) {
             console.log(str);
           },
