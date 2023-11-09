@@ -4,11 +4,11 @@ import { setCreateChatRoom } from '@/apis/chat';
 import { useRouter } from 'next/router';
 import { ChatButtonProps } from '@/types/chat';
 
-function ChatButton({ token, chatUserId, twCustom }: ChatButtonProps) {
+function ChatButton({ chatUserId, twCustom }: ChatButtonProps) {
   const router = useRouter();
   const handleChatClick = async () => {
     try {
-      const response = await setCreateChatRoom(token, chatUserId);
+      const response = await setCreateChatRoom(chatUserId);
       const roomId: number = response.data.data.roomId;
 
       if (roomId) {

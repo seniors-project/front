@@ -36,3 +36,8 @@ export const getMeResume = async () => {
 
   return response.data;
 };
+
+//타인 이력서 조회
+export const getUserResume = (roomId: number) => {
+  return httpClient.get(`resumes/${roomId}`);
+};

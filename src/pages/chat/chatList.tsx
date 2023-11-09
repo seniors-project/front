@@ -5,7 +5,6 @@ import { useState, useEffect } from 'react';
 import ChatListBox from './chatListBox';
 import ResumeWriteButton from '@/components/Button/ResumeWriteButton';
 import { getChatList } from '@/apis/chat';
-import parseCookies from '@/utils/parseCookies';
 import { useRouter } from 'next/router';
 import { useRecoilState } from 'recoil';
 import { loggedInUserIdState } from '@/atom/chatUser';
@@ -24,9 +23,7 @@ const ChatList = () => {
   const { data } = useQuery(
     ['chatList'],
     () => {
-      const cookies = parseCookies(document.cookie || '');
-      const accessToken = cookies.accessToken;
-      return getChatList(accessToken);
+      return getChatList();
     },
     {
       onSuccess: data => console.log(data),
@@ -66,6 +63,7 @@ const ChatList = () => {
           message={box.chatMessageRes.content}
           date={box.chatMessageRes.createdAt}
           chatRoomId={box.roomId}
+          profileImageUrl={box.profileImageUrl}
         />
       ))}
       {chatBoxes.length === 0 && (

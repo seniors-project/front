@@ -75,3 +75,11 @@ export interface Certificate {
   issuedMonth: number;
   isIssued: boolean;
 }
+
+export interface ResumesInforBoxProps {
+  title: string;
+  period: string;
+  subPeriod: string;
+  content: string;
+  subContent: string;
+}
