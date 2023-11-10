@@ -15,6 +15,7 @@ const ChatListBox = ({
   date,
   chatRoomId,
   profileImageUrl,
+  notification,
 }: ChatListBoxProps) => {
   const [showDropdown, setShowDropdown] = useState(false);
   const lastDate = dateconversion(date);
@@ -46,13 +47,13 @@ const ChatListBox = ({
       isActive={isActive}
       onClick={onClick}
       className="group"
-      onMouseEnter={() => setShowDropdown(false)} // Hide dropdown but show the MoreOptionsButton on hover
+      onMouseEnter={() => setShowDropdown(false)}
       onMouseLeave={() => {
-        setShowDropdown(false); // Hide the dropdown when mouse leaves
+        setShowDropdown(false);
       }}>
       <ProfileImageContainer>
         <StyledProfileImg src={profileImageUrl} alt="Profile" />
-        <OnlineStatusIndicator />
+        <OnlineStatusIndicator notification={notification} />
       </ProfileImageContainer>
       <StyledChatContent>
         <StyledProfileName>{name}</StyledProfileName>
@@ -61,7 +62,7 @@ const ChatListBox = ({
       <StyledChatPreviewDate>{lastDate}</StyledChatPreviewDate>
       <MoreOptionsButton
         onClick={e => {
-          e.stopPropagation(); // Prevents the outer onClick from being triggered
+          e.stopPropagation();
           setShowDropdown(!showDropdown);
         }}>
         ...
@@ -73,6 +74,7 @@ const ChatListBox = ({
       )}
     </ChatListBoxWrapper>
 
+    // html,css 반응형 컴포넌트로 리팩토링 중
     // <ChatListBoxcontainer
     //   isActive={isActive}
     //   onClick={onClick}
@@ -154,12 +156,9 @@ const ProfileImageContainer = styled.div`
   ${tw`relative inline-block mr-4`}
 `;
 
-// 온라인 상태 표시기
-const OnlineStatusIndicator = styled.div`
-  ${tw`absolute w-3 h-3 rounded-full bg-green-500`}
-  right: 2px; // 위치 조정
-  bottom: 1px; // 위치 조정
-  border: 1px solid white; // 배경색과 구분되도록 흰색 테두리 추가
+const OnlineStatusIndicator = styled.div<{ notification: boolean }>`
+  ${tw`absolute w-3 h-3 rounded-full right-0.5 bottom-px border-2 border-white`}
+  ${({ notification }) => (notification ? tw`bg-green-500` : tw`bg-red-500`)};
 `;
 
 // const ChatListBoxcontainer = styled.div<{ isActive: boolean }>`
