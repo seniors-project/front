@@ -50,7 +50,10 @@ const ChatListBox = ({
       onMouseLeave={() => {
         setShowDropdown(false); // Hide the dropdown when mouse leaves
       }}>
-      <StyledProfileImg src={profileImageUrl} alt="Profile" />
+      <ProfileImageContainer>
+        <StyledProfileImg src={profileImageUrl} alt="Profile" />
+        <OnlineStatusIndicator />
+      </ProfileImageContainer>
       <StyledChatContent>
         <StyledProfileName>{name}</StyledProfileName>
         <StyledChatPreview>{message}</StyledChatPreview>
@@ -116,7 +119,7 @@ const ChatListBoxWrapper = styled.div<{ isActive: boolean }>`
 `;
 
 const StyledProfileImg = tw.img`
-  w-[60px] h-[60px] rounded-full mr-4
+  w-[60px] h-[60px] rounded-full
 `;
 
 const StyledChatContent = tw.div`
@@ -145,6 +148,18 @@ const OptionItem = tw.div`
 
 const MoreOptionsButton = tw.button`
   hidden group-hover:block ml-auto mr-4
+`;
+
+const ProfileImageContainer = styled.div`
+  ${tw`relative inline-block mr-4`}
+`;
+
+// 온라인 상태 표시기
+const OnlineStatusIndicator = styled.div`
+  ${tw`absolute w-3 h-3 rounded-full bg-green-500`}
+  right: 2px; // 위치 조정
+  bottom: 1px; // 위치 조정
+  border: 1px solid white; // 배경색과 구분되도록 흰색 테두리 추가
 `;
 
 // const ChatListBoxcontainer = styled.div<{ isActive: boolean }>`
