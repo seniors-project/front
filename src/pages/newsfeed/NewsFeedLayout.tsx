@@ -11,7 +11,7 @@ interface Props {
   children: ReactNode;
 }
 
-export function NewsFeedLayout({ children }: Props) {
+export default function NewsFeedLayout({ children }: Props) {
   return (
     <>
       <Header />

@@ -1,8 +1,8 @@
 import Head from 'next/head';
 
-import { Layout } from './feeduploadLayout';
+import Layout from './feeduploadLayout';
 import FeedUploadHead from './feeduploadHeader';
-import FeedUploadList from './feeduploadList'
+import FeedUploadList from './feeduploadList';
 
 function Home() {
   return (
@@ -11,9 +11,9 @@ function Home() {
         <title>setting-practice</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      
+
       <Layout>
-      <FeedUploadHead/>
+        <FeedUploadHead />
         <div
           style={{
             display: 'flex',
@@ -21,9 +21,8 @@ function Home() {
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-      
-      <FeedUploadList/>
-       </div>
+          <FeedUploadList />
+        </div>
       </Layout>
     </>
   );

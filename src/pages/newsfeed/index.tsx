@@ -1,36 +1,31 @@
-import Head from 'next/head';
-
-import { Layout } from '@/components/Layout';
-import NewsFeedHeader from './NewsFeedHeader'
-import {NewsFeedLayout} from './NewsFeedLayout';
+import NewsFeedHeader from './NewsFeedHeader';
 import NewsFeedTab from './NewsFeedTab';
 import NewsFeedList from './NewsFeedList';
 
 function NewsFeed() {
   return (
     <>
- 
-        <div style={{
+      <div
+        style={{
           display: 'flex',
-          flexDirection: 'column', 
-          justifyContent: 'flex-start', 
+          flexDirection: 'column',
+          justifyContent: 'flex-start',
           alignItems: 'center',
         }}>
-      <NewsFeedHeader/>
+        <NewsFeedHeader />
       </div>
-        <div style={{
-          display: 'flex', 
-          flexDirection: 'column', 
-          justifyContent: 'center', 
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
           alignItems: 'center',
         }}>
-          <NewsFeedTab/>
-          <NewsFeedList/>
-          
-        </div>
-        
+        <NewsFeedTab />
+        <NewsFeedList />
+      </div>
     </>
-  ); 
+  );
 }
 
 export default NewsFeed;
