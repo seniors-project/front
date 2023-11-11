@@ -9,12 +9,7 @@ import NewsFeedList from './NewsFeedList';
 function NewsFeed() {
   return (
     <>
-      <Head>
-        <title>setting-practice</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      
-      <NewsFeedLayout>
+ 
         <div style={{
           display: 'flex',
           flexDirection: 'column', 
@@ -33,7 +28,7 @@ function NewsFeed() {
           <NewsFeedList/>
           
         </div>
-        </NewsFeedLayout>
+        
     </>
   ); 
 }

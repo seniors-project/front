@@ -58,11 +58,11 @@ const StyledShowLike = tw.div`
 font-medium text-sm  
 `
 const StyledLike = tw.button`
-font-bold text-xl mt-5
+font-bold text-sm mt-5
 `
 const StyledComment = tw.button`
-font-bold text-xl mt-[218px] ml-[50px]
+font-bold text-sm mt-[218px] ml-[50px]
 `
 const StyledShare = tw.button`
-font-bold text-xl mt-[218px] ml-[50px]
+font-bold text-sm mt-[218px] ml-[50px]
 `

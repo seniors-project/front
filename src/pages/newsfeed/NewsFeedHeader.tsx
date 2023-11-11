@@ -1,11 +1,14 @@
 import tw from 'twin.macro';
 import { pretenderedBold } from '../../styles/fonts/index'
+import Link from 'next/link';
 
 function NewsFeedHeader() {
     return (
         <>
         <StyledNewsFeedHeader>함께 나누고 싶은 이야기가 있나요?</StyledNewsFeedHeader>
-        <StyledWriteBtn>글 작성하기</StyledWriteBtn>
+        <Link href="/feedupload">
+        <StyledWriteBtn >글 작성하기</StyledWriteBtn>
+        </Link>
         </>
     );
 }
