@@ -10,5 +10,5 @@ function FeedUploadHead() {
 
 export default FeedUploadHead;
 const FeedUploadHeader = tw.div`
-font-bold text-xl mb-3 flex flex-row items-center 
+font-bold text-xl mb-3 flex flex-row items-center pl-80 pt-5
 `
