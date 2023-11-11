@@ -5,6 +5,8 @@ import { Layout } from '@/components/Layout';
 import { userValidate } from '@/apis/auth';
 import parseCookies from '@/utils/parseCookies';
 
+import NewsFeed from './newsfeed';
+
 function Home() {
   return (
     <>
@@ -12,7 +14,7 @@ function Home() {
         <title>setting-practice</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Layout>hi</Layout>
+      <Layout><NewsFeed/></Layout>
     </>
   );
 }
