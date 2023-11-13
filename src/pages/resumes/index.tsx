@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useRecoilValue } from 'recoil';
 import tw from 'twin.macro';
 import { GetServerSidePropsContext, GetServerSideProps, NextPage } from 'next';
 import Image from 'next/image';
@@ -14,7 +13,6 @@ import ChatButton from '@/components/Button/ChatButton';
 
 import { Layout } from '@/components/Layout';
 import { Container } from '@/styles';
-import { tokenState } from '@/atom/user';
 
 const RegisterResumeBanner = tw.div`
   py-10 bg-white
@@ -94,7 +92,6 @@ const HistoryPeriod = tw.div`
 `;
 
 const ResumeListPage: NextPage = () => {
-  const token = useRecoilValue(tokenState) ?? '';
   const [limit, setLimit] = useState(150);
 
   const { status, data, error, fetchNextPage } = useInfiniteQuery(
@@ -251,7 +248,7 @@ const ResumeListPage: NextPage = () => {
                     {(data?.viewCount ?? 0) > 0 && (
                       <ViewCount>조회수 {data.viewCount}회</ViewCount>
                     )}
-                    <ChatButton token={token} chatUserId={data.userId} />
+                    <ChatButton chatUserId={data.userId} />
                   </ResumeCardHeader>
                   <ResumeCardBody>
                     <ResumeDe>
