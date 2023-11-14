@@ -9,6 +9,51 @@ import { Client } from '@stomp/stompjs';
 import { ChatRoomBox } from '@/types/chat';
 import { dateconversion } from '@/utils/dateconversion';
 
+const StyledChatRoomBox = tw.div`
+  w-[803px]
+  h-[769px]
+  rounded-tr-[20px]
+  flex flex-col justify-between p-6
+  border-t border-r border-solid border-gray-300
+  `;
+
+const StyledMessagesContainer = tw.div`
+  flex flex-col
+  overflow-y-auto
+`;
+
+const StyledChatRoomDate = tw.div`
+  w-[211px] h-[44px] rounded-[100px] bg-gray-200 text-gray-300 flex justify-center items-center
+`;
+
+const StyleReceiveMessage = tw.div`
+  bg-white
+  text-black
+  px-4 py-2
+  my-6
+  rounded-lg
+`;
+
+const StyledSendMessage = tw.div`
+  bg-[#E5F1FF]
+  text-black
+  px-4 py-2
+  my-6 
+  mr-4
+  rounded-lg
+`;
+
+const StyledSendMessageWrapper = tw.div`
+  flex justify-end
+`;
+
+const StyleReceiveMessageWrapper = tw.div`
+  flex justify-start
+`;
+
+const StyleChatRoomDateWrapper = tw.div`
+  flex justify-center items-center self-center`;
+
 function ChatRoom() {
   const [chatRoomBoxes, setChatRoomBoxes] = useState<ChatRoomBox[]>([]);
   const userId = useRecoilValue(loggedInUserIdState);
@@ -137,48 +182,3 @@ function ChatRoom() {
 }
 
 export default ChatRoom;
-
-const StyledChatRoomBox = tw.div`
-  w-[803px]
-  h-[769px]
-  rounded-tr-[20px]
-  flex flex-col justify-between p-6
-  border-t border-r border-solid border-gray-300
-  `;
-
-const StyledMessagesContainer = tw.div`
-  flex flex-col
-  overflow-y-auto
-`;
-
-const StyledChatRoomDate = tw.div`
-  w-[211px] h-[44px] rounded-[100px] bg-gray-200 text-gray-300 flex justify-center items-center
-`;
-
-const StyleReceiveMessage = tw.div`
-  bg-white
-  text-black
-  px-4 py-2
-  my-6
-  rounded-lg
-`;
-
-const StyledSendMessage = tw.div`
-  bg-[#E5F1FF]
-  text-black
-  px-4 py-2
-  my-6 
-  mr-4
-  rounded-lg
-`;
-
-const StyledSendMessageWrapper = tw.div`
-  flex justify-end
-`;
-
-const StyleReceiveMessageWrapper = tw.div`
-  flex justify-start
-`;
-
-const StyleChatRoomDateWrapper = tw.div`
-  flex justify-center items-center self-center`;

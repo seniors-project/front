@@ -4,6 +4,13 @@ import { setCreateChatRoom } from '@/apis/chat';
 import { useRouter } from 'next/router';
 import { ChatButtonProps } from '@/types/chat';
 
+const StyledChatButton = styled.div<{ twCustom: string | undefined }>`
+  ${({ twCustom }) =>
+    twCustom
+      ? tw`${twCustom}`
+      : tw`h-14 font-medium  text-[#515A64] text-2xl my-auto flex ml-auto bg-[#EAECEF] rounded-sm py-3 px-9`};
+`;
+
 function ChatButton({ chatUserId, twCustom }: ChatButtonProps) {
   const router = useRouter();
   const handleChatClick = async () => {
@@ -29,10 +36,3 @@ function ChatButton({ chatUserId, twCustom }: ChatButtonProps) {
 }
 
 export default ChatButton;
-
-const StyledChatButton = styled.div<{ twCustom: string | undefined }>`
-  ${({ twCustom }) =>
-    twCustom
-      ? tw`${twCustom}`
-      : tw`h-14 font-medium  text-[#515A64] text-2xl my-auto flex ml-auto bg-[#EAECEF] rounded-sm py-3 px-9`};
-`;

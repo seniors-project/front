@@ -1,4 +1,3 @@
-import styled from '@emotion/styled';
 import tw from 'twin.macro';
 import { useState, useEffect } from 'react';
 
@@ -11,8 +10,26 @@ import { loggedInUserIdState } from '@/atom/chatUser';
 import { ChatBox } from '@/types/chat';
 import { Client } from '@stomp/stompjs';
 
-import { pretenderedSemiBold } from '@/styles/fonts';
 import { useQuery } from '@tanstack/react-query';
+
+const StyledChatListContainer = tw.div`
+  w-[396px] rounded-tl-[20px] bg-white flex flex-col border-t border-l border-gray-300
+`;
+
+const StyledGrayLine = tw.div`
+  w-full border-t border-gray-300
+`;
+
+const StyledChatListBoxUpText = tw.div`
+  w-full mb-4 my-[30px] ml-[24px] text-[26px] font-semibold
+`;
+
+const StyledChatListBoxDownText = tw.div`
+  w-full text-center mb-4
+`;
+const StyledContent = tw.div`
+  flex-grow flex flex-col justify-center items-center
+`;
 
 const ChatList = () => {
   const [chatBoxes, setChatBoxes] = useState<ChatBox[]>([]);
@@ -134,23 +151,3 @@ const ChatList = () => {
 };
 
 export default ChatList;
-
-const StyledChatListContainer = tw.div`
-w-[396px] rounded-tl-[20px] bg-white flex flex-col border-t border-l border-gray-300
-`;
-
-const StyledGrayLine = tw.div`
-w-full border-t border-gray-300
-`;
-
-const StyledChatListBoxUpText = styled.div`
-  ${tw`w-full mb-4 my-[30px] ml-[24px] text-[26px]`}
-  font-family: "${pretenderedSemiBold}", sans-serif;
-`;
-
-const StyledChatListBoxDownText = tw.div`
-w-full text-center mb-4
-`;
-const StyledContent = tw.div`
-flex-grow flex flex-col justify-center items-center
-`;

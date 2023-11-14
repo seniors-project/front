@@ -1,5 +1,4 @@
 import tw from 'twin.macro';
-import styled from '@emotion/styled';
 
 import { GetServerSidePropsContext, GetServerSideProps } from 'next';
 import { userValidate } from '@/apis/auth';
@@ -7,17 +6,106 @@ import parseCookies from '@/utils/parseCookies';
 
 import { Layout } from '@/components/Layout';
 
-import {
-  pretenderedSemiBold,
-  pretenderedBold,
-  pretenderedMedium,
-} from '@/styles/fonts';
 import SwitchButton from '@/components/Button/SwitchButton';
 import ChatButton from '@/components/Button/ChatButton';
 import { useQuery } from '@tanstack/react-query';
 import { getUserResume } from '@/apis/resume';
 import { useRouter } from 'next/router';
 import ResumesInforBox from '@/components/Resumes/ResumesInforBox';
+
+const StyledResumesContainer = tw.div`
+  flex justify-center
+`;
+
+const StyledResumesWrapper = tw.div`
+`;
+
+const StyledPageTitle = tw.div`
+  py-8
+`;
+
+const StyledPageTitleText = tw.div`
+  text-[30px] mt-8 font-semibold
+`;
+
+const StyledResumesBox = tw.div`
+  p-6
+  flex flex-col
+  bg-white
+  rounded-2xl
+  mb-20
+  border
+  border-[#DFE2E6]
+`;
+
+const StyledResumesBoxWrapper = tw.div`
+  p-2
+  mb-14
+  mt-4
+`;
+
+const StyledResumesBoxHeader = tw.div`
+  gap-y-1 grid
+`;
+
+const StyledResumesBoxImgWrap = tw.div`
+  grid justify-items-center
+`;
+
+const StyledResumesBoxImg = tw.img`
+  w-[120px] h-[120px] rounded-full
+`;
+
+const StyledResumesBoxHeaderRight = tw.div`
+  grid justify-items-end
+`;
+
+const StyledResumesBoxHeaderTop = tw.div`
+  grid grid-cols-3 grid-flow-col
+`;
+
+const StyledResumesBoxContent = tw.div`
+  w-9/12
+  mx-auto
+`;
+
+const StyledResumesBoxName = tw.div`
+  text-[30px] flex justify-center font-bold
+`;
+
+const StyledResumesBoxWish = tw.div`
+  text-[18px] flex justify-center font-semibold
+`;
+
+const StyledResumesBoxDcp = tw.div`
+  text-[22px] flex justify-center text-[#515A64] font-medium
+`;
+
+const StyledResumesBoxContentTitle = tw.div`
+  text-[26px] mb-2 mt-8 font-semibold
+`;
+
+const StyledResumesBoxContentLine = tw.div`
+  border-t-2
+  border-t-gray-300
+  border-opacity-100
+  space-x-4
+  mt-10
+`;
+
+const StyledResumesEtc = tw.div`
+  flex
+  items-center
+  mt-14
+`;
+
+const StyledHits = tw.div`
+  text-[20px] text-[#515A64] mt-2 font-medium
+`;
+
+const StyledEtTitle = tw.div`
+  text-[26px] text-[#0177FD]  ml-2 font-bold
+`;
 
 const Resumes = () => {
   const router = useRouter();
@@ -148,104 +236,3 @@ export const getServerSideProps: GetServerSideProps = async (
 };
 
 export default Resumes;
-
-const StyledResumesContainer = tw.div`
-  flex justify-center
-`;
-
-const StyledResumesWrapper = tw.div`
-`;
-
-const StyledPageTitle = tw.div`
-  py-8
-`;
-
-const StyledPageTitleText = styled.div`
-  ${tw`text-[30px] mt-8`}
-  font-family: "${pretenderedSemiBold}", sans-serif;
-`;
-
-const StyledResumesBox = tw.div`
-  p-6
-  flex flex-col
-  bg-white
-  rounded-2xl
-  mb-20
-  border
-  border-[#DFE2E6]
-`;
-
-const StyledResumesBoxWrapper = tw.div`
-  p-2
-  mb-14
-  mt-4
-`;
-
-const StyledResumesBoxHeader = tw.div`
-  gap-y-1 grid
-`;
-
-const StyledResumesBoxImgWrap = tw.div`
-  grid justify-items-center
-`;
-
-const StyledResumesBoxImg = tw.img`
-  w-[120px] h-[120px] rounded-full
-`;
-
-const StyledResumesBoxHeaderRight = tw.div`
-  grid justify-items-end
-`;
-
-const StyledResumesBoxHeaderTop = tw.div`
-  grid grid-cols-3 grid-flow-col
-`;
-
-const StyledResumesBoxContent = tw.div`
-  w-9/12
-  mx-auto
-`;
-
-const StyledResumesBoxName = styled.div`
-  ${tw`text-[30px] flex justify-center`}
-  font-family: "${pretenderedBold}", sans-serif;
-`;
-
-const StyledResumesBoxWish = styled.div`
-  ${tw`text-[18px] flex justify-center`}
-  font-family: "${pretenderedSemiBold}", sans-serif;
-`;
-
-const StyledResumesBoxDcp = styled.div`
-  ${tw`text-[22px] flex justify-center text-[#515A64]`}
-  font-family: "${pretenderedMedium}", sans-serif;
-`;
-
-const StyledResumesBoxContentTitle = styled.div`
-  ${tw`text-[26px] mb-2 mt-8`}
-  font-family: "${pretenderedSemiBold}", sans-serif;
-`;
-
-const StyledResumesBoxContentLine = tw.div`
-  border-t-2
-  border-t-gray-300
-  border-opacity-100
-  space-x-4
-  mt-10
-`;
-
-const StyledResumesEtc = tw.div`
-  flex
-  items-center
-  mt-14
-`;
-
-const StyledHits = styled.div`
-  ${tw`text-[20px] text-[#515A64] mt-2`}
-  font-family: "${pretenderedMedium}", sans-serif;
-`;
-
-const StyledEtTitle = styled.div`
-  ${tw`text-[26px] text-[#0177FD]  ml-2`}
-  font-family: "${pretenderedBold}", sans-serif;
-`;
