@@ -4,6 +4,31 @@ import { useState } from 'react';
 import { ChatRoomBoxProps } from '@/types/chat';
 import { useQueryClient } from '@tanstack/react-query';
 
+const StyledChatInputContainer = tw.div`
+  w-full
+  h-[134px]
+  rounded-[4px]
+  bg-white
+  relative
+  flex flex-col justify-between
+`;
+const StyledChatRoomInputBox = tw.textarea`
+w-full h-[134px]
+rounded-[4px]
+pr-[100px] pl-4 py-3
+resize-none
+overflow-y-auto
+`;
+const StyleChatSendButton = tw.button`
+  w-[80px]
+  h-[45px]
+  rounded-[4px]
+  absolute bottom-4 right-4
+  bg-[#0177FD]
+  text-white
+  flex-shrink-0 
+`;
+
 function ChatInputBox({ userId, chatRoomId, ws }: ChatRoomBoxProps) {
   const [message, setMessage] = useState<string>('');
   const queryClient = useQueryClient();
@@ -46,27 +71,3 @@ function ChatInputBox({ userId, chatRoomId, ws }: ChatRoomBoxProps) {
 }
 
 export default ChatInputBox;
-const StyledChatInputContainer = tw.div`
-  w-full
-  h-[134px]
-  rounded-[4px]
-  bg-white
-  relative
-  flex flex-col justify-between
-`;
-const StyledChatRoomInputBox = tw.textarea`
-w-full h-[134px]
-rounded-[4px]
-pr-[100px] pl-4 py-3
-resize-none
-overflow-y-auto
-`;
-const StyleChatSendButton = tw.button`
-  w-[80px]
-  h-[45px]
-  rounded-[4px]
-  absolute bottom-4 right-4
-  bg-[#0177FD]
-  text-white
-  flex-shrink-0 
-`;

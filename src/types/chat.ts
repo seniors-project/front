@@ -3,6 +3,7 @@ import { Client } from '@stomp/stompjs';
 export interface ChatBox {
   profileImageUrl: string;
   roomId: number;
+  userId: number;
   roomName: string;
   message: string;
   chatMessageRes: {
@@ -19,6 +20,7 @@ export interface ChatListBoxProps {
   date: string;
   chatRoomId: number;
   profileImageUrl: string;
+  notification: boolean;
 }
 
 export interface ChatRoomBox {

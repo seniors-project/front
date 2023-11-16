@@ -1,16 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
 
-const SwitchButton = () => {
-  const isToggled = true;
-
-  return (
-    <SwitchButtonContainer isToggled={isToggled}>
-      <SwitchCircle isToggled={isToggled} />
-    </SwitchButtonContainer>
-  );
-};
-
 const SwitchButtonContainer = styled.div<{ isToggled: boolean }>`
   width: 50px;
   height: 24px;
@@ -30,5 +20,15 @@ const SwitchCircle = styled.div<{ isToggled: boolean }>`
   left: ${props => (props.isToggled ? '26px' : '2px')};
   transition: left 0.2s;
 `;
+
+const SwitchButton = () => {
+  const isToggled = true;
+
+  return (
+    <SwitchButtonContainer isToggled={isToggled}>
+      <SwitchCircle isToggled={isToggled} />
+    </SwitchButtonContainer>
+  );
+};
 
 export default SwitchButton;
