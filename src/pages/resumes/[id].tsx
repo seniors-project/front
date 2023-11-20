@@ -123,13 +123,15 @@ const Resumes = () => {
     },
   );
 
+  const resumeData = data?.data?.data;
+
   return (
     <Layout>
       <StyledResumesContainer>
         <StyledResumesWrapper>
           <StyledPageTitle>
             <StyledPageTitleText>
-              {data?.data.data.name}님의 이력서 페이지 입니다.
+              {resumeData?.name}님의 이력서 페이지 입니다.
             </StyledPageTitleText>
           </StyledPageTitle>
           <StyledResumesBox>
@@ -139,48 +141,44 @@ const Resumes = () => {
                   <div></div>
                   <StyledResumesBoxImgWrap>
                     <StyledResumesBoxImg
-                      src={data?.data.data.photoUrl}
+                      src={resumeData?.photoUrl}
                       alt="Profile"
                     />
                   </StyledResumesBoxImgWrap>
                   <StyledResumesBoxHeaderRight>
-                    <ChatButton chatUserId={data?.data.data.id} />
-                    <StyledHits>
-                      조회수 {data?.data.data.viewCount}회
-                    </StyledHits>
+                    <ChatButton chatUserId={resumeData?.id} />
+                    <StyledHits>조회수 {resumeData?.viewCount}회</StyledHits>
                   </StyledResumesBoxHeaderRight>
                 </StyledResumesBoxHeaderTop>
-                <StyledResumesBoxName>
-                  {data?.data.data.name}
-                </StyledResumesBoxName>
+                <StyledResumesBoxName>{resumeData?.name}</StyledResumesBoxName>
                 <StyledResumesBoxWish>
-                  {data?.data.data.occupation}
+                  {resumeData?.occupation}
                 </StyledResumesBoxWish>
                 <StyledResumesBoxDcp>
-                  {data?.data.data.introduce}{' '}
+                  {resumeData?.introduce}
                 </StyledResumesBoxDcp>
               </StyledResumesBoxHeader>
               <StyledResumesBoxContent>
                 <ResumesInforBox
                   title="경력 사항"
-                  period=""
-                  subPeriod=""
-                  content=""
-                  subContent=""
+                  period={resumeData?.careers[0]?.startedAt}
+                  subPeriod={resumeData?.careers[0]?.company}
+                  content={resumeData?.careers[0]?.title}
+                  subContent={resumeData?.careers[0]?.content}
                 />
                 <ResumesInforBox
                   title="교육 이수"
-                  period=""
-                  subPeriod=""
-                  content=""
-                  subContent=""
+                  period={resumeData?.educations[0]?.startedAt}
+                  subPeriod={resumeData?.educations[0]?.content}
+                  content={resumeData?.educations[0]?.institution}
+                  subContent={resumeData?.educations[0]?.process}
                 />
                 <ResumesInforBox
                   title="자격증"
-                  period=""
-                  subPeriod=""
-                  content=""
-                  subContent=""
+                  period={resumeData?.certificates[0]?.startedAt}
+                  subPeriod={resumeData?.certificates[0]?.company}
+                  content={resumeData?.certificates[0]?.name}
+                  subContent={resumeData?.certificates[0]?.rating}
                 />
                 <StyledResumesBoxContentTitle>
                   그 외
