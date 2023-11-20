@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import type { ReactNode } from 'react';
 import tw from 'twin.macro';
 
@@ -15,6 +16,10 @@ interface Props {
 export function Layout({ children }: Props) {
   return (
     <>
+      <Head>
+        <title>SENIORS</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       <Header />
       <Main>{children}</Main>
     </>

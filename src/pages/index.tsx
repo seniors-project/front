@@ -1,4 +1,3 @@
-import Head from 'next/head';
 import { GetServerSidePropsContext, GetServerSideProps } from 'next';
 
 import { Layout } from '@/components/Layout';
@@ -10,10 +9,6 @@ import NewsFeed from './newsfeed';
 function Home() {
   return (
     <>
-      <Head>
-        <title>setting-practice</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
       <Layout>
         <NewsFeed />
       </Layout>
