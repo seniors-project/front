@@ -12,9 +12,10 @@ import { dateconversion } from '@/utils/dateconversion';
 const StyledChatRoomBox = tw.div`
   w-[803px]
   h-[769px]
-  rounded-tr-[20px]
   flex flex-col justify-between p-6
   border-t border-r border-solid border-gray-300
+  sm:(rounded-none)
+  lg:(rounded-tr-[20px])
   `;
 
 const StyledMessagesContainer = tw.div`

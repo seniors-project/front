@@ -13,7 +13,9 @@ import { Client } from '@stomp/stompjs';
 import { useQuery } from '@tanstack/react-query';
 
 const StyledChatListContainer = tw.div`
-  w-[396px] rounded-tl-[20px] bg-white flex flex-col border-t border-l border-gray-300
+bg-white flex flex-col border-t border-l border-gray-300
+lg:(w-[396px] rounded-tl-[20px] bg-white flex flex-col border-t border-l border-gray-300)
+sm:(w-full rounded-none)
 `;
 
 const StyledGrayLine = tw.div`

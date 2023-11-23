@@ -1,5 +1,7 @@
 import tw from 'twin.macro';
 
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import { Layout } from '@/components/Layout';
 import { GetServerSidePropsContext, GetServerSideProps } from 'next';
 import { userValidate } from '@/apis/auth';
@@ -25,14 +27,38 @@ const StyledChatHeaderWrapper = tw.div`
 `;
 
 function Chat() {
+  const router = useRouter();
+  const { id } = router.query;
+  const [isSmallScreen, setIsSmallScreen] = useState(false);
+
+  const checkScreenWidth = () => {
+    setIsSmallScreen(window.innerWidth < 768);
+  };
+
+  useEffect(() => {
+    checkScreenWidth();
+    window.addEventListener('resize', checkScreenWidth);
+    return () => window.removeEventListener('resize', checkScreenWidth);
+  }, []);
+
+  // Conditional rendering based on screen size and id presence
+  const renderContent = () => {
+    if (isSmallScreen) {
+      return id ? <ChatRoom /> : <ChatList />;
+    }
+    return (
+      <>
+        <ChatList />
+        <ChatRoom />
+      </>
+    );
+  };
+
   return (
     <Layout>
       <StyledChatContainer>
         <StyledChatHeaderWrapper>채팅하기</StyledChatHeaderWrapper>
-        <StyledChatWrapper>
-          <ChatList />
-          <ChatRoom />
-        </StyledChatWrapper>
+        <StyledChatWrapper>{renderContent()}</StyledChatWrapper>
       </StyledChatContainer>
     </Layout>
   );
