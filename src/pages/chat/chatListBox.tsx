@@ -8,7 +8,7 @@ import { useRouter } from 'next/router';
 import { setDeleteChatRoom } from '@/apis/chat';
 
 const ChatListBoxWrapper = styled.div<{ isActive: boolean }>`
-  ${tw`flex w-[396px] h-[109px] px-[15px] py-6 border-b border-gray-300 relative hover:group-hover:block`}
+  ${tw`flex w-full h-[109px] px-[15px] py-6 border-b border-gray-300 relative hover:group-hover:block md:(w-[396px])`}
   ${({ isActive }) => (isActive ? tw`bg-[#E5F1FF]` : '')};
 `;
 
