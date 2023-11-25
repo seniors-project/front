@@ -3,9 +3,32 @@ import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import ShareIcon from '@mui/icons-material/Share';
 
+import { useQuery } from '@tanstack/react-query';
+import { getNewsfeedList } from '@/apis/newsfeed';
+import { getNewsfeed } from '@/apis/newsfeed';
+
 function NewsFeedList() {
+
+  const newsFeedLists = useQuery(['newsFeedList'], async () => {
+    const response = await getNewsfeedList();
+    const newsFeedList = response.data;
+
+    console.log(response); 
+    return { newsFeedList };
+  });
+
+  
+
+  // const {} = useQuery(['newsFeed'], async () => {
+  //   const response = await getNewsfeed(1);
+  //   const newsFeed = response.data;
+
+  //   return { newsFeed };
+  // });
+  
   return (
-    <StyledNewsFeedList>
+    <div>
+<StyledNewsFeedList>
       <StyledProfileImg src="/images/profile.png" alt="Profile" />
 
       <StyledProfileBox>
@@ -28,7 +51,9 @@ function NewsFeedList() {
         &nbsp;&nbsp;공유 하기
       </StyledShare>
     </StyledNewsFeedList>
+    </div>
   );
+  
 }
 
 export default NewsFeedList;
