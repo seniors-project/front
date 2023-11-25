@@ -1,22 +1,61 @@
 import tw from 'twin.macro';
 import React from 'react';
+import { useState } from "react";
+import { useQuery } from '@tanstack/react-query';
+import { postNewsfeed } from '@/apis/newsfeed';
 
-function FeedUploadList() {
+
+type MyFormProps = {
+  onSubmit: (form: { name: string; description: string }) => void;
+};
+function FeedUploadList({ onSubmit }: MyFormProps) {
+
+  // const {} = useQuery(['newsFeedList'], async () => {
+  //   const response = await postNewsfeed();
+  //   const Newsfeed = response.data;
+  //   console.log(response); 
+
+  //   return { Newsfeed };
+  // });
+
+    const [img, setImg] = useState("");
+    const [title, setTitle] = useState("");
+    const [content, setContent] = useState("");
+
+  const onSubmitHandler = (e:React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.preventDefault();
+    
+    const confirmForm = {
+      img,
+      title,
+      content
+    };
+    console.log(confirmForm)
+  };
+
   return (
     <>
       <FeedUploadListBox />
       <FeedUploadImgLabel htmlFor="file">사진추가</FeedUploadImgLabel>
-      <FeedUploadImg type="file" name="file" id="file"></FeedUploadImg>
+      <FeedUploadImg type="file" name="file" id="file" value={img}
+            onChange={(e) => {setImg(e.target.value);
+            }} ></FeedUploadImg>
       <FeedUpLoadTitle>제목</FeedUpLoadTitle>
-      <FeedUpLoadTitleInput placeholder="본명을 입력해 주세요."></FeedUpLoadTitleInput>
+      <FeedUpLoadTitleInput id={title} value={title}
+            onChange={(e) => {setTitle(e.target.value);
+            }} placeholder="본명을 입력해 주세요."></FeedUpLoadTitleInput>
       <FeedUpLoadbody>내용</FeedUpLoadbody>
-      <FeedUpLoadbodyInput
+      <FeedUpLoadbodyInput id={content} value={content}
+            onChange={(e) => {setContent(e.target.value);
+            }}
         placeholder="최소 10자 이상 내용을 입력해 주세요."
         minLength={10}></FeedUpLoadbodyInput>
-      <FeedUpLoadButton>등록</FeedUpLoadButton>
+      <FeedUpLoadButton onClick={onSubmitHandler}>등록</FeedUpLoadButton>
     </>
   );
 }
+
+
 
 export default FeedUploadList;
 
