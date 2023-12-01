@@ -1,8 +1,9 @@
 import { httpClient } from '@/lib/httpClient';
-import axios from 'axios';
+import { userValidate } from './auth';
+import { postForm } from '../types/newsfeed';
 
 export async function getNewsfeedList() {
-  const response = await httpClient.get(`posts?page=1&size=4`);
+  const response = await httpClient.get(`/posts?page=1&size=4`);
   return response.data;
 }
 
@@ -10,8 +11,12 @@ export function getNewsfeed(postId: number) {
   return httpClient.get(`posts/${postId}`);
 }
 
-export function postNewsfeed() {
-  return httpClient.post(`posts`);
+export async function postNewsfeed(data: postForm) {
+  const formdata = new FormData();
+
+  const response = await httpClient.post('/posts', formdata);
+
+  return response;
 }
 
 export function patchNewsfeed(postId: number) {
