@@ -4,7 +4,6 @@ import axios from 'axios';
 export async function getNewsfeedList() {
   const response = await httpClient.get(`posts?page=1&size=4`);
   return response.data;
-  
 }
 
 export function getNewsfeed(postId: number) {
@@ -16,8 +15,8 @@ export function postNewsfeed() {
 }
 
 export function patchNewsfeed(postId: number) {
-    return httpClient.patch(`posts/${postId}`);
-  }
+  return httpClient.patch(`posts/${postId}`);
+}
 
 export function deleteNewsfeed(postId: number) {
   return httpClient.delete(`posts/${postId}`);

@@ -8,7 +8,6 @@ import { GetServerSidePropsContext, GetServerSideProps } from 'next';
 import parseCookies from '@/utils/parseCookies';
 import { userValidate } from '@/apis/auth';
 
-
 function Home() {
   return (
     <>
