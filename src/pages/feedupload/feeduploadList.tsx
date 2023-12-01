@@ -1,20 +1,37 @@
 import tw from 'twin.macro';
 import React from 'react';
 import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useQueryClient, useMutation } from '@tanstack/react-query';
 import { postNewsfeed } from '@/apis/newsfeed';
+
 function FeedUploadList() {
-  // const {} = useQuery(['newsFeedList'], async () => {
-  //   const response = await postNewsfeed();
-  //   const Newsfeed = response.data;
-  //   console.log(response);
+  const queryClient = useQueryClient();
 
-  //   return { Newsfeed };
-  // });
+  const mutation = useMutation(postNewsfeed, {
+    onSuccess: () => {
+      alert('작성 완료!');
+    },
+    onError: () => {
+      alert('작성 오류!');
+    },
+  });
 
-  const [img, setImg] = useState('');
+  const [img, setImg] = useState<File | null>(null);
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+
+  const onChangeImg = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    const formData = new FormData();
+
+    if (e.target.files) {
+      const uploadimg = e.target.files[0];
+      formData.append('img', uploadimg);
+      setImg(uploadimg);
+      console.log(uploadimg);
+      console.log(img);
+    }
+  };
 
   const onSubmitHandler = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
@@ -22,11 +39,11 @@ function FeedUploadList() {
     e.preventDefault();
 
     const confirmForm = {
-      img,
       title,
       content,
     };
     console.log(confirmForm);
+    mutation.mutate(confirmForm);
   };
 
   return (
@@ -34,13 +51,11 @@ function FeedUploadList() {
       <FeedUploadListBox />
       <FeedUploadImgLabel htmlFor="file">사진추가</FeedUploadImgLabel>
       <FeedUploadImg
+        multiple
         type="file"
         name="file"
         id="file"
-        value={img}
-        onChange={e => {
-          setImg(e.target.value);
-        }}></FeedUploadImg>
+        onChange={onChangeImg}></FeedUploadImg>
       <FeedUpLoadTitle>제목</FeedUpLoadTitle>
       <FeedUpLoadTitleInput
         id={title}
