@@ -4,3 +4,8 @@ export interface newsFeedData {
   profileimg: any;
   likestatus: any;
 }
+
+export interface postForm {
+  title: string;
+  content: string;
+}
